@@ -15,6 +15,15 @@
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.countries.index') }}" :active="request()->routeIs('admin.countries.index')">
+                        {{ __('Países') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.provinces.index') }}" :active="request()->routeIs('admin.provinces.index')">
+                        {{ __('Provincias') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.localities.index') }}" :active="request()->routeIs('admin.localities.index')">
+                        {{ __('Localidades') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 
