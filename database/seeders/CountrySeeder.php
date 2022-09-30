@@ -13,10 +13,10 @@ class CountrySeeder extends Seeder
     public function run()
     {
         Country::factory(3)->create()->each(function (Country $country) {
-            Province::factory(5)->create([
+            Province::factory(4)->create([
                 'country_id' => $country->id
             ])->each(function (Province $province) {
-                Locality::factory(8)->create([
+                Locality::factory(5)->create([
                     'province_id' => $province->id
                 ]);
             });

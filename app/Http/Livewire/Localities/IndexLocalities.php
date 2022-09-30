@@ -27,7 +27,10 @@ class IndexLocalities extends Component
 
     public function render()
     {
-        $localities = Locality::where('name', 'LIKE', "%" . $this->search . "%")->orderBy('id', 'DESC')->paginate(6);
+        $localities = Locality::where('name', 'LIKE', "%" . $this->search . "%")
+                    ->orwhere('postal_code', 'LIKE', '%' . $this->search . '%')
+                    ->orderBy('updated_at', 'DESC')->paginate(6);
+
         return view('livewire.localities.index-localities', compact('localities'));
     }
 }

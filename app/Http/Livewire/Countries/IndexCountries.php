@@ -25,7 +25,7 @@ class IndexCountries extends Component
 
     public function render()
     {
-        $countries = Country::where('name', 'LIKE', "%" . $this->search . "%")->paginate(6);
+        $countries = Country::where('name', 'LIKE', "%" . $this->search . "%")->orderBy('updated_at', 'DESC')->paginate(6);
         return view('livewire.countries.index-countries', compact('countries'));
     }
 }

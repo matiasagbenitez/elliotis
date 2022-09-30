@@ -9,7 +9,7 @@ class LocalityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->sentence(2, true),
+            'name' => $this->faker->city(),
             'postal_code' => $this->faker->randomNumber(5, true)
         ];
     }

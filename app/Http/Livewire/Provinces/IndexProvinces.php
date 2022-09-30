@@ -26,7 +26,7 @@ class IndexProvinces extends Component
 
     public function render()
     {
-        $provinces = Province::where('name', 'LIKE', "%" . $this->search . "%")->orderBy('id', 'DESC')->paginate(6);
+        $provinces = Province::where('name', 'LIKE', "%" . $this->search . "%")->orderBy('updated_at', 'DESC')->paginate(6);
         return view('livewire.provinces.index-provinces', compact('provinces'));
     }
 }

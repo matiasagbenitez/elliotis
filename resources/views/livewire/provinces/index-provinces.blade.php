@@ -44,12 +44,12 @@
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class=" text-sm uppercase">
+                                <p class="font-bold text-sm uppercase">
                                     {{ $province->name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class=" text-sm uppercase">
+                                <p class="text-sm uppercase">
                                     {{ $province->country->name }}
                                 </p>
                             </td>
