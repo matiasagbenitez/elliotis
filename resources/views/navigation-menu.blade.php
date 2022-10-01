@@ -30,6 +30,9 @@
                     <x-jet-nav-link href="{{ route('admin.clients.index') }}" :active="request()->routeIs('admin.clients.*')">
                         {{ __('Clientes') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.suppliers.index') }}" :active="request()->routeIs('admin.suppliers.*')">
+                        {{ __('Proveedores') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 

@@ -4,8 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Clients\EditClient;
 use App\Http\Livewire\Clients\CreateClient;
 use App\Http\Livewire\Clients\IndexClients;
+use App\Http\Livewire\Suppliers\EditSupplier;
 use App\Http\Livewire\Countries\IndexCountries;
 use App\Http\Livewire\Provinces\IndexProvinces;
+use App\Http\Livewire\Suppliers\CreateSupplier;
+use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
 
@@ -18,3 +21,7 @@ Route::get('/iva-conditions', IndexIvaConditions::class)->name('admin.iva-condit
 Route::get('/clients', IndexClients::class)->name('admin.clients.index');
 Route::get('/clients/create', CreateClient::class)->name('admin.clients.create');
 Route::get('/clients/{client}/edit', EditClient::class)->name('admin.clients.edit');
+
+Route::get('/suppliers', IndexSuppliers::class)->name('admin.suppliers.index');
+Route::get('/suppliers/create', CreateSupplier::class)->name('admin.suppliers.create');
+Route::get('/suppliers/{supplier}/edit', EditSupplier::class)->name('admin.suppliers.edit');
