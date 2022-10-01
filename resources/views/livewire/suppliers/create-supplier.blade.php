@@ -9,11 +9,19 @@
     <x-jet-form-section class="mb-6" submit="save">
 
         <x-slot name="title">
-            Crear un nuevo proveedor
+            Aclaraciones
         </x-slot>
 
         <x-slot name="description">
-            Lea detenidamente la información solicitada y rellene los campos requeridos para registrar un nuevo proveedor en el sistema.
+            <span>
+                Lea detenidamente la información solicitada y rellene los campos requeridos para registrar un nuevo proveedor en el sistema.
+                <br><br>
+                (*) Campos obligatorios.
+                <br><br>
+                Los campos que no son obligatorios (dirección, teléfono y correo electrónico), pueden ser rellenados en cualquier momento.
+                <br><br>
+                (**) Si el estado del proveedor es inactivo, no será tenido en cuenta en el proceso automatizado de pedido de rollos. Además, no podrá asociarle una nueva compra de materia prima.
+            </span>
         </x-slot>
 
         <x-slot name="form">

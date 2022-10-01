@@ -9,11 +9,17 @@
     <x-jet-form-section class="mb-6" submit="update">
 
         <x-slot name="title">
-            Editar un proveedor
+            Aclaraciones
         </x-slot>
 
         <x-slot name="description">
-            Lea detenidamente la información solicitada y rellene los campos requeridos para editar los datos de un proveedor en el sistema.
+            <span>
+                Lea detenidamente la información solicitada y rellene los campos requeridos para editar la información de un proveedor en el sistema.
+                <br><br>
+                (*) Campos obligatorios.
+                <br><br>
+                Los campos que no son obligatorios (dirección, teléfono y correo electrónico), pueden ser rellenados en cualquier momento.
+            </span>
         </x-slot>
 
         <x-slot name="form">

@@ -9,13 +9,19 @@
     <x-jet-form-section class="mb-6" submit="save">
 
         <x-slot name="title">
-            Crear un nuevo cliente
+            Aclaraciones
         </x-slot>
 
         <x-slot name="description">
-            Lea detenidamente la información solicitada y rellene los campos requeridos para registrar un nuevo cliente
-            en el sistema.
-
+            <span>
+                Lea detenidamente la información solicitada y rellene los campos requeridos para registrar un nuevo cliente en el sistema.
+                <br><br>
+                (*) Campos obligatorios.
+                <br><br>
+                Los campos que no son obligatorios (dirección, teléfono y correo electrónico), pueden ser rellenados en cualquier momento.
+                <br><br>
+                (**) Si el estado del cliente es inactivo, no podrá asociarle un nuevo pedido.
+            </span>
         </x-slot>
 
         <x-slot name="form">
@@ -121,14 +127,14 @@
 
             {{-- Email --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Dirección</x-jet-label>
+                <x-jet-label class="mb-2">Correo electrónico</x-jet-label>
                 <x-jet-input wire:model.defer="createForm.email" type="email" class="w-full"
                     placeholder="Ingrese el correo electrónico del cliente"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.email" />
             </div>
 
             <div class="col-span-6">
-                <h2 class="font-bold">Estado del cliente</h2>
+                <h2 class="font-bold">Estado del cliente **</h2>
                 <hr>
             </div>
 
