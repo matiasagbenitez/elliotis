@@ -27,6 +27,9 @@
                     <x-jet-nav-link href="{{ route('admin.iva-conditions.index') }}" :active="request()->routeIs('admin.iva-conditions.index')">
                         {{ __('Condiciones IVA') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.clients.index') }}" :active="request()->routeIs('admin.clients.*')">
+                        {{ __('Clientes') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 

@@ -11,12 +11,13 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
 
-            $table->string('businness_name')->required();
+            $table->string('business_name')->required();
+            $table->string('slug')->required()->unique();
 
             $table->unsignedBigInteger('iva_condition_id')->nullable();
             $table->foreign('iva_condition_id')->references('id')->on('iva_conditions')->onDelete('set null');
 
-            $table->string('cuit')->nullable();
+            $table->string('cuit')->required();
             $table->string('last_name')->required();
             $table->string('first_name')->required();
 
