@@ -12,13 +12,10 @@ class IndexClients extends Component
 
     public $search;
 
-    protected $listeners = ['delete' => 'disableClient'];
-
     public function updatingSearch()
     {
         $this->resetPage();
     }
-
     public function render()
     {
         $clients = Client::where('business_name', 'LIKE', "%" . $this->search . "%")->orderBy('updated_at', 'DESC')->paginate(6);

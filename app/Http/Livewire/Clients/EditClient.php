@@ -88,6 +88,8 @@ class EditClient extends Component
 
         $this->reset('editForm');
 
+        session()->flash('flash.banner', '¡Bien hecho! La información del cliente se actualizó correctamente.');
+
         return redirect()->route('admin.clients.index');
     }
 

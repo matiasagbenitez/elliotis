@@ -68,8 +68,7 @@ class CreateSupplier extends Component
 
         $this->reset('createForm');
 
-        // $this->emit('saved');
-        // $this->emit('alert', ['type' => 'success', 'message' => 'Supplier created successfully']);
+        session()->flash('flash.banner', '¡Bien hecho! El proveedor se ha creado correctamente.');
 
         return redirect()->route('admin.suppliers.index');
     }

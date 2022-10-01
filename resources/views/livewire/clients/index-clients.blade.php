@@ -69,13 +69,15 @@
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             Activo
                                         </span>
-                                        @break
+                                    @break
+
                                     @case(0)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             Inactivo
                                         </span>
-                                        @break
+                                    @break
+
                                     @default
                                 @endswitch
                             </td>
@@ -106,37 +108,5 @@
         @endif
 
     </x-responsive-table>
-
-    @push('script')
-        <script>
-            Livewire.on('deleteClient', clientId => {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "¡No podrás revertir esta acción!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#1f2937',
-                    cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, eliminar cliente',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.emitTo('clients.index-clients', 'delete', clientId);
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                        })
-                        Toast.fire({
-                            icon: 'success',
-                            title: '¡Cliente eliminado correctamente!'
-                        })
-                    }
-                })
-            });
-        </script>
-    @endpush
 
 </div>

@@ -62,10 +62,12 @@ class CreateClient extends Component
     {
         $this->validate();
 
-        $this->editForm['slug'] = Str::slug($this->createForm['business_name']);
+        $this->createForm['slug'] = Str::slug($this->createForm['business_name']);
         Client::create($this->createForm);
 
         $this->reset('createForm');
+
+        session()->flash('flash.banner', '¡Bien hecho! El cliente se creó correctamente.');
 
         return redirect()->route('admin.clients.index');
     }

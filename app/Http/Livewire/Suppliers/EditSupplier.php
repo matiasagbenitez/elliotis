@@ -88,6 +88,8 @@ class EditSupplier extends Component
 
         $this->reset('editForm');
 
+        session()->flash('flash.banner', '¡Bien hecho! La información del proveedor se actualizó correctamente.');
+
         return redirect()->route('admin.suppliers.index');
     }
 
