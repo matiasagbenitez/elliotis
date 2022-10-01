@@ -11,5 +11,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CountrySeeder::class);
         $this->call(IvaConditionSeeder::class);
         $this->call(ClientSeeder::class);
+        $this->call(SupplierSeeder::class);
     }
 }
