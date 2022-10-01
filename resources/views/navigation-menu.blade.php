@@ -36,6 +36,9 @@
                     <x-jet-nav-link href="{{ route('admin.pucharse-parameters.index') }}" :active="request()->routeIs('admin.pucharse-parameters.index')">
                         {{ __('Parámetros de compra') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.iva-types.index') }}" :active="request()->routeIs('admin.iva-types.index')">
+                        {{ __('Tipos de IVA') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 

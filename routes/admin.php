@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Clients\EditClient;
 use App\Http\Livewire\Clients\CreateClient;
 use App\Http\Livewire\Clients\IndexClients;
+use App\Http\Livewire\IvaTypes\IndexIvaTypes;
 use App\Http\Livewire\Suppliers\EditSupplier;
 use App\Http\Livewire\Countries\IndexCountries;
 use App\Http\Livewire\Provinces\IndexProvinces;
@@ -28,3 +29,5 @@ Route::get('/suppliers/create', CreateSupplier::class)->name('admin.suppliers.cr
 Route::get('/suppliers/{supplier}/edit', EditSupplier::class)->name('admin.suppliers.edit');
 
 Route::get('/pucharse-parameters', IndexPucharseParameters::class)->name('admin.pucharse-parameters.index');
+
+Route::get('/iva-types', IndexIvaTypes::class)->name('admin.iva-types.index');
