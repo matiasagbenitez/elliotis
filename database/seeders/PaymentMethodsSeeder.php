@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\PaymentMethods;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PaymentMethodsSeeder extends Seeder
 {
@@ -35,5 +36,9 @@ class PaymentMethodsSeeder extends Seeder
                 'name' => 'Otro',
             ],
         ];
+
+        foreach ($payment_methods as $payment_method) {
+            PaymentMethods::create($payment_method);
+        }
     }
 }

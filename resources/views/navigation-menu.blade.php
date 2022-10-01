@@ -33,6 +33,9 @@
                     <x-jet-nav-link href="{{ route('admin.suppliers.index') }}" :active="request()->routeIs('admin.suppliers.*')">
                         {{ __('Proveedores') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.pucharse-parameters.index') }}" :active="request()->routeIs('admin.pucharse-parameters.index')">
+                        {{ __('Parámetros de compra') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 

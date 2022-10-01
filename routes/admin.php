@@ -11,6 +11,7 @@ use App\Http\Livewire\Suppliers\CreateSupplier;
 use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
+use App\Http\Livewire\PucharseParameters\IndexPucharseParameters;
 
 Route::get('/countries', IndexCountries::class)->name('admin.countries.index');
 Route::get('/provinces', IndexProvinces::class)->name('admin.provinces.index');
@@ -25,3 +26,5 @@ Route::get('/clients/{client}/edit', EditClient::class)->name('admin.clients.edi
 Route::get('/suppliers', IndexSuppliers::class)->name('admin.suppliers.index');
 Route::get('/suppliers/create', CreateSupplier::class)->name('admin.suppliers.create');
 Route::get('/suppliers/{supplier}/edit', EditSupplier::class)->name('admin.suppliers.edit');
+
+Route::get('/pucharse-parameters', IndexPucharseParameters::class)->name('admin.pucharse-parameters.index');
