@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Clients\EditClient;
 use App\Http\Livewire\Clients\CreateClient;
 use App\Http\Livewire\Clients\IndexClients;
+use App\Http\Livewire\Unities\IndexUnities;
 use App\Http\Livewire\IvaTypes\IndexIvaTypes;
 use App\Http\Livewire\Measures\IndexMeasures;
 use App\Http\Livewire\Suppliers\EditSupplier;
@@ -34,3 +35,5 @@ Route::get('/pucharse-parameters', IndexPucharseParameters::class)->name('admin.
 Route::get('/iva-types', IndexIvaTypes::class)->name('admin.iva-types.index');
 
 Route::get('/measures', IndexMeasures::class)->name('admin.measures.index');
+
+Route::get('/unities', IndexUnities::class)->name('admin.unities.index');

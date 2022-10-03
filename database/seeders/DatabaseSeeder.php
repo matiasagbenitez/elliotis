@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(InchSeeder::class);
         $this->call(FeetSeeder::class);
         $this->call(MeasureSeeder::class);
-
+        $this->call(UnitySeeder::class);
     }
 }

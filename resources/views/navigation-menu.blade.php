@@ -58,11 +58,14 @@
                     <x-jet-nav-link href="{{ route('admin.suppliers.index') }}" :active="request()->routeIs('admin.suppliers.*')">
                         {{ __('Proveedores') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('admin.pucharse-parameters.index') }}" :active="request()->routeIs('admin.pucharse-parameters.index')">
-                        {{ __('Parámetros de compra') }}
+                    <x-jet-nav-link href="{{ route('admin.pucharse-parameters.index') }}" :active="request()->routeIs('admin.pucharse-parameters.index')" class="text-center">
+                        {{ __('Parámetros compra') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('admin.measures.index') }}" :active="request()->routeIs('admin.measures.index')">
                         {{ __('Medidas') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.unities.index') }}" :active="request()->routeIs('admin.unities.index')">
+                        {{ __('Unidades') }}
                     </x-jet-nav-link>
                 </div>
             </div>
