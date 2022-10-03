@@ -13,6 +13,8 @@ return new class extends Migration
 
             $table->string('name')->required()->unique();
 
+            $table->boolean('favorite')->default(false);
+
             $table->boolean('is_trunk')->default(false);
 
             $table->unsignedBigInteger('height')->nullable();

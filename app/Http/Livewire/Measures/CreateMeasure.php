@@ -80,7 +80,7 @@ class CreateMeasure extends Component
 
             $lengthName = Feet::where('id', $this->createForm['length'])->first()->name;
 
-            $this->createForm['name'] = "Rollo de " . $lengthName . '\' de largo';
+            $this->createForm['name'] = $lengthName . '\'';
 
             $this->validate([
                 'createForm.name' => 'required|unique:measures,name',

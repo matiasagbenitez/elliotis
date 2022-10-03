@@ -2,8 +2,8 @@
 
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Medidas de producción</h2>
-            @livewire('measures.create-measure')
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tipos de productos</h2>
+            @livewire('product-types.create-product-type')
         </div>
     </x-slot>
 
@@ -13,7 +13,7 @@
             <x-jet-input type="text" wire:model="search" class="w-full" placeholder="Filtre su búsqueda aquí..." />
         </div>
 
-        @if ($measures->count())
+        @if ($product_types->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="border-b border-gray-300 bg-gray-200">
                     <tr>
@@ -22,9 +22,17 @@
                             ID
                         </th>
                         <th scope="col"
-                            class="w-full px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Descripción
-                    </th>
+                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Nombre
+                        </th>
+                        <th scope="col"
+                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Medida
+                        </th>
+                        <th scope="col"
+                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Unidad
+                        </th>
                         <th scope="col"
                             class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Acción
@@ -32,23 +40,40 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach ($measures as $measure)
+                    @foreach ($product_types as $product_type)
                         <tr class="bg-gray-50">
                             <td class="px-6 py-3">
                                 <p class="text-sm uppercase">
-                                    {{ $measure->id }}
+                                    {{ $product_type->id }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class="text-sm ">
-                                    {{ $measure->name }}
+                                <p class="font-bold text-sm uppercase">
+                                    {{ $product_type->name }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    @if ($product_type->measure)
+                                        {{ $product_type->measure->name }}
+                                    @else
+                                        N/E
+                                    @endif
+                                </p>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                                <p class=" text-sm uppercase">
+                                    @if ($product_type->unity)
+                                        {{ $product_type->unity->unities }}
+                                    @else
+                                        N/E
+                                    @endif
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
-                                    @livewire('measures.favorite-measure', ['measure' => $measure], key($measure->id))
-                                    @livewire('measures.edit-measure', ['measure' => $measure], key($measure->id))
-                                    <x-jet-danger-button wire:click="$emit('deleteMeasure', '{{ $measure->id }}')">
+                                    {{-- @livewire('localities.edit-locality', ['locality' => $locality], key($locality->id)) --}}
+                                    <x-jet-danger-button wire:click="$emit('deleteProductType', '{{ $product_type->id }}')">
                                         <i class="fas fa-trash"></i>
                                     </x-jet-danger-button>
                                 </div>
@@ -63,9 +88,9 @@
             </div>
         @endif
 
-        @if ($measures->hasPages())
+        @if ($product_types->hasPages())
             <div class="px-6 py-3">
-                {{ $measures->links() }}
+                {{ $product_types->links() }}
             </div>
         @endif
 
@@ -73,7 +98,7 @@
 
     @push('script')
         <script>
-            Livewire.on('deleteMeasure', measureId => {
+            Livewire.on('deleteProductType', productTypeId => {
                 Swal.fire({
                     title: '¿Estás seguro?',
                     text: "¡No podrás revertir esta acción!",
@@ -81,11 +106,11 @@
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, eliminar medida',
+                    confirmButtonText: 'Sí, eliminar tipo de producto',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.emitTo('measures.index-measures', 'delete', measureId);
+                        Livewire.emitTo('product-types.index-product-types', 'delete', productTypeId);
                         const Toast = Swal.mixin({
                             toast: true,
                             position: 'top-end',
@@ -95,7 +120,7 @@
                         })
                         Toast.fire({
                             icon: 'success',
-                            title: 'Medida eliminada correctamente!'
+                            title: '¡Tipo de producto eliminado correctamente!'
                         })
                     }
                 })

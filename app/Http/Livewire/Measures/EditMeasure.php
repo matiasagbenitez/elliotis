@@ -94,7 +94,7 @@ class EditMeasure extends Component
         } else {
             $lengthName = Feet::where('id', $this->editForm['length'])->first()->name;
 
-            $this->editForm['name'] = "Rollo de " . $lengthName . '\' de largo';
+            $this->editForm['name'] = $lengthName . '\'';
 
             $this->validate([
                 'editForm.name' => 'required|unique:measures,name,' . $this->measure->id,
