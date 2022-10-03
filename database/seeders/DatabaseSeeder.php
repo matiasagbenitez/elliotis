@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentMethodsSeeder::class);
         $this->call(VoucherTypesSeeder::class);
         $this->call(IvaTypesSeeder::class);
+        $this->call(InchSeeder::class);
+        $this->call(FeetSeeder::class);
+        $this->call(MeasureSeeder::class);
 
     }
 }
