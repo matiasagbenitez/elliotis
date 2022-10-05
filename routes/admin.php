@@ -15,6 +15,7 @@ use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\TaskTypes\IndexTaskTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\ProductTypes\IndexProductTypes;
+use App\Http\Livewire\TaskStatuses\IndexTaskStatuses;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
 use App\Http\Livewire\PucharseParameters\IndexPucharseParameters;
 
@@ -43,3 +44,5 @@ Route::get('/unities', IndexUnities::class)->name('admin.unities.index');
 Route::get('/product-types', IndexProductTypes::class)->name('admin.product-types.index');
 
 Route::get('/task-types', IndexTaskTypes::class)->name('admin.task-types.index');
+
+Route::get('/task-statuses', IndexTaskStatuses::class)->name('admin.task-statuses.index');

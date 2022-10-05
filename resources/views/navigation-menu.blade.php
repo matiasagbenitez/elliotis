@@ -130,8 +130,8 @@
                                 <x-jet-dropdown-link href="{{ route('admin.task-types.index') }}" :active="request()->routeIs('admin.task-types.index')">
                                     {{ __('Tipos de tareas') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('admin.provinces.index') }}" :active="request()->routeIs('admin.provinces.index')">
-                                    {{ __('Provincias') }}
+                                <x-jet-dropdown-link href="{{ route('admin.task-statuses.index') }}" :active="request()->routeIs('admin.task-statuses.index')">
+                                    {{ __('Estados de tareas') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="{{ route('admin.localities.index') }}" :active="request()->routeIs('admin.localities.index')">
                                     {{ __('Localidades') }}
