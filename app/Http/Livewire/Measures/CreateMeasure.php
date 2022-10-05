@@ -78,6 +78,7 @@ class CreateMeasure extends Component
 
             $this->reset('createForm');
             $this->closeModal();
+            $this->emit('success', '¡La medida se ha creado con éxito!');
             $this->emitTo('measures.index-measures', 'refresh');
 
         } else {
@@ -102,6 +103,7 @@ class CreateMeasure extends Component
 
             $this->reset('createForm');
             $this->closeModal();
+            $this->emit('success', '¡La medida se ha creado con éxito!');
             $this->emitTo('measures.index-measures', 'refresh');
 
         }

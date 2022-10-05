@@ -66,6 +66,7 @@ class EditProvince extends Component
         $province->update($this->editForm);
         $this->reset('editForm');
         $this->closeModal();
+        $this->emit('success', '¡La provincia se ha actualizado con éxito!');
         $this->emitTo('provinces.index-provinces', 'refresh');
     }
 

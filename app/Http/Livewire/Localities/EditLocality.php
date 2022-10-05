@@ -86,6 +86,7 @@ class EditLocality extends Component
             ]);
             $this->reset('editForm');
             $this->closeModal();
+            $this->emit('success', '¡La localidad se ha actualizado con éxito!');
             $this->emitTo('localities.index-localities', 'refresh');
         }
     }

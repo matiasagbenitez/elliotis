@@ -12,7 +12,8 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre</x-jet-label>
-                <x-jet-input wire:model="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre del país"></x-jet-input>
+                <x-jet-input wire:model="createForm.name" type="text" class="w-full"
+                    placeholder="Ingrese el nombre del país"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
             </div>
         </x-slot>
@@ -30,3 +31,22 @@
         </x-slot>
     </x-jet-dialog-modal>
 </div>
+
+@push('script')
+    <script>
+        Livewire.on('success', message => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: message
+            });
+        });
+    </script>
+@endpush

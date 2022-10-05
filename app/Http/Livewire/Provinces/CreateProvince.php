@@ -50,6 +50,7 @@ class CreateProvince extends Component
         Province::create($this->createForm);
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡La provincia se ha creado con éxito!');
         $this->emitTo('provinces.index-provinces', 'refresh');
     }
 

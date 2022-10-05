@@ -33,7 +33,7 @@ class IndexMeasures extends Component
     public function render()
     {
         $measures = Measure::where('name', 'like', '%' . $this->search . '%')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('favorite', 'desc')->orderBy('updated_at', 'desc')
             ->paginate(10);
         return view('livewire.measures.index-measures', compact('measures'));
     }

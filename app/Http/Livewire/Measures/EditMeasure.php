@@ -93,6 +93,7 @@ class EditMeasure extends Component
 
             $this->reset('editForm');
             $this->closeModal();
+            $this->emit('success', '¡La medida se ha actualizado con éxito!');
             $this->emitTo('measures.index-measures', 'refresh');
         } else {
             $lengthName = Feet::where('id', $this->editForm['length'])->first()->name;
@@ -115,6 +116,7 @@ class EditMeasure extends Component
 
             $this->reset('editForm');
             $this->closeModal();
+            $this->emit('success', '¡La medida se ha actualizado con éxito!');
             $this->emitTo('measures.index-measures', 'refresh');
         }
     }

@@ -48,6 +48,7 @@ class CreateUnity extends Component
         Unity::create($this->createForm);
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡La unidad se ha creado con éxito!');
         $this->emitTo('unities.index-unities', 'refresh');
     }
 

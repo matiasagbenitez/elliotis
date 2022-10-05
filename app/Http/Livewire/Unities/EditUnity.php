@@ -63,6 +63,7 @@ class EditUnity extends Component
         $unity->update($this->editForm);
         $this->reset('editForm');
         $this->closeModal();
+        $this->emit('success', '¡La unidad se ha actualizado con éxito!');
         $this->emitTo('unities.index-unities', 'refresh');
     }
 

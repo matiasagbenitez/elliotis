@@ -45,7 +45,10 @@
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
-                                <div class="flex items-center justify-center gap-2">
+                                <div class="flex items-center justify-end gap-2">
+                                    @if ($measure->favorite)
+                                        <i class="fas fa-star text-yellow-400" title="Medida marcada como favorita"></i>
+                                    @endif
                                     @livewire('measures.edit-measure', ['measure' => $measure], key($measure->id))
                                     <x-jet-danger-button wire:click="$emit('deleteMeasure', '{{ $measure->id }}')">
                                         <i class="fas fa-trash"></i>

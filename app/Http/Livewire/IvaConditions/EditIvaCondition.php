@@ -58,6 +58,7 @@ class EditIvaCondition extends Component
         $condition->update($this->editForm);
         $this->reset('editForm');
         $this->closeModal();
+        $this->emit('success', '¡La condición de IVA se ha actualizado con éxito!');
         $this->emitTo('iva-conditions.index-iva-conditions', 'refresh');
     }
 

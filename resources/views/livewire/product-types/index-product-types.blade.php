@@ -72,7 +72,7 @@
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
-                                    {{-- @livewire('localities.edit-locality', ['locality' => $locality], key($locality->id)) --}}
+                                    @livewire('product-types.edit-product-type', ['product_type' => $product_type], key($product_type->id))
                                     <x-jet-danger-button wire:click="$emit('deleteProductType', '{{ $product_type->id }}')">
                                         <i class="fas fa-trash"></i>
                                     </x-jet-danger-button>

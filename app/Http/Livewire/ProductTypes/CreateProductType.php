@@ -60,6 +60,7 @@ class CreateProductType extends Component
 
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡El tipo de producto se ha creado con éxito!');
         $this->emitTo('product-types.index-product-types', 'refresh');
     }
 

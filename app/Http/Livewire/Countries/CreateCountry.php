@@ -46,6 +46,7 @@ class CreateCountry extends Component
         Country::create($this->createForm);
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡El país se ha creado con éxito!');
         $this->emitTo('countries.index-countries', 'refresh');
     }
 

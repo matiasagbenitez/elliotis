@@ -61,3 +61,22 @@
         </x-slot>
     </x-jet-dialog-modal>
 </div>
+
+@push('script')
+    <script>
+        Livewire.on('success', message => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: message
+            });
+        });
+    </script>
+@endpush

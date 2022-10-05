@@ -63,6 +63,7 @@ class CreateLocality extends Component
         ]);
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡La localidad se ha creado con éxito!');
         $this->emitTo('localities.index-localities', 'refresh');
     }
 

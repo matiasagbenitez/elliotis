@@ -48,6 +48,7 @@ class CreateIvaCondition extends Component
         IvaCondition::create($this->createForm);
         $this->reset('createForm');
         $this->closeModal();
+        $this->emit('success', '¡La condición de IVA se ha creado con éxito!');
         $this->emitTo('iva-conditions.index-iva-conditions', 'refresh');
     }
 

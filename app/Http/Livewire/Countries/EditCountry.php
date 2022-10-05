@@ -53,6 +53,7 @@ class EditCountry extends Component
         $country->update($this->editForm);
         $this->reset('editForm');
         $this->closeModal();
+        $this->emit('success', '¡El país se ha actualizado con éxito!');
         $this->emitTo('countries.index-countries', 'refresh');
     }
 
