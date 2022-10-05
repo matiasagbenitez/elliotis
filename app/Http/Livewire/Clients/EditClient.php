@@ -24,6 +24,7 @@ class EditClient extends Component
         'phone' => '',
         'email' => '',
         'active' => true,
+        'observations' => '',
     ];
 
     protected $validationAttributes = [
@@ -37,6 +38,7 @@ class EditClient extends Component
         'editForm.phone' => 'phone',
         'editForm.email' => 'email',
         'editForm.active' => 'active',
+        'editForm.observations' => 'observations',
     ];
 
     public function mount(Client $client)
@@ -53,6 +55,7 @@ class EditClient extends Component
         $this->editForm['phone'] = $client->phone;
         $this->editForm['email'] = $client->email;
         $this->editForm['active'] = $client->active;
+        $this->editForm['observations'] = $client->observations;
         $this->ivaConditions = IvaCondition::all();
         $this->localities = Locality::orderBy('name', 'ASC')->get();
     }
@@ -62,14 +65,15 @@ class EditClient extends Component
         $this->validate([
             'editForm.business_name' => 'required|string|unique:clients,business_name,' . $this->client->id,
             'editForm.iva_condition_id' => 'required|integer|exists:iva_conditions,id',
-            'editForm.cuit' => 'required',
+            'editForm.cuit' => 'required|unique:clients,cuit,' . $this->client->id,
             'editForm.last_name' => 'required|string|min:3',
             'editForm.first_name' => 'required|string|min:3',
-            'editForm.adress' => 'nullable',
+            'editForm.adress' => 'required',
             'editForm.locality_id' => 'required|integer|exists:localities,id',
-            'editForm.phone' => 'nullable',
-            'editForm.email' => 'nullable',
+            'editForm.phone' => 'required',
+            'editForm.email' => 'required',
             'editForm.active' => 'required|boolean',
+            'editForm.observations' => 'nullable',
         ]);
 
         $this->client->update([
@@ -84,6 +88,7 @@ class EditClient extends Component
             'phone' => $this->editForm['phone'],
             'email' => $this->editForm['email'],
             'active' => $this->editForm['active'],
+            'observations' => $this->editForm['observations'],
         ]);
 
         $this->reset('editForm');

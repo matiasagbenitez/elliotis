@@ -11,6 +11,7 @@ class EditMeasure extends Component
 {
     public $isOpen = 0;
     public $hideDiv;
+    public $isFav;
 
     public $measure;
 
@@ -32,6 +33,7 @@ class EditMeasure extends Component
     {
         $this->measure = $measure;
         $this->hideDiv = $measure->is_trunk;
+        $this->isFav = $measure->favorite;
         $this->editForm['name'] = $measure->name;
         $this->editForm['height'] = $measure->height;
         $this->editForm['width'] = $measure->width;
@@ -86,11 +88,12 @@ class EditMeasure extends Component
                 'height' => $this->editForm['height'],
                 'width' => $this->editForm['width'],
                 'length' => $this->editForm['length'],
+                'favorite' => $this->isFav,
             ]);
 
             $this->reset('editForm');
             $this->closeModal();
-            $this->emitTo('measures.index-measures', 'render');
+            $this->emitTo('measures.index-measures', 'refresh');
         } else {
             $lengthName = Feet::where('id', $this->editForm['length'])->first()->name;
 
@@ -107,11 +110,12 @@ class EditMeasure extends Component
                 'height' => null,
                 'width' => null,
                 'length' => $this->editForm['length'],
+                'favorite' => $this->isFav,
             ]);
 
             $this->reset('editForm');
             $this->closeModal();
-            $this->emitTo('measures.index-measures', 'render');
+            $this->emitTo('measures.index-measures', 'refresh');
         }
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('postal_code');
 
             $table->unsignedBigInteger('province_id');
-            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+            $table->foreign('province_id')->references('id')->on('provinces');
 
             $table->timestamps();
         });

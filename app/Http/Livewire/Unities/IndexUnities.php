@@ -11,7 +11,12 @@ class IndexUnities extends Component
 
     public function delete(Unity $unity)
     {
-        $unity->delete();
+        try {
+            $unity->delete();
+            $this->emit('success', '¡Unidad eliminada con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No se puede eliminar la unidad porque está siendo usada.');
+        }
     }
 
     public function render()

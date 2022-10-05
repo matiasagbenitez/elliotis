@@ -20,7 +20,13 @@ class IndexCountries extends Component
 
     public function delete(Country $country)
     {
-        $country->delete();
+        try {
+            $country->delete();
+            $this->emit('refresh');
+            $this->emit('success', '¡País eliminado con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No puedes eliminar este país porque tiene provincias asociadas.');
+        }
     }
 
     public function render()

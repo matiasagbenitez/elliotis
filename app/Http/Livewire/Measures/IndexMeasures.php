@@ -12,22 +12,28 @@ class IndexMeasures extends Component
 
     public $search;
 
-    protected $listeners = ['deleteMeasure', 'render'];
+    protected $listeners = ['delete', 'refresh' => 'render'];
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function deleteMeasure(Measure $measure)
+    public function delete(Measure $measure)
     {
-        $measure->delete();
+        try {
+            $measure->delete();
+            $this->emit('refresh');
+            $this->emit('success', '¡Medida eliminada con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No se puede eliminar la medida porque está siendo usada.');
+        }
     }
 
     public function render()
     {
         $measures = Measure::where('name', 'like', '%' . $this->search . '%')
-            ->orderBy('favorite', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
         return view('livewire.measures.index-measures', compact('measures'));
     }

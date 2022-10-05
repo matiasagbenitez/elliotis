@@ -81,6 +81,20 @@
                 <p class="text-md font-mono">{{ $client->email }}</p>
             </div>
 
+            <h2 class="font-bold text-lg uppercase mt-4">Observaciones</h2>
+            <hr>
+
+            {{-- Observations --}}
+            <div class="flex items-baseline space-x-2">
+                <h3 class="mt-3 text-md font-bold">Observaciones:</h3>
+                <div class="overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span class="text-md font-mono ">
+                        {{ $client->observations ? $client->observations : 'No especifica' }}
+                    </span>
+                </div>
+            </div>
+
+
         </x-slot>
 
         <x-slot name="footer">

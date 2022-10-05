@@ -24,19 +24,21 @@ class CreateClient extends Component
         'phone' => '',
         'email' => '',
         'active' => true,
+        'observations' => '',
     ];
 
     protected $rules = [
         'createForm.business_name' => 'required|string|unique:clients,business_name',
         'createForm.iva_condition_id' => 'required|integer|exists:iva_conditions,id',
-        'createForm.cuit' => 'required',
+        'createForm.cuit' => 'required|unique:clients,cuit',
         'createForm.last_name' => 'required|string|min:3',
         'createForm.first_name' => 'required|string|min:3',
-        'createForm.adress' => 'nullable',
+        'createForm.adress' => 'required',
         'createForm.locality_id' => 'required|integer|exists:localities,id',
-        'createForm.phone' => 'nullable',
-        'createForm.email' => 'nullable',
+        'createForm.phone' => 'required',
+        'createForm.email' => 'required',
         'createForm.active' => 'required|boolean',
+        'createForm.observations' => 'nullable',
     ];
 
     protected $validationAttributes = [
@@ -50,6 +52,7 @@ class CreateClient extends Component
         'createForm.phone' => 'phone',
         'createForm.email' => 'email',
         'createForm.active' => 'active',
+        'createForm.observations' => 'observations',
     ];
 
     public function mount()

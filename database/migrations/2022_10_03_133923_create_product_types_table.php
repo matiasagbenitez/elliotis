@@ -14,10 +14,10 @@ return new class extends Migration
             $table->string('name')->unique();
 
             $table->unsignedBigInteger('measure_id')->nullable();
-            $table->foreign('measure_id')->references('id')->on('measures')->onDelete('set null');
+            $table->foreign('measure_id')->references('id')->on('measures');
 
             $table->unsignedBigInteger('unity_id')->nullable();
-            $table->foreign('unity_id')->references('id')->on('unities')->onDelete('set null');
+            $table->foreign('unity_id')->references('id')->on('unities');
 
             $table->timestamps();
         });

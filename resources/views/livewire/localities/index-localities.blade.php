@@ -111,18 +111,35 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.emitTo('localities.index-localities', 'delete', localityId);
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                        })
-                        Toast.fire({
-                            icon: 'success',
-                            title: '¡Localidad eliminada correctamente!'
-                        })
+                        if (result.isConfirmed) {
+
+                            Livewire.emitTo('localities.index-localities', 'delete', localityId);
+
+                            Livewire.on('success', message => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: message
+                                });
+                            });
+
+                            Livewire.on('error', message => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: message,
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#1f2937',
+                                });
+                            });
+                        }
                     }
                 })
             });

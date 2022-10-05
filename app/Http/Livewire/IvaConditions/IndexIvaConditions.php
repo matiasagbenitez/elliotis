@@ -11,7 +11,13 @@ class IndexIvaConditions extends Component
 
     public function delete(IvaCondition $ivaCondition)
     {
-        $ivaCondition->delete();
+        try {
+            $ivaCondition->delete();
+            $this->emit('refresh');
+            $this->emit('success', '¡Condición de IVA eliminada con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No puedes eliminar esta condición de IVA porque tiene clientes y/o proveedores asociados.');
+        }
     }
 
     public function render()

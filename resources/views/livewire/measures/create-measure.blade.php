@@ -62,6 +62,19 @@
 
             <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
 
+            {{-- Favorite --}}
+            {{-- Radio buttons for favorite attribute --}}
+            <div class="my-4">
+                <x-jet-label for="is_favorite" value="{{ __('¿Marcar como favorito?') }}" />
+                <div class="mt-2 flex space-x-2">
+                    <x-jet-label for="is_favorite" value="{{ __('No') }}" />
+                    <x-jet-input id="is_favorite" type="radio" class="mt-1 block" wire:model="isFav" checked value="0" />
+                    <x-jet-label for="is_favorite" value="{{ __('Si') }}" />
+                    <x-jet-input id="is_favorite" type="radio" class="mt-1 block" wire:model="isFav" value="1" />
+                </div>
+                <x-jet-input-error for="is_favorite" class="mt-2" />
+            </div>
+
         </x-slot>
 
         <x-slot name="footer">

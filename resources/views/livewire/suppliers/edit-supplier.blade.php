@@ -18,7 +18,7 @@
                 <br><br>
                 (*) Campos obligatorios.
                 <br><br>
-                Los campos que no son obligatorios (dirección, teléfono y correo electrónico), pueden ser rellenados en cualquier momento.
+                Los campos que no son obligatorios pueden ser rellenados en cualquier momento.
             </span>
         </x-slot>
 
@@ -41,8 +41,8 @@
             {{-- CUIT --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2">CUIT *</x-jet-label>
-                <x-jet-input wire:model.defer="editForm.cuit" type="number" class="w-full"
-                    placeholder="Ingrese el CUIT del proveedor"></x-jet-input>
+                <x-jet-input wire:model.defer="editForm.cuit" type="text" class="w-full"
+                    placeholder="XX-XXXXXXXX-X"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.cuit" />
             </div>
 
@@ -117,7 +117,7 @@
 
             {{-- Phone --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Teléfono</x-jet-label>
+                <x-jet-label class="mb-2">Teléfono *</x-jet-label>
                 <x-jet-input wire:model.defer="editForm.phone" type="tel" class="w-full"
                     placeholder="Ingrese el teléfono del proveedor"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.phone" />
@@ -125,7 +125,7 @@
 
             {{-- Email --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Correo electrónico</x-jet-label>
+                <x-jet-label class="mb-2">Correo electrónico *</x-jet-label>
                 <x-jet-input wire:model.defer="editForm.email" type="email" class="w-full"
                     placeholder="Ingrese el correo electrónico del cliente"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.email" />
@@ -150,6 +150,14 @@
                     </div>
                 </div>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.active" />
+            </div>
+
+            {{-- Observations --}}
+            <div class="col-span-6">
+                <x-jet-label class="mb-2">Observaciones</x-jet-label>
+                <textarea wire:model.defer="editForm.observations" class="input-control w-full"
+                    placeholder="Ingrese las observaciones del proveedor"></textarea>
+                <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.observations" />
             </div>
 
         </x-slot>

@@ -18,7 +18,7 @@
                 <br><br>
                 (*) Campos obligatorios.
                 <br><br>
-                Los campos que no son obligatorios (dirección, teléfono y correo electrónico), pueden ser rellenados en cualquier momento.
+                Los campos que no son obligatorios pueden ser rellenados en cualquier momento.
                 <br><br>
                 (**) Si el estado del proveedor es inactivo, no será tenido en cuenta en el proceso automatizado de pedido de rollos. Además, no podrá asociarle una nueva compra de materia prima.
             </span>
@@ -43,8 +43,8 @@
             {{-- CUIT --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2">CUIT *</x-jet-label>
-                <x-jet-input wire:model.defer="createForm.cuit" type="number" class="w-full"
-                    placeholder="Ingrese el CUIT del proveedor"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.cuit" type="text" class="w-full"
+                    placeholder="XX-XXXXXXXX-X"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.cuit" />
             </div>
 
@@ -92,7 +92,7 @@
 
             {{-- Adress --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Dirección</x-jet-label>
+                <x-jet-label class="mb-2">Dirección *</x-jet-label>
                 <x-jet-input wire:model.defer="createForm.adress" type="text" class="w-full"
                     placeholder="Ingrese la dirección del proveedor"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.adress" />
@@ -119,7 +119,7 @@
 
             {{-- Phone --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Teléfono</x-jet-label>
+                <x-jet-label class="mb-2">Teléfono *</x-jet-label>
                 <x-jet-input wire:model.defer="createForm.phone" type="tel" class="w-full"
                     placeholder="Ingrese el teléfono del proveedor"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.phone" />
@@ -127,7 +127,7 @@
 
             {{-- Email --}}
             <div class="col-span-6">
-                <x-jet-label class="mb-2">Correo electrónico</x-jet-label>
+                <x-jet-label class="mb-2">Correo electrónico *</x-jet-label>
                 <x-jet-input wire:model.defer="createForm.email" type="email" class="w-full"
                     placeholder="Ingrese el correo electrónico del proveedor"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.email" />
@@ -152,6 +152,14 @@
                     </div>
                 </div>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.active" />
+            </div>
+
+            {{-- Observations --}}
+            <div class="col-span-6">
+                <x-jet-label class="mb-2">Observaciones</x-jet-label>
+                <textarea wire:model.defer="createForm.observations" class="input-control w-full"
+                    placeholder="Ingrese las observaciones del proveedor"></textarea>
+                <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.observations" />
             </div>
 
         </x-slot>

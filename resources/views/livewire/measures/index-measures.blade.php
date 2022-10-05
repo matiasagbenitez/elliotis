@@ -24,7 +24,7 @@
                         <th scope="col"
                             class="w-full px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Descripción
-                    </th>
+                        </th>
                         <th scope="col"
                             class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Acción
@@ -46,7 +46,6 @@
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
-                                    @livewire('measures.favorite-measure', ['measure' => $measure], key($measure->id))
                                     @livewire('measures.edit-measure', ['measure' => $measure], key($measure->id))
                                     <x-jet-danger-button wire:click="$emit('deleteMeasure', '{{ $measure->id }}')">
                                         <i class="fas fa-trash"></i>
@@ -85,18 +84,33 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
+
                         Livewire.emitTo('measures.index-measures', 'delete', measureId);
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                        })
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Medida eliminada correctamente!'
-                        })
+
+                        Livewire.on('success', message => {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: message
+                            });
+                        });
+
+                        Livewire.on('error', message => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: message,
+                                showConfirmButton: true,
+                                confirmButtonColor: '#1f2937',
+                            });
+                        });
                     }
                 })
             });

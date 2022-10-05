@@ -21,7 +21,13 @@ class IndexProvinces extends Component
 
     public function delete(Province $province)
     {
-        $province->delete();
+        try {
+            $province->delete();
+            $this->emit('refresh');
+            $this->emit('success', '¡Provincia eliminada con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No puedes eliminar esta provincia porque tiene localidades asociadas.');
+        }
     }
 
     public function render()

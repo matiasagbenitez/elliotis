@@ -11,8 +11,9 @@ class CreateMeasure extends Component
 {
     public $isOpen = 0;
     public $showDiv = 1;
+    public $isFav = 0;
 
-    public $createForm = ['name' => '', 'height' => '', 'width' => '', 'length' => ''];
+    public $createForm = ['name' => '-', 'height' => '', 'width' => '', 'length' => ''];
 
     public $inches = [], $feets = [];
 
@@ -27,7 +28,7 @@ class CreateMeasure extends Component
         'createForm.name' => 'name',
         'createForm.height' => 'height',
         'createForm.width' => 'width',
-        'createForm.length' => 'length'
+        'createForm.length' => 'length',
     ];
 
     public function createMeasure()
@@ -50,7 +51,7 @@ class CreateMeasure extends Component
 
     public function resetInputFields()
     {
-        $this->createForm = ['name' => '-', 'height' => '', 'width' => '', 'length' => ''];
+        $this->createForm = ['name' => '-', 'height' => '', 'width' => '', 'length' => '', 'favorite' => ''];
         $this->resetErrorBag();
     }
 
@@ -71,11 +72,14 @@ class CreateMeasure extends Component
                 'name' => $this->createForm['name'],
                 'height' => $this->createForm['height'],
                 'width' => $this->createForm['width'],
-                'length' => $this->createForm['length']
+                'length' => $this->createForm['length'],
+                'favorite' => $this->isFav,
             ]);
+
             $this->reset('createForm');
             $this->closeModal();
-            $this->emitTo('measures.index-measures', 'render');
+            $this->emitTo('measures.index-measures', 'refresh');
+
         } else {
 
             $lengthName = Feet::where('id', $this->createForm['length'])->first()->name;
@@ -92,12 +96,13 @@ class CreateMeasure extends Component
                 'is_trunk' => true,
                 'height' => null,
                 'width' => null,
-                'length' => $this->createForm['length']
+                'length' => $this->createForm['length'],
+                'favorite' => $this->isFav,
             ]);
 
             $this->reset('createForm');
             $this->closeModal();
-            $this->emitTo('measures.index-measures', 'render');
+            $this->emitTo('measures.index-measures', 'refresh');
 
         }
     }

@@ -13,7 +13,7 @@ class IndexLocalities extends Component
 
     public $search;
 
-    public $listeners = ['refresh' => 'render', 'delete'];
+    public $listeners = ['delete', 'refresh' => 'render'];
 
     public function updatingSearch()
     {
@@ -22,7 +22,13 @@ class IndexLocalities extends Component
 
     public function delete(Locality $locality)
     {
-        $locality->delete();
+        try {
+            $locality->delete();
+            $this->emit('refresh');
+            $this->emit('success', '¡Localidad eliminada con éxito!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No puedes eliminar esta localidad porque tiene clientes y/o proveedores asociados.');
+        }
     }
 
     public function render()

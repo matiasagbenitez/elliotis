@@ -21,7 +21,7 @@ class SupplierFactory extends Factory
             'business_name' => $business_name,
             'slug' => $slug,
             'iva_condition_id' => $iva_condition_id,
-            'cuit' => $this->faker->numberBetween(10000000000, 99999999999),
+            'cuit' => $this->faker->numberBetween(20, 30) . '-' . $this->faker->numberBetween(10000000, 99999999) . '-' . $this->faker->numberBetween(0, 9),
             'last_name' => $this->faker->lastName,
             'first_name' => $this->faker->firstName,
             'adress' => $this->faker->streetAddress,
@@ -29,6 +29,7 @@ class SupplierFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
             'active' => $this->faker->boolean,
+            'observations' => $this->faker->text(100),
         ];
     }
 }

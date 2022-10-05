@@ -11,25 +11,28 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
 
-            $table->string('business_name')->required();
+            $table->string('business_name')->required()->unique();
             $table->string('slug')->required()->unique();
 
-            $table->unsignedBigInteger('iva_condition_id')->nullable();
-            $table->foreign('iva_condition_id')->references('id')->on('iva_conditions')->onDelete('set null');
+            $table->unsignedBigInteger('iva_condition_id')->required();
+            $table->foreign('iva_condition_id')->references('id')->on('iva_conditions');
 
             $table->string('cuit')->required();
             $table->string('last_name')->required();
             $table->string('first_name')->required();
 
-            $table->string('adress')->nullable();
+            $table->string('adress')->required();
 
-            $table->unsignedBigInteger('locality_id')->nullable();
-            $table->foreign('locality_id')->references('id')->on('localities')->onDelete('set null');
+            $table->unsignedBigInteger('locality_id')->required();
+            $table->foreign('locality_id')->references('id')->on('localities');
 
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('phone')->required();
+            $table->string('email')->required();
 
             $table->boolean('active')->default(true);
+
+            // Observations
+            $table->text('observations')->nullable();
 
             $table->timestamps();
         });
