@@ -12,6 +12,7 @@ use App\Http\Livewire\Countries\IndexCountries;
 use App\Http\Livewire\Provinces\IndexProvinces;
 use App\Http\Livewire\Suppliers\CreateSupplier;
 use App\Http\Livewire\Suppliers\IndexSuppliers;
+use App\Http\Livewire\TaskTypes\IndexTaskTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\ProductTypes\IndexProductTypes;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
@@ -40,3 +41,5 @@ Route::get('/measures', IndexMeasures::class)->name('admin.measures.index');
 Route::get('/unities', IndexUnities::class)->name('admin.unities.index');
 
 Route::get('/product-types', IndexProductTypes::class)->name('admin.product-types.index');
+
+Route::get('/task-types', IndexTaskTypes::class)->name('admin.task-types.index');
