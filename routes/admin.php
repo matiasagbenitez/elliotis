@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Areas\IndexAreas;
 use App\Http\Livewire\Clients\EditClient;
 use App\Http\Livewire\Clients\CreateClient;
 use App\Http\Livewire\Clients\IndexClients;
@@ -46,3 +47,5 @@ Route::get('/product-types', IndexProductTypes::class)->name('admin.product-type
 Route::get('/task-types', IndexTaskTypes::class)->name('admin.task-types.index');
 
 Route::get('/task-statuses', IndexTaskStatuses::class)->name('admin.task-statuses.index');
+
+Route::get('/areas', IndexAreas::class)->name('admin.areas.index');

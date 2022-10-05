@@ -133,8 +133,8 @@
                                 <x-jet-dropdown-link href="{{ route('admin.task-statuses.index') }}" :active="request()->routeIs('admin.task-statuses.index')">
                                     {{ __('Estados de tareas') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('admin.localities.index') }}" :active="request()->routeIs('admin.localities.index')">
-                                    {{ __('Localidades') }}
+                                <x-jet-dropdown-link href="{{ route('admin.areas.index') }}" :active="request()->routeIs('admin.areas.index')">
+                                    {{ __('Áreas') }}
                                 </x-jet-dropdown-link>
                             </x-slot>
 
