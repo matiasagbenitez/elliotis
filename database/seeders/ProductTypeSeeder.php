@@ -13,14 +13,54 @@ class ProductTypeSeeder extends Seeder
     {
         $productTypes = [
             [
-                'name' => 'Rollo de 10\' de largo',
+                'name' => 'Rollo',
+                'measure_id' => 25,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Faja húmeda',
                 'measure_id' => 21,
                 'unity_id' => 1,
             ],
             [
-                'name' => 'Rollo de 12\' de largo',
+                'name' => 'Faja seca',
+                'measure_id' => 21,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Faja machimbrada',
+                'measure_id' => 21,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Paquete grande machimbrado',
+                'measure_id' => 21,
+                'unity_id' => 3,
+            ],
+            [
+                'name' => 'Rollo',
+                'measure_id' => 27,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Faja húmeda',
                 'measure_id' => 23,
                 'unity_id' => 1,
+            ],
+            [
+                'name' => 'Faja seca',
+                'measure_id' => 23,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Faja machimbrada',
+                'measure_id' => 23,
+                'unity_id' => 1,
+            ],
+            [
+                'name' => 'Paquete grande machimbrado',
+                'measure_id' => 23,
+                'unity_id' => 3,
             ],
         ];
 

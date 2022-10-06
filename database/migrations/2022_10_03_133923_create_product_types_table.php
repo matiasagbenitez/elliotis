@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('product_types', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->unique();
+            $table->string('name');
 
             $table->unsignedBigInteger('measure_id')->nullable();
             $table->foreign('measure_id')->references('id')->on('measures');

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(InchSeeder::class);
         $this->call(FeetSeeder::class);
         $this->call(MeasureSeeder::class);
+        $this->call(MachimbreMeasureSeeder::class);
         $this->call(TrunkMeasureSeeder::class);
         $this->call(UnitySeeder::class);
         $this->call(ProductTypeSeeder::class);
@@ -28,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaSeeder::class);
         $this->call(PurchaseSeeder::class);
         $this->call(WoodTypeSeeder::class);
+        $this->call(ProductSeeder::class);
     }
 }
