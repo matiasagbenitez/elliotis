@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TaskStatusSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(PurchaseSeeder::class);
+        $this->call(WoodTypeSeeder::class);
     }
 }
