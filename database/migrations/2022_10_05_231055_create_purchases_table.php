@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
+            // Date format is d/m/Y
             $table->date('date');
 
             $table->unsignedBigInteger('supplier_id');
@@ -30,7 +31,7 @@ return new class extends Migration
             $table->unsignedBigInteger('voucher_type_id')->required();
             $table->foreign('voucher_type_id')->references('id')->on('voucher_types');
 
-            $table->string('voucher_number')->nullable();
+            $table->integer('voucher_number')->required()->unique();
 
             $table->decimal('subtotal', 10, 2)->required();
             $table->decimal('iva', 10, 2)->required();
@@ -38,6 +39,8 @@ return new class extends Migration
 
             $table->decimal('weight', 10, 2)->required();
             $table->string('weight_voucher')->nullable();
+
+            $table->text('observations')->nullable();
 
             $table->timestamps();
         });

@@ -3,7 +3,11 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Compras</h2>
-            {{-- @livewire('purchases.create-purchase') --}}
+            <a href="{{ route('admin.purchases.create') }}">
+                <x-jet-secondary-button>
+                    Registrar nueva compra
+                </x-jet-secondary-button>
+            </a>
         </div>
     </x-slot>
 
@@ -53,7 +57,8 @@
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="font-bold text-sm uppercase">
-                                    {{ $purchase->date }}
+                                    {{-- Format date to Y-m-d --}}
+                                    {{ Date::parse($purchase->date)->format('d-m-Y') }}
                                 </p>
                             </td>
                             <td class="px-6 py-3">

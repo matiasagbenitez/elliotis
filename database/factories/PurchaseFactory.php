@@ -7,6 +7,7 @@ use App\Models\PaymentMethods;
 use App\Models\Supplier;
 use App\Models\VoucherTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class PurchaseFactory extends Factory
 {
@@ -22,7 +23,7 @@ class PurchaseFactory extends Factory
 
         return [
             'user_id' => 1,
-            'date' => $this->faker->date(),
+            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'supplier_id' => $supplier_id,
             'supplier_order_id' => $this->faker->unique()->numberBetween(1, 100),
             'payment_condition_id' => $payment_condition_id,
@@ -33,7 +34,8 @@ class PurchaseFactory extends Factory
             'iva' => $iva,
             'total' => $total,
             'weight' => $this->faker->randomFloat(2, 30000, 50000),
-            'weight_voucher' => $this->faker->numberBetween(1, 100),
+            'weight_voucher' => null,
+            'observations' => $this->faker->text(100),
         ];
     }
 }
