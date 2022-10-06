@@ -164,6 +164,10 @@
                             </x-slot>
 
                         </x-jet-dropdown>
+
+                        <x-jet-nav-link href="{{ route('admin.products.index') }}" :active="request()->routeIs('admin.products.index')">
+                            {{ __('Productos') }}
+                        </x-jet-nav-link>
                     </div>
 
                 </div>

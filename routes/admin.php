@@ -8,6 +8,7 @@ use App\Http\Livewire\Clients\IndexClients;
 use App\Http\Livewire\Unities\IndexUnities;
 use App\Http\Livewire\IvaTypes\IndexIvaTypes;
 use App\Http\Livewire\Measures\IndexMeasures;
+use App\Http\Livewire\Products\IndexProducts;
 use App\Http\Livewire\Suppliers\EditSupplier;
 use App\Http\Livewire\Countries\IndexCountries;
 use App\Http\Livewire\Provinces\IndexProvinces;
@@ -57,3 +58,5 @@ Route::get('/purchases', IndexPurchases::class)->name('admin.purchases.index');
 Route::get('/purchase/create', CreatePurchase::class)->name('admin.purchases.create');
 
 Route::get('/wood-types', IndexWoodTypes::class)->name('admin.wood-types.index');
+
+Route::get('/products', IndexProducts::class)->name('admin.products.index');

@@ -2,8 +2,8 @@
 
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tipos de productos</h2>
-            @livewire('product-types.create-product-type')
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Productos</h2>
+            {{-- @livewire('products.create-product') --}}
         </div>
     </x-slot>
 
@@ -13,7 +13,7 @@
             <x-jet-input type="text" wire:model="search" class="w-full" placeholder="Filtre su búsqueda aquí..." />
         </div>
 
-        @if ($product_types->count())
+        @if ($products->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="border-b border-gray-300 bg-gray-200">
                     <tr>
@@ -22,59 +22,59 @@
                             ID
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Nombre
+                            class="w-2/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Producto
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Medida
+                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Tipo de madera
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Unidad
+                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Código
                         </th>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Stock real
+                        </th>
+                        <th scope="col"
+                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Acción
                         </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach ($product_types as $product_type)
+                    @foreach ($products as $product)
                         <tr class="bg-gray-50">
                             <td class="px-6 py-3">
                                 <p class="text-sm uppercase">
-                                    {{ $product_type->id }}
+                                    {{ $product->id }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="font-bold text-sm uppercase">
-                                    {{ $product_type->name }}
+                                    {{ $product->name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
-                                    @if ($product_type->measure)
-                                        {{ $product_type->measure->name }}
-                                    @else
-                                        N/E
-                                    @endif
+                                    {{ $product->woodType->name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class=" text-sm uppercase">
-                                    @if ($product_type->unity)
-                                        {{ $product_type->unity->unities }}
-                                    @else
-                                        N/E
-                                    @endif
+                                    {{ $product->code }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                                <p class=" text-sm uppercase">
+                                    {{ $product->real_stock }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
-                                    @livewire('product-types.edit-product-type', ['product_type' => $product_type], key($product_type->id))
-                                    <x-jet-danger-button
-                                        wire:click="$emit('deleteProductType', '{{ $product_type->id }}')">
+                                    {{-- @livewire('products.edit-product', ['product' => $product], key($product->id)) --}}
+                                    <x-jet-danger-button wire:click="$emit('deleteProduct', '{{ $product->id }}')">
                                         <i class="fas fa-trash"></i>
                                     </x-jet-danger-button>
                                 </div>
@@ -89,9 +89,9 @@
             </div>
         @endif
 
-        @if ($product_types->hasPages())
+        @if ($products->hasPages())
             <div class="px-6 py-3">
-                {{ $product_types->links() }}
+                {{ $products->links() }}
             </div>
         @endif
 
@@ -99,7 +99,7 @@
 
     @push('script')
         <script>
-            Livewire.on('deleteProductType', productTypeId => {
+            Livewire.on('deleteProduct', productId => {
                 Swal.fire({
                     title: '¿Estás seguro?',
                     text: "¡No podrás revertir esta acción!",
@@ -107,35 +107,39 @@
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, eliminar tipo de producto',
+                    confirmButtonText: 'Sí, eliminar producto',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.emitTo('product-types.index-product-types', 'delete', productTypeId);
-                        Livewire.on('success', message => {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
+                        if (result.isConfirmed) {
+
+                            Livewire.emitTo('products.index-products', 'delete', productId);
+
+                            Livewire.on('success', message => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: message
+                                });
                             });
 
-                            Toast.fire({
-                                icon: 'success',
-                                title: message
+                            Livewire.on('error', message => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: message,
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#1f2937',
+                                });
                             });
-                        });
-
-                        Livewire.on('error', message => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: message,
-                                showConfirmButton: true,
-                                confirmButtonColor: '#1f2937',
-                            });
-                        });
+                        }
                     }
                 })
             });

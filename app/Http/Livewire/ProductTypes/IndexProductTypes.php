@@ -21,7 +21,13 @@ class IndexProductTypes extends Component
 
     public function delete(ProductType $productType)
     {
-        $productType->delete();
+        try {
+            $productType->delete();
+            $this->emit('success', '¡Tipo de producto eliminado con éxito!');
+            $this->emit('refresh');
+        } catch (\Throwable $th) {
+            $this->emit('error', 'Error al eliminar el tipo de producto.');
+        }
     }
 
 

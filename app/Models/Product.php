@@ -22,7 +22,7 @@ class Product extends Model
         return $this->belongsTo(WoodType::class);
     }
 
-    public function iva_type()
+    public function ivaType()
     {
         return $this->belongsTo(IvaType::class);
     }
