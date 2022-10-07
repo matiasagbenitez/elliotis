@@ -102,9 +102,14 @@
                                     {{ __('Unidades') }}
                                 </x-jet-dropdown-link>
 
+                                <x-jet-dropdown-link href="{{ route('admin.product-names.index') }}">
+                                    {{ __('Nombres de productos') }}
+                                </x-jet-dropdown-link>
+
                                 <x-jet-dropdown-link href="{{ route('admin.product-types.index') }}">
                                     {{ __('Tipos de productos') }}
                                 </x-jet-dropdown-link>
+
                                 <x-jet-dropdown-link href="{{ route('admin.wood-types.index') }}">
                                     {{ __('Tipos de madera') }}
                                 </x-jet-dropdown-link>

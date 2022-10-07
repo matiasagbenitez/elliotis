@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MachimbreMeasureSeeder::class);
         $this->call(TrunkMeasureSeeder::class);
         $this->call(UnitySeeder::class);
+        $this->call(ProductNameSeeder::class);
         $this->call(ProductTypeSeeder::class);
         $this->call(TaskTypeSeeder::class);
         $this->call(TaskStatusSeeder::class);
