@@ -12,15 +12,15 @@ class UnitySeeder extends Seeder
     {
         $unities = [
             [
-                'name' => 'Unidad',
+                'name' => 'Unidades',
                 'unities' => 1,
             ],
             [
-                'name' => 'Paquete chico',
+                'name' => 'Paquetes chicos',
                 'unities' => 13,
             ],
             [
-                'name' => 'Paquete grande',
+                'name' => 'Paquetes grandes',
                 'unities' => 702,
             ],
         ];

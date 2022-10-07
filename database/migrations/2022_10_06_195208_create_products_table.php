@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('wood_type_id');
             $table->foreign('wood_type_id')->references('id')->on('wood_types');
 
+            $table->boolean('is_buyable')->default(false)->required();
+            $table->boolean('is_salable')->default(false)->required();
+
             $table->string('code')->unique();
 
             $table->integer('real_stock')->required();

@@ -9,37 +9,85 @@
 
     <x-responsive-table>
 
-        <div class="px-6 py-4">
+        {{-- Buscador --}}
+        <div class="px-6 py-4 flex gap-2 bg-white">
             <x-jet-input type="text" wire:model="search" class="w-full" placeholder="Filtre su búsqueda aquí..." />
+            <x-jet-button wire:click="toggleFiltersDiv">
+                <span class="text-xs mr-1">Filtros</span>
+                <i class="fas fa-filter"></i>
+            </x-jet-button>
         </div>
+
+        @if ($filtersDiv)
+            <div class="px-6 pb-4 grid grid-cols-4 gap-3 bg-white">
+                {{-- Filtro por clasificación de producto --}}
+                <div class="col-span-1 rounded-lg gap-2">
+                    <x-jet-label class="mb-1">Clasificación del producto</x-jet-label>
+                    <select class="input-control w-full" wire:model="product_name">
+                        <option value="" class="text-md">Todos</option>
+                        @foreach ($product_names as $product_name)
+                            <option value="{{ $product_name->name }}" class="text-md">{{ $product_name->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Filtro por medidas --}}
+                <div class="col-span-1 rounded-lg bg-white gap-2">
+                    <x-jet-label class="mb-1">Medidas</x-jet-label>
+                    <select class="input-control w-full" wire:model="measure">
+                        <option value="" class="text-md">Todos</option>
+                        @foreach ($measures as $measure)
+                            <option value="{{ $measure->name }}" class="text-md">{{ $measure->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Filtro por especie --}}
+                <div class="col-span-1 rounded-lg bg-white gap-2">
+                    <x-jet-label class="mb-1">Especie</x-jet-label>
+                    <select class="input-control w-full" wire:model="wood_type">
+                        <option value="" class="text-md">Todos</option>
+                        @foreach ($wood_types as $wood_type)
+                            <option value="{{ $wood_type->name }}" class="text-md">{{ $wood_type->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Filtro por especie --}}
+                <div class="col-span-1 rounded-lg bg-white gap-2">
+                    <x-jet-label class="mb-1">Nivel de stock</x-jet-label>
+                    <select class="input-control w-full" wire:model="stock_parameter">
+                        <option value="" class="text-md">Todos</option>
+                        <option value=">=" class="text-md">Stock normal</option>
+                        <option value="<" class="text-md">Bajo stock</option>
+                    </select>
+                </div>
+            </div>
+        @endif
 
         @if ($products->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="border-b border-gray-300 bg-gray-200">
                     <tr>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             ID
                         </th>
                         <th scope="col"
-                            class="w-2/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Producto
+                            class="w-3/6 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            Denominación
                         </th>
                         <th scope="col"
-                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Tipo de madera
+                            class="w-1/6 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            Especie
                         </th>
                         <th scope="col"
-                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Código
+                            class="w-1/6 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            Nivel stock
                         </th>
                         <th scope="col"
-                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/6 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             Stock real
-                        </th>
-                        <th scope="col"
-                            class="w-1/6 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Acción
                         </th>
                     </tr>
                 </thead>
@@ -51,7 +99,7 @@
                                     {{ $product->id }}
                                 </p>
                             </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                            <td class="px-6 py-3 whitespace-nowrap">
                                 <p class="font-bold text-sm uppercase">
                                     {{ $product->name }}
                                 </p>
@@ -62,22 +110,25 @@
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class=" text-sm uppercase">
-                                    {{ $product->code }}
-                                </p>
-                            </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class=" text-sm uppercase">
-                                    {{ $product->real_stock }}
-                                </p>
-                            </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
-                                <div class="flex items-center justify-center gap-2">
-                                    {{-- @livewire('products.edit-product', ['product' => $product], key($product->id)) --}}
-                                    <x-jet-danger-button wire:click="$emit('deleteProduct', '{{ $product->id }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </x-jet-danger-button>
+                                <div class="flex items-center justify-center">
+                                    @if ($product->real_stock > $product->minimum_stock)
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Stock normal
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Bajo stock
+                                        </span>
+                                    @endif
                                 </div>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap">
+                                <p class="text-sm uppercase text-center">
+                                    {{ $product->real_stock }}
+                                    <span class="text-xs italic">{{ $product->productType->unity->name }}</span>
+                                </p>
                             </td>
                         </tr>
                     @endforeach
@@ -96,54 +147,5 @@
         @endif
 
     </x-responsive-table>
-
-    @push('script')
-        <script>
-            Livewire.on('deleteProduct', productId => {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "¡No podrás revertir esta acción!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#1f2937',
-                    cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, eliminar producto',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if (result.isConfirmed) {
-
-                            Livewire.emitTo('products.index-products', 'delete', productId);
-
-                            Livewire.on('success', message => {
-                                const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                });
-
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: message
-                                });
-                            });
-
-                            Livewire.on('error', message => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: message,
-                                    showConfirmButton: true,
-                                    confirmButtonColor: '#1f2937',
-                                });
-                            });
-                        }
-                    }
-                })
-            });
-        </script>
-    @endpush
 
 </div>
