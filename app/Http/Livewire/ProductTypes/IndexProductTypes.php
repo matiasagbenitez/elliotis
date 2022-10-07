@@ -33,8 +33,7 @@ class IndexProductTypes extends Component
 
     public function render()
     {
-        $product_types = ProductType::where('name', 'LIKE', "%" . $this->search . "%")
-                    ->orderBy('updated_at', 'DESC')->paginate(6);
+        $product_types = ProductType::orderBy('updated_at', 'DESC')->paginate(6);
 
         return view('livewire.product-types.index-product-types', compact('product_types'));
     }

@@ -23,4 +23,10 @@ class ProductType extends Model
         return $this->belongsTo(Unity::class);
     }
 
+    // Relationship with ProductName
+    public function product_name()
+    {
+        return $this->belongsTo(ProductName::class);
+    }
+
 }

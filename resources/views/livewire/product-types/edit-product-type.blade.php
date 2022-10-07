@@ -12,9 +12,14 @@
 
             {{-- Name --}}
             <div class="mb-4">
-                <x-jet-label class="mb-2">Nombre</x-jet-label>
-                <x-jet-input wire:model="editForm.name" type="text" class="w-full" placeholder="Ingrese el nombre del tipo de producto"></x-jet-input>
-                <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.name" />
+                <x-jet-label class="mb-2">Clasificación</x-jet-label>
+                <select class="input-control w-full" wire:model="editForm.product_name_id">
+                    <option value="" disabled selected>Seleccione la clasificación</option>
+                    @foreach ($productNames as $productName)
+                        <option value="{{ $productName->id }}">{{ $productName->name }}</option>
+                    @endforeach
+                </select>
+                <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.product_name_id" />
             </div>
 
             {{-- Measure --}}
@@ -64,13 +69,23 @@
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 2000,
+                timer: 3000,
                 timerProgressBar: true,
             });
 
             Toast.fire({
                 icon: 'success',
                 title: message
+            });
+        });
+
+        Livewire.on('error', message => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+                showConfirmButton: true,
+                confirmButtonColor: '#1f2937',
             });
         });
     </script>

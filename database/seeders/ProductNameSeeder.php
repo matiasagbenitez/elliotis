@@ -23,9 +23,6 @@ class ProductNameSeeder extends Seeder
                 'name' => 'Faja machimbrada',
             ],
             [
-                'name' => 'Paquete chico machimbrado',
-            ],
-            [
                 'name' => 'Paquete grande machimbrado',
             ]
         ];

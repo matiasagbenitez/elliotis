@@ -49,7 +49,7 @@
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="font-bold text-sm uppercase">
-                                    {{ $product_type->name }}
+                                    {{ $product_type->product_name->name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
