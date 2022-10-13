@@ -18,6 +18,7 @@ class MachimbreMeasureSeeder extends Seeder
                 'height' => 2,
                 'width' => 16,
                 'length' => 40,
+                'm2' => 0.30
             ],
             [
                 'name' => '1/2" x 4" x 11\'',
@@ -26,6 +27,7 @@ class MachimbreMeasureSeeder extends Seeder
                 'height' => 2,
                 'width' => 16,
                 'length' => 44,
+                'm2' => 0.34
             ],
             [
                 'name' => '1/2" x 4" x 12\'',
@@ -34,6 +36,7 @@ class MachimbreMeasureSeeder extends Seeder
                 'height' => 2,
                 'width' => 16,
                 'length' => 48,
+                'm2' => 0.37
             ],
             [
                 'name' => '1/2" x 4" x 13\'',
@@ -42,6 +45,7 @@ class MachimbreMeasureSeeder extends Seeder
                 'height' => 2,
                 'width' => 16,
                 'length' => 52,
+                'm2' => 0.40
             ],
         ];
 

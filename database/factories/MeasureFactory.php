@@ -19,7 +19,8 @@ class MeasureFactory extends Factory
             'name' => $name,
             'height' => $height->id,
             'width' => $width->id,
-            'length' => $length->id
+            'length' => $length->id,
+            'm2' => $width->centimeter * $length->centimeter / 10000,
         ];
     }
 }

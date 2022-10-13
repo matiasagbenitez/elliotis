@@ -20,7 +20,7 @@
 
     {{-- SweetAlert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://kit.fontawesome.com/d2f341af73.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/d2f341af73.js" crossorigin="anonymous"></script> --}}
 
 </head>
 

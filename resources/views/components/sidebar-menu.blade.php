@@ -191,13 +191,13 @@
 
             <a href="{{ route('admin.clients.index') }}"
                 class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                <i class="fa-solid fa-user-group mr-2"></i>
+                <i class="fas fa-poll mr-2"></i>
                 Clientes
             </a>
 
             <a href="{{ route('admin.suppliers.index') }}"
                 class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                <i class="fa-solid fa-user-group mr-2"></i>
+                <i class="fas fa-poll mr-2"></i>
                 Proveedores
             </a>
 
@@ -208,7 +208,7 @@
 
             <a href="{{ route('admin.purchases.index') }}"
                 class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                <i class="fa-solid fa-cart-shopping mr-2"></i>
+                <i class="fas fa-shopping-cart mr-2"></i>
                 Compras
             </a>
 

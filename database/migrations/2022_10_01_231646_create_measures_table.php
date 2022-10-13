@@ -26,6 +26,8 @@ return new class extends Migration
             $table->unsignedBigInteger('length')->required();
             $table->foreign('length')->references('id')->on('feets');
 
+            $table->float('m2')->nullable();
+
             $table->timestamps();
         });
     }
