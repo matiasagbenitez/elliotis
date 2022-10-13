@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+    <title>{{ config('app.name', 'Elliotis') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Styles -->
-        @livewireStyles
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        {{-- SweetAlert2 --}}
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Styles -->
+    @livewireStyles
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
 
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+    {{-- SweetAlert2 --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/d2f341af73.js" crossorigin="anonymous"></script>
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+</head>
 
-            <!-- Page Heading -->
+<body class="font-sans antialiased">
+    <x-jet-banner />
+
+
+    <div class="flex-col md:flex md:flex-row md:min-h-screen">
+        {{-- Sidebar --}}
+        <x-sidebar-menu />
+
+        <!-- Page Content -->
+        <main class="w-full bg-gray-100 shadow border">
+            {{-- @livewire('navigation-menu') --}}
             @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white ">
+                    <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endif
+            {{ $slot }}
+        </main>
+    </div>
+    </div>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+    @stack('modals')
 
-        @stack('modals')
+    @livewireScripts
 
-        @livewireScripts
+    @stack('script')
+</body>
 
-        @stack('script')
-    </body>
 </html>
