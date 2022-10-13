@@ -13,7 +13,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Clasificación</x-jet-label>
-                <select class="input-control w-full" wire:model="editForm.product_name_id">
+                <select class="input-control w-full" wire:model.defer="editForm.product_name_id">
                     <option value="" disabled selected>Seleccione la clasificación</option>
                     @foreach ($productNames as $productName)
                         <option value="{{ $productName->id }}">{{ $productName->name }}</option>
@@ -25,7 +25,7 @@
             {{-- Measure --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Medida</x-jet-label>
-                <select class="input-control w-full" wire:model="editForm.measure_id">
+                <select class="input-control w-full" wire:model.defer="editForm.measure_id">
                     <option value="" disabled selected>Seleccione la medida</option>
                     @foreach ($measures as $measure)
                         <option value="{{ $measure->id }}">{{ $measure->name }}</option>
@@ -37,7 +37,7 @@
             {{-- Unidad --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Unidad</x-jet-label>
-                <select class="input-control w-full" wire:model="editForm.unity_id">
+                <select class="input-control w-full" wire:model.defer="editForm.unity_id">
                     <option value="" disabled selected>Seleccione la unidad de referencia </option>
                     @foreach ($unities as $unity)
                         <option value="{{ $unity->id }}">{{ $unity->unities }} ({{ $unity->name }})</option>

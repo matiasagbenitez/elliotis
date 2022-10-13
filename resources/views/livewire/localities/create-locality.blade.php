@@ -36,14 +36,14 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Localidad</x-jet-label>
-                <x-jet-input wire:model="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la localidad"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la localidad"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
             </div>
 
             {{-- Postal code --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Código postal</x-jet-label>
-                <x-jet-input wire:model="createForm.postal_code" type="text" class="w-full" placeholder="Ingrese el código postal de la localidad"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.postal_code" type="text" class="w-full" placeholder="Ingrese el código postal de la localidad"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.postal_code" />
             </div>
         </x-slot>

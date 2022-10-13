@@ -12,7 +12,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre</x-jet-label>
-                <x-jet-input wire:model="createForm.name" type="text" class="w-full"
+                <x-jet-input wire:model.defer="createForm.name" type="text" class="w-full"
                     placeholder="Ingrese el nombre del área"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
             </div>

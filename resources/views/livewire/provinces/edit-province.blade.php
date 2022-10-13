@@ -12,7 +12,7 @@
             {{-- País --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">País al que pertenece</x-jet-label>
-                <select class="input-control w-full" wire:model="editForm.country_id">
+                <select class="input-control w-full" wire:model.defer="editForm.country_id">
                     @foreach ($countries as $country)
                         @if ($country_id == $province->country_id)
                             <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
@@ -27,7 +27,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre de la provincia</x-jet-label>
-                <x-jet-input wire:model="editForm.name" type="text" class="w-full" placeholder="Nombre de la provincia...">
+                <x-jet-input wire:model.defer="editForm.name" type="text" class="w-full" placeholder="Nombre de la provincia...">
                 </x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.name" />
             </div>

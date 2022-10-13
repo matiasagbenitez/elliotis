@@ -12,7 +12,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre del producto</x-jet-label>
-                <x-jet-input wire:model="editForm.name" type="text" class="w-full" placeholder="Nombre del producto"></x-jet-input>
+                <x-jet-input wire:model.defer="editForm.name" type="text" class="w-full" placeholder="Nombre del producto"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.name" />
             </div>
         </x-slot>

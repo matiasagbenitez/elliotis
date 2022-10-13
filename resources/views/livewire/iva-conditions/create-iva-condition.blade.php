@@ -12,7 +12,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre</x-jet-label>
-                <x-jet-input wire:model="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la condición ante IVA"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la condición ante IVA"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
             </div>
 
@@ -22,11 +22,11 @@
                     <div class="flex gap-4">
                         <div class="flex space-x-2">
                             <x-jet-label class="mb-2">Sí</x-jet-label>
-                            <x-jet-input wire:model="createForm.discriminate" type="radio" value="1"></x-jet-input>
+                            <x-jet-input wire:model.defer="createForm.discriminate" type="radio" value="1"></x-jet-input>
                         </div>
                         <div class="flex space-x-2">
                             <x-jet-label class="mb-2">No</x-jet-label>
-                            <x-jet-input wire:model="createForm.discriminate" type="radio" value="0"></x-jet-input>
+                            <x-jet-input wire:model.defer="createForm.discriminate" type="radio" value="0"></x-jet-input>
                         </div>
                     </div>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.discriminate" />

@@ -12,7 +12,7 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre del país</x-jet-label>
-                <x-jet-input wire:model="editForm.name" type="text" class="w-full" placeholder="Nombre del tipo de madera"></x-jet-input>
+                <x-jet-input wire:model.defer="editForm.name" type="text" class="w-full" placeholder="Nombre del tipo de madera"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="editForm.name" />
             </div>
         </x-slot>

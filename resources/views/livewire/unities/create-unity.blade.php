@@ -12,14 +12,14 @@
             {{-- Name --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Nombre</x-jet-label>
-                <x-jet-input wire:model="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la unidad"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.name" type="text" class="w-full" placeholder="Ingrese el nombre de la unidad"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.name" />
             </div>
 
             {{-- Unities --}}
             <div class="mb-4">
                 <x-jet-label class="mb-2">Unidades</x-jet-label>
-                <x-jet-input wire:model="createForm.unities" type="number" class="w-full" placeholder="Ingrese las unidades correspondientes"></x-jet-input>
+                <x-jet-input wire:model.defer="createForm.unities" type="number" class="w-full" placeholder="Ingrese las unidades correspondientes"></x-jet-input>
                 <x-jet-input-error class="mt-2 text-xs font-semibold" for="createForm.unities" />
             </div>
         </x-slot>
