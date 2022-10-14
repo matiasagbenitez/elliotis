@@ -123,6 +123,15 @@
             </div>
 
             <div class="col-span-6">
+                <h2 class="font-bold">Detalle de compra</h2>
+                <hr>
+            </div>
+
+            <div class="col-span-6">
+                @livewire('products.add-products-component')
+            </div>
+
+            <div class="col-span-6">
                 <h2 class="font-bold">Monto de la compra</h2>
                 <hr>
             </div>

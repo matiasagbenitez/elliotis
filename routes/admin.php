@@ -19,6 +19,7 @@ use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\TaskTypes\IndexTaskTypes;
 use App\Http\Livewire\WoodTypes\IndexWoodTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
+use App\Http\Livewire\Products\AddProductsComponent;
 use App\Http\Livewire\ProductNames\IndexProductNames;
 use App\Http\Livewire\ProductTypes\IndexProductTypes;
 use App\Http\Livewire\TaskStatuses\IndexTaskStatuses;
@@ -63,3 +64,5 @@ Route::get('/purchase/create', CreatePurchase::class)->name('admin.purchases.cre
 Route::get('/wood-types', IndexWoodTypes::class)->name('admin.wood-types.index');
 
 Route::get('/products', IndexProducts::class)->name('admin.products.index');
+
+Route::get('/add-products', AddProductsComponent::class)->name('admin.add-products.index');
