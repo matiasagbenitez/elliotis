@@ -35,55 +35,20 @@ class IndexProducts extends Component
     public function toggleFiltersDiv()
     {
         $this->filtersDiv = !$this->filtersDiv;
-        $this->resetFilters();
-    }
-
-    public function resetFilters()
-    {
         $this->reset(['product_name', 'wood_type', 'measure', 'stock_parameter']);
-    }
-
-    public function updatedProductName($value)
-    {
-        $this->product_name = $value;
-    }
-
-    public function updatedMeasure($value)
-    {
-        $this->measure = $value;
-    }
-
-    public function updatedWoodType($value)
-    {
-        $this->wood_type = $value;
-    }
-
-    public function updatedStockParameter($value)
-    {
-        $this->stock_parameter = $value;
     }
 
     public function render()
     {
-        if ($this->stock_parameter) {
-            $products = Product::whereHas('productType.product_name', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->product_name . '%');
-            })->whereHas('productType.measure', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->measure . '%');
-            })->whereHas('woodType', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->wood_type . '%');
-            })->whereRaw('real_stock ' . $this->stock_parameter . ' minimum_stock')
-            ->where('name', 'LIKE', '%' . $this->search . '%')->paginate(10);
-        } else {
-            $products = Product::whereHas('productType.product_name', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->product_name . '%');
-            })->whereHas('productType.measure', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->measure . '%');
-            })->whereHas('woodType', function ($query) {
-                $query->where('name', 'LIKE', '%' . $this->wood_type . '%');
-            })
-            ->where('name', 'LIKE', '%' . $this->search . '%')->paginate(10);
-        }
+        $products = Product::whereHas('productType.product_name', function ($query) {
+            $query->where('name', 'LIKE', '%' . $this->product_name . '%');
+        })->whereHas('productType.measure', function ($query) {
+            $query->where('name', 'LIKE', '%' . $this->measure . '%');
+        })->whereHas('woodType', function ($query) {
+            $query->where('name', 'LIKE', '%' . $this->wood_type . '%');
+        })->when($this->stock_parameter ?? null, function($query) {
+            $query->whereRaw('real_stock ' . $this->stock_parameter . ' minimum_stock');
+        })->where('name', 'LIKE', '%' . $this->search . '%')->paginate(10);
 
         return view('livewire.products.index-products', compact('products'));
     }
