@@ -11,20 +11,28 @@ class Product extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    // Relationships
+    // Relationship with ProductType
     public function productType()
     {
         return $this->belongsTo(ProductType::class);
     }
 
+    // Relationship with WoodType
     public function woodType()
     {
         return $this->belongsTo(WoodType::class);
     }
 
+    // Relationship with IvaType
     public function ivaType()
     {
         return $this->belongsTo(IvaType::class);
+    }
+
+    // Relationship many to many with Purchase
+    public function purchases()
+    {
+        return $this->belongsToMany(Purchase::class);
     }
 
 }

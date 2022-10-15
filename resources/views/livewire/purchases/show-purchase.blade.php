@@ -1,0 +1,158 @@
+<div class="container py-6">
+
+    <x-slot name="header">
+        <div class="flex items-center justify-between">
+
+            {{-- GO BACK BUTTON --}}
+            <a href="{{ route('admin.purchases.index') }}">
+                <x-jet-button>
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver
+                </x-jet-button>
+            </a>
+
+            {{-- PDF BUTTON --}}
+            <a href="#">
+                <x-jet-danger-button>
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Descargar PDF
+                </x-jet-danger-button>
+            </a>
+        </div>
+    </x-slot>
+
+    {{-- Purchase detail --}}
+    <div class="bg-white p-10 rounded-lg">
+        <h2 class=" font-mono font-semibold text-2xl text-gray-800 leading-tight mb-4 uppercase text-center">
+            Detalle de compra N° {{ $purchase->voucher_number }}
+        </h2>
+
+        {{-- Datos del proveedor --}}
+        <div class="mt-6">
+            <p class="font-mono font-bold text-xl">Datos del proveedor</p>
+            <hr class="w-full">
+            <div class="flex justify-between my-2">
+                <div class="w-1/2 space-y-2">
+                    <p class="text-sm  font-mono font-bold">
+                        Razón social:
+                        <span class="font-normal">{{ $purchase->supplier->business_name }}</span>
+                    </p>
+                    <p class="text-sm  font-mono font-bold">
+                        CUIT:
+                        <span class="font-normal">{{ $purchase->supplier->cuit }}</span>
+                    </p>
+                    <p class="text-sm font-mono font-bold">
+                        Condición ante IVA:
+                        <span class="font-normal">{{ $purchase->supplier->iva_condition->name }}</span>
+                    </p>
+                </div>
+                {{-- <div class="w-1/2 space-y-2">
+                    <p class="text-sm  font-mono font-bold">Dirección: <span class=" font-mono font-normal">{{ $purchase->supplier->adress }}, {{ $purchase->supplier->locality->name }}</span></p>
+                    <p class="text-sm  font-mono font-bold">Teléfono de contacto: <span class=" font-mono font-normal">{{ $purchase->supplier->phone }}</span></p>
+                    <p class="text-sm  font-mono font-bold">Correo electrónico: <span class=" font-mono font-normal">{{ $purchase->supplier->email }}</span></p>
+                </div> --}}
+            </div>
+        </div>
+
+        {{-- Datos de la compra --}}
+        <div class="mt-6">
+            <p class=" font-mono font-bold text-xl">Datos de la compra</p>
+            <hr class="w-full">
+            <div class="flex justify-between my-2">
+                <div class="w-1/2 space-y-2">
+                    <p class="text-sm  font-mono font-bold">Fecha de compra: <span
+                            class="font-normal">{{ Date::parse($purchase->date)->format('d-m-Y') }}</span></p>
+                    <p class="text-sm  font-mono font-bold">Método de pago: <span
+                            class="font-normal">{{ $purchase->payment_method->name }}</span></p>
+                    <p class="text-sm  font-mono font-bold">Condición de pago: <span
+                            class="font-normal">{{ $purchase->payment_condition->name }}</span></p>
+                </div>
+                <div class="w-1/2 space-y-2">
+                    <p class="text-sm font-mono font-bold">Tipo de comprobante: <span
+                            class="font-normal">{{ $purchase->voucher_type->name }}</span></p>
+                    <p class="text-sm font-mono font-bold">Número de comprobante: <span
+                            class="font-normal">{{ $purchase->voucher_number }}</span></p>
+                    <p class="text-sm  font-mono font-bold">Peso neto:
+                        @if ($purchase->weight)
+                            <span class="font-normal">{{ $purchase->weight }} Kgs.</span>
+                        @else
+                            <span class="font-normal">N/A</span>
+                        @endif
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Detalle de la compra de la compra --}}
+        <div class="mt-6">
+            <p class=" font-mono font-bold text-xl">Detalle de la compra</p>
+            <hr class="w-full">
+
+            {{-- Table for product_purchase --}}
+            <div class="mt-5">
+                <table class="min-w-full divide-y border">
+                    <thead>
+                        <tr class="text-center text-gray-500 uppercase text-sm  font-mono font-thin">
+                            <th scope="col" class="px-6 py-1 text-left">
+                                Producto
+                            </th>
+                            <th scope="col" class="px-6 py-1">
+                                Cantidad
+                            </th>
+                            <th scope="col" class="px-6 py-1">
+                                Precio unitario
+                            </th>
+                            <th scope="col" class="px-6 py-1 text-right">
+                                Subtotal
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($purchase->products as $product)
+                            <tr class="uppercase text-sm font-mono">
+                                <td class="px-6 py-3 whitespace-nowrap">
+                                    <p>
+                                        {{ $product->name }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-3 whitespace-nowrap text-center">
+                                    <p>
+                                        {{ $product->pivot->quantity }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-3 whitespace-nowrap text-center">
+                                    <p>
+                                        {{-- Decimal format --}}
+                                        {{ number_format($product->pivot->price, 2, ',', '.') }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-3 whitespace-nowrap text-right">
+                                    <p>
+                                        {{ number_format($product->pivot->price * $product->pivot->quantity, 2, ',', '.') }}
+                                    </p>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Totales --}}
+            <div class="mt-5 flex flex-col items-end px-6 space-y-2">
+                <p class="text-sm font-mono font-bold">
+                    Subtotal:
+                    <span class="font-normal">${{ number_format($purchase->subtotal, 2, ',', '.') }}</span>
+                </p>
+                <p class="text-sm font-mono font-bold">
+                    IVA:
+                    <span class="font-normal">${{ number_format($purchase->iva, 2, ',', '.') }}</span>
+                </p>
+                <p class="font-mono font-bold text-lg">
+                    Total:
+                    <span>${{ number_format($purchase->total, 2, ',', '.') }}</span>
+                </p>
+            </div>
+
+        </div>
+
+    </div>

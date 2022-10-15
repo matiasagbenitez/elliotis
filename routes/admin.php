@@ -25,6 +25,7 @@ use App\Http\Livewire\ProductTypes\IndexProductTypes;
 use App\Http\Livewire\TaskStatuses\IndexTaskStatuses;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
 use App\Http\Livewire\PucharseParameters\IndexPucharseParameters;
+use App\Http\Livewire\Purchases\ShowPurchase;
 
 Route::get('/countries', IndexCountries::class)->name('admin.countries.index');
 Route::get('/provinces', IndexProvinces::class)->name('admin.provinces.index');
@@ -60,6 +61,7 @@ Route::get('/areas', IndexAreas::class)->name('admin.areas.index');
 
 Route::get('/purchases', IndexPurchases::class)->name('admin.purchases.index');
 Route::get('/purchase/create', CreatePurchase::class)->name('admin.purchases.create');
+Route::get('/purchase/{purchase}/detail', ShowPurchase::class)->name('admin.purchases.show-detail');
 
 Route::get('/wood-types', IndexWoodTypes::class)->name('admin.wood-types.index');
 

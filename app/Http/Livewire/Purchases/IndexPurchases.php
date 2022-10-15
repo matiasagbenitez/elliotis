@@ -18,16 +18,16 @@ class IndexPurchases extends Component
         $this->resetPage();
     }
 
-    public function delete(Purchase $purchase)
-    {
-       try {
-            $purchase->delete();
-            $this->emit('refresh');
-            $this->emit('success', '¡La compra se ha eliminado correctamente!');
-        } catch (\Exception $e) {
-            $this->emit('error', 'No es posible eliminar la compra.');
-        }
-    }
+    // public function delete(Purchase $purchase)
+    // {
+    //    try {
+    //         $purchase->delete();
+    //         $this->emit('refresh');
+    //         $this->emit('success', '¡La compra se ha eliminado correctamente!');
+    //     } catch (\Exception $e) {
+    //         $this->emit('error', 'No es posible eliminar la compra.');
+    //     }
+    // }
 
     public function render()
     {

@@ -25,7 +25,7 @@ class PurchaseFactory extends Factory
             'user_id' => 1,
             'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'supplier_id' => $supplier_id,
-            'supplier_order_id' => $this->faker->unique()->numberBetween(1, 100),
+            // 'supplier_order_id' => $this->faker->unique()->numberBetween(1, 100),
             'payment_condition_id' => $payment_condition_id,
             'payment_method_id' => $payment_method_id,
             'voucher_type_id' => $voucher_type_id,

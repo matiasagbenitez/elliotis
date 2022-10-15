@@ -25,8 +25,6 @@
 </head>
 
 <body class="font-sans antialiased">
-    <x-jet-banner />
-
 
     <div class="flex-col md:flex md:flex-row md:min-h-screen">
         {{-- Sidebar --}}
@@ -34,6 +32,7 @@
 
         <!-- Page Content -->
         <main class="w-full bg-gray-100 shadow border">
+            <x-jet-banner />
             {{-- @livewire('navigation-menu') --}}
             @if (isset($header))
                 <header class="bg-white ">
@@ -44,7 +43,6 @@
             @endif
             {{ $slot }}
         </main>
-    </div>
     </div>
 
     @stack('modals')

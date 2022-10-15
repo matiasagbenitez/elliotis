@@ -14,7 +14,8 @@
 
         <x-slot name="description">
             <span>
-                Lea detenidamente la información solicitada y rellene los campos requeridos para registrar una nueva compra en el sistema.
+                Lea detenidamente la información solicitada y rellene los campos requeridos para registrar una nueva
+                compra en el sistema.
                 <br><br>
                 (*) Campos obligatorios.
                 <br><br>
@@ -27,7 +28,8 @@
             {{-- Date --}}
             <div class="col-span-6">
                 <x-jet-label class="mb-2" for="date" value="Fecha de la compra (*)" />
-                <x-jet-input id="date" type="date" class="mt-1 block w-full" wire:model.defer="createForm.date" />
+                <x-jet-input id="date" type="date" class="mt-1 block w-full"
+                    wire:model.defer="createForm.date" />
                 <x-jet-input-error for="createForm.date" class="mt-2" />
             </div>
 
@@ -51,7 +53,8 @@
             {{-- Has order associated? --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="has_order_associated" value="¿Tiene orden asociada?" />
-                <select id="" class="input-control w-full" wire:click="hasOrderAssociated">Seleccione una opción</option>
+                <select id="" class="input-control w-full" wire:click="hasOrderAssociated">Seleccione una
+                    opción</option>
                     <option value="0">No</option>
                     <option value="1">Si</option>
                 </select>
@@ -82,7 +85,8 @@
             {{-- Select for payment_methods --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="payment_method" value="Método de pago (*)" />
-                <select id="payment_method" class="input-control w-full" wire:model.defer="createForm.payment_method_id">
+                <select id="payment_method" class="input-control w-full"
+                    wire:model.defer="createForm.payment_method_id">
                     <option value="">Seleccione un método de pago</option>
                     @foreach ($payment_methods as $payment_method)
                         <option value="{{ $payment_method->id }}">{{ $payment_method->name }}</option>
@@ -94,7 +98,8 @@
             {{-- Select for payment_conditions --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="payment_condition" value="Condición de pago (*)" />
-                <select id="payment_condition" class="input-control w-full" wire:model.defer="createForm.payment_condition_id">
+                <select id="payment_condition" class="input-control w-full"
+                    wire:model.defer="createForm.payment_condition_id">
                     <option value="">Seleccione una condición de pago</option>
                     @foreach ($payment_conditions as $payment_condition)
                         <option value="{{ $payment_condition->id }}">{{ $payment_condition->name }}</option>
@@ -118,7 +123,8 @@
             {{-- Voucher number --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="voucher_number" value="Número de comprobante" />
-                <x-jet-input id="voucher_number" type="number" class="mt-1 block w-full" placeholder="Ingrese el número de comprobante" wire:model.defer="createForm.voucher_number" />
+                <x-jet-input id="voucher_number" type="number" class="mt-1 block w-full"
+                    placeholder="Ingrese el número de comprobante" wire:model.defer="createForm.voucher_number" />
                 <x-jet-input-error for="createForm.voucher_number" class="mt-2" />
             </div>
 
@@ -128,7 +134,75 @@
             </div>
 
             <div class="col-span-6">
-                @livewire('products.add-products-component')
+                @if ($orderProducts)
+                    <table class="text-gray-600 min-w-full table-fixed" id="products_table">
+                        <thead>
+                            <tr class="text-sm uppercase py-2 text-left">
+                                <th scope="col" class="w-1/2">Producto</th>
+                                <th scope="col" class="w-1/4">Cantidad</th>
+                                <th scope="col" class="w-1/4">Precio</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($orderProducts as $index => $orderProduct)
+                                <tr>
+                                    <td>
+                                        <select name="orderProducts[{{ $index }}][product_id]"
+                                            wire:model.lazy="orderProducts.{{ $index }}.product_id"
+                                            class="input-control w-full">
+                                            <option disabled value="">Seleccione un producto</option>
+                                            @foreach ($allProducts as $product)
+                                                <option value="{{ $product->id }}">
+                                                    {{ $product->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <x-jet-input type="number" min="1"
+                                            name="orderProducts[{{ $index }}][quantity]"
+                                            wire:model.lazy="orderProducts.{{ $index }}.quantity"
+                                            class="input-control w-full" />
+                                    </td>
+                                    <td>
+                                        <x-jet-input type="number" min="1"
+                                            name="orderProducts[{{ $index }}][price]"
+                                            wire:model.lazy="orderProducts.{{ $index }}.price"
+                                            class="input-control w-full" />
+                                    </td>
+                                    <td>
+                                        <x-jet-danger-button type="button"
+                                            wire:click.prevent="removeProduct({{ $index }})">
+                                            <i class="fas fa-trash"></i>
+                                        </x-jet-danger-button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
+                <x-jet-input-error for="orderProducts.*.product_id" class="mt-2" />
+
+                <div class="flex flex-col {{ $orderProducts ? '' : 'items-center' }} gap-2 my-2">
+                    <div>
+                        <x-jet-secondary-button type="button" wire:click.prevent="addProduct">
+                            <i class="fas fa-plus mr-2"></i>
+                            Agregar producto
+                        </x-jet-secondary-button>
+                    </div>
+
+                    @if ($orderProducts)
+                        <div>
+                            <x-jet-button type="button" wire:click="showProducts">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Debug
+                            </x-jet-button>
+                        </div>
+                    @endif
+                </div>
             </div>
 
             <div class="col-span-6">
@@ -141,17 +215,19 @@
                 <x-jet-label class="mb-1" for="subtotal" value="Subtotal" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input id="subtotal" type="number" class="mt-1 block w-full" placeholder="Subtotal" wire:model.defer="createForm.subtotal" />
+                    <x-jet-input disabled id="subtotal" type="number" class="mt-1 block w-full text-right"
+                        placeholder="Subtotal" wire:model.defer="createForm.subtotal" />
                 </div>
                 <x-jet-input-error for="createForm.subtotal" class="mt-2" />
             </div>
 
-            {{-- iva --}}
+            {{-- IVA --}}
             <div class="col-span-2">
                 <x-jet-label class="mb-1" for="iva" value="IVA" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input id="iva" type="number" class="mt-1 block w-full" placeholder="IVA" wire:model.defer="createForm.iva" />
+                    <x-jet-input disabled id="iva" type="number" class="mt-1 block w-full text-right"
+                        placeholder="IVA" wire:model.defer="createForm.iva" />
                 </div>
                 <x-jet-input-error for="createForm.iva" class="mt-2" />
             </div>
@@ -161,7 +237,8 @@
                 <x-jet-label class="mb-1" for="total" value="Total" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input id="total" type="number" class="mt-1 block w-full" placeholder="Total compra" wire:model.defer="createForm.total" />
+                    <x-jet-input disabled id="total" type="number" class="mt-1 block w-full text-right"
+                        placeholder="Total compra" wire:model.defer="createForm.total" />
                 </div>
                 <x-jet-input-error for="createForm.total" class="mt-2" />
             </div>
@@ -174,19 +251,22 @@
             {{-- Weight --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="weight" value="Peso neto" />
-                <x-jet-input id="weight" type="text" class="mt-1 block w-full" placeholder="Ingrese el peso neto de la compra" wire:model.defer="createForm.weight" />
+                <x-jet-input id="weight" type="text" class="mt-1 block w-full"
+                    placeholder="Ingrese el peso neto de la compra" wire:model.defer="createForm.weight" />
                 <x-jet-input-error for="createForm.weight" class="mt-2" />
             </div>
 
             {{-- Input type file for weight_voucher --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="weight_voucher" value="Comprobante de peso" />
-                <input type="file" id="weight_voucher" class="input-control w-full" wire:model.defer="createForm.weight_voucher" accept="image/*">
+                <input type="file" id="weight_voucher" class="input-control w-full"
+                    wire:model.defer="createForm.weight_voucher" accept="image/*">
 
                 {{-- Image preview --}}
                 @if ($createForm['weight_voucher'])
                     <div class="mt-5">
-                        <img class="mt-2 w-96" src="{{ $createForm['weight_voucher']->temporaryUrl() }}" alt="Comprobante de peso">
+                        <img class="mt-2 w-96" src="{{ $createForm['weight_voucher']->temporaryUrl() }}"
+                            alt="Comprobante de peso">
                     </div>
                 @endif
 

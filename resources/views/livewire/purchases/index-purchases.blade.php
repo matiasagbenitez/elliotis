@@ -19,30 +19,30 @@
 
         @if ($purchases->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
-                <thead class="border-b border-gray-300 bg-gray-200">
+                <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
                     <tr>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            ID
-                        </th>
-                        <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Fecha
-                        </th>
-                        <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-4 py-2">
                             Proveedor
                         </th>
                         <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            N° Comprobante
+                            class="w-1/5 px-4 py-2">
+                            Fecha de compra
                         </th>
                         <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
-                            Total
+                            class="w-1/5 px-4 py-2">
+                            Tipo - N° comprobante
                         </th>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-4 py-2">
+                            Monto total
+                        </th>
+                        <th scope="col"
+                            class="w-1/5 px-4 py-2">
+                            Pedido asociado
+                        </th>
+                        <th scope="col"
+                            class="px-4 py-2">
                             Acción
                         </th>
                     </tr>
@@ -50,38 +50,42 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($purchases as $purchase)
                         <tr class="bg-gray-50">
-                            <td class="px-6 py-3">
-                                <p class="text-sm uppercase">
-                                    {{ $purchase->id }}
-                                </p>
-                            </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-center">
-                                <p class="font-bold text-sm uppercase">
-                                    {{-- Format date to Y-m-d --}}
-                                    {{ Date::parse($purchase->date)->format('d-m-Y') }}
-                                </p>
-                            </td>
-                            <td class="px-6 py-3">
+                            <td class="px-6 py-2">
                                 <p class="text-sm uppercase text-center">
                                     {{ $purchase->supplier->business_name }}
                                 </p>
                             </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                            <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
-                                    {{ $purchase->voucher_number }}
+                                    {{-- Format date to Y-m-d --}}
+                                    {{ Date::parse($purchase->date)->format('d-m-Y') }}
                                 </p>
                             </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                            <td class="px-6 py-2">
+                                <p class="text-sm uppercase text-center">
+                                    {{ $purchase->voucher_type->name }} - {{ $purchase->voucher_number }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     $ {{ $purchase->total }}
                                 </p>
                             </td>
-                            <td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
+                            <td class="px-6 py-2 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                   -
+                                </p>
+                            </td>
+                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
-                                    {{-- @livewire('purchases.edit-purchase', ['purchase' => $purchase], key($purchase->id)) --}}
-                                    <x-jet-danger-button wire:click="$emit('deletePurchase', '{{ $purchase->id }}')">
+                                    {{-- <x-jet-danger-button wire:click="$emit('deletePurchase', '{{ $purchase->id }}')">
                                         <i class="fas fa-trash"></i>
-                                    </x-jet-danger-button>
+                                    </x-jet-danger-button> --}}
+                                    <a href="{{ route('admin.purchases.show-detail', $purchase) }}">
+                                        <x-jet-secondary-button>
+                                            <i class="fas fa-list"></i>
+                                        </x-jet-secondary-button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -102,7 +106,7 @@
 
     </x-responsive-table>
 
-    @push('script')
+    {{-- @push('script')
         <script>
             Livewire.on('deletePurchase', purchaseId => {
                 Swal.fire({
@@ -147,6 +151,6 @@
                 })
             });
         </script>
-    @endpush
+    @endpush --}}
 
 </div>
