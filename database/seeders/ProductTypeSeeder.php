@@ -62,6 +62,19 @@ class ProductTypeSeeder extends Seeder
                 'measure_id' => 23,
                 'unity_id' => 3,
             ],
+
+            // Rollos 11 y 13
+
+            [
+                'product_name_id' => 1,
+                'measure_id' => 26,
+                'unity_id' => 1,
+            ],
+            [
+                'product_name_id' => 1,
+                'measure_id' => 28,
+                'unity_id' => 1,
+            ],
         ];
 
         foreach ($productTypes as $productType) {

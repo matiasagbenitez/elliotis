@@ -155,6 +155,38 @@ class ProductSeeder extends Seeder
                 'selling_price' => 225000.00,
             ],
 
+            // ROLLO DE 11
+            [
+                'name' => ProductType::find(11)->product_name->name . ' ' . ProductType::find(11)->measure->name,
+                'product_type_id' => 11,
+                'wood_type_id' => 1,
+                'code' => 'RO' . ProductType::find(11)->measure->name,
+                'real_stock' => 95,
+                'minimum_stock' => 30,
+                'is_buyable' => true,
+                'reposition' => 50,
+                'iva_type_id' => 2,
+                'cost' => 0.00,
+                'margin' => 0.00,
+                'selling_price' => 100.00,
+            ],
+
+            // ROLLO DE 13
+            [
+                'name' => ProductType::find(12)->product_name->name . ' ' . ProductType::find(12)->measure->name,
+                'product_type_id' => 12,
+                'wood_type_id' => 1,
+                'code' => 'RO' . ProductType::find(12)->measure->name,
+                'real_stock' => 95,
+                'minimum_stock' => 30,
+                'is_buyable' => true,
+                'reposition' => 50,
+                'iva_type_id' => 2,
+                'cost' => 0.00,
+                'margin' => 0.00,
+                'selling_price' => 100.00,
+            ],
+
         ];
 
         foreach ($products as $product) {
