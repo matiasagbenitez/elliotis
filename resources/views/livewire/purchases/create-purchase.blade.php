@@ -65,7 +65,7 @@
                 <div class="col-span-6">
                     <x-jet-label class="mb-2" for="order_id" value="Orden asociada" />
                     <select id="order_id" class="input-control w-full" wire:model="createForm.supplier_order_id">
-                        <option value="">Seleccione una orden</option>
+                        <option value="1">Seleccione una orden</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -215,7 +215,7 @@
                 <x-jet-label class="mb-1" for="subtotal" value="Subtotal" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input disabled id="subtotal" type="number" class="mt-1 block w-full text-right"
+                    <x-jet-input readonly disabled id="subtotal" type="number" class="mt-1 block w-full text-right"
                         placeholder="Subtotal" wire:model.defer="createForm.subtotal" />
                 </div>
                 <x-jet-input-error for="createForm.subtotal" class="mt-2" />
@@ -226,7 +226,7 @@
                 <x-jet-label class="mb-1" for="iva" value="IVA" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input disabled id="iva" type="number" class="mt-1 block w-full text-right"
+                    <x-jet-input readonly disabled id="iva" type="number" class="mt-1 block w-full text-right"
                         placeholder="IVA" wire:model.defer="createForm.iva" />
                 </div>
                 <x-jet-input-error for="createForm.iva" class="mt-2" />
@@ -237,7 +237,7 @@
                 <x-jet-label class="mb-1" for="total" value="Total" />
                 <div class="flex items-center justify-center gap-2">
                     <span>$</span>
-                    <x-jet-input disabled id="total" type="number" class="mt-1 block w-full text-right"
+                    <x-jet-input readonly disabled id="total" type="number" class="mt-1 block w-full text-right"
                         placeholder="Total compra" wire:model.defer="createForm.total" />
                 </div>
                 <x-jet-input-error for="createForm.total" class="mt-2" />
@@ -251,7 +251,7 @@
             {{-- Weight --}}
             <div class="col-span-3">
                 <x-jet-label class="mb-2" for="weight" value="Peso neto" />
-                <x-jet-input id="weight" type="text" class="mt-1 block w-full"
+                <x-jet-input id="weight" type="number" class="mt-1 block w-full"
                     placeholder="Ingrese el peso neto de la compra" wire:model.defer="createForm.weight" />
                 <x-jet-input-error for="createForm.weight" class="mt-2" />
             </div>

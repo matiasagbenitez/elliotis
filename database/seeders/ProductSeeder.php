@@ -13,16 +13,16 @@ class ProductSeeder extends Seeder
     {
         $products = [
 
-            // 10
+            // ROLLO  DE 10
 
             [
                 'name' => ProductType::find(1)->product_name->name . ' ' . ProductType::find(1)->measure->name,
                 'product_type_id' => 1,
                 'wood_type_id' => 1,
                 'code' => 'RO' . ProductType::find(1)->measure->name,
-                'real_stock' => 95,
-                'minimum_stock' => 30,
                 'is_buyable' => true,
+                'real_stock' => 120,
+                'minimum_stock' => 100,
                 'reposition' => 50,
                 'iva_type_id' => 2,
                 'cost' => 0.00,
@@ -84,16 +84,16 @@ class ProductSeeder extends Seeder
                 'selling_price' => 180000.00,
             ],
 
-            // 12
+            // ROLLO DE 12
 
             [
                 'name' => ProductType::find(6)->product_name->name . ' ' . ProductType::find(6)->measure->name,
                 'product_type_id' => 6,
                 'wood_type_id' => 2,
                 'code' => 'RO' . ProductType::find(6)->measure->name,
-                'real_stock' => 85,
                 'is_buyable' => true,
-                'minimum_stock' => 30,
+                'real_stock' => 110,
+                'minimum_stock' => 100,
                 'reposition' => 50,
                 'iva_type_id' => 2,
                 'cost' => 0.00,
@@ -161,9 +161,9 @@ class ProductSeeder extends Seeder
                 'product_type_id' => 11,
                 'wood_type_id' => 1,
                 'code' => 'RO' . ProductType::find(11)->measure->name,
-                'real_stock' => 95,
-                'minimum_stock' => 30,
                 'is_buyable' => true,
+                'real_stock' => 80,
+                'minimum_stock' => 100,
                 'reposition' => 50,
                 'iva_type_id' => 2,
                 'cost' => 0.00,
@@ -177,9 +177,9 @@ class ProductSeeder extends Seeder
                 'product_type_id' => 12,
                 'wood_type_id' => 1,
                 'code' => 'RO' . ProductType::find(12)->measure->name,
-                'real_stock' => 95,
-                'minimum_stock' => 30,
                 'is_buyable' => true,
+                'real_stock' => 90,
+                'minimum_stock' => 100,
                 'reposition' => 50,
                 'iva_type_id' => 2,
                 'cost' => 0.00,

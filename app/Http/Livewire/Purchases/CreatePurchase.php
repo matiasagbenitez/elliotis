@@ -68,7 +68,7 @@ class CreatePurchase extends Component
         $this->voucher_types = VoucherTypes::all();
         $this->suppliers = Supplier::all();
 
-        $this->allProducts = Product::where('is_buyable', true)->get();
+        $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
         $this->orderProducts = [
             ['product_id' => '', 'quantity' => 1, 'price' => 0]
         ];
@@ -97,7 +97,17 @@ class CreatePurchase extends Component
     // SHOW PRODUCTS
     public function showProducts()
     {
-        dd($this->orderProducts);
+        // dd($this->orderProducts);
+
+        // Unify products with same id
+        // $products = collect($this->orderProducts)->groupBy('product_id')->map(function ($item) {
+        //     return [
+        //         'product_id' => $item->first()['product_id'],
+        //         'quantity' => $item->sum('quantity'),
+        //         'price' => $item->first()['price'],
+        //     ];
+        // })->toArray();
+        // dd($products);
     }
 
     // UPDATED ORDER PRODUCTS
@@ -140,6 +150,15 @@ class CreatePurchase extends Component
             'iva' => $iva,
             'total' => $total
         ]);
+
+        // Update stock of products in purchase
+        foreach ($purchase->products as $product) {
+            $product->update([
+                'real_stock' => $product->real_stock + $product->pivot->quantity
+            ]);
+        }
+
+        dd('ok');
 
         // Reset
         $this->reset(['createForm', 'orderProducts']);
