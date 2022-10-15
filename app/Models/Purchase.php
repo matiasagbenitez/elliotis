@@ -11,6 +11,20 @@ class Purchase extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+    // Query Scope
+    public function scopeFilter($query, $filters)
+    {
+        $query->when($filters['supplier'] ?? null, function($query, $supplier) {
+            $query->where('supplier_id', $supplier);
+        })->when($filters['voucherType'] ?? null, function($query, $voucherType) {
+            $query->where('voucher_type_id', $voucherType);
+        })->when($filters['fromDate'] ?? null, function($query, $fromDate) {
+            $query->where('date', '>=', $fromDate);
+        })->when($filters['toDate'] ?? null, function($query, $toDate) {
+            $query->where('date', '<=', $toDate);
+        });
+    }
+
     public function getRouteKeyName()
     {
         return 'voucher_number';

@@ -97,17 +97,7 @@ class CreatePurchase extends Component
     // SHOW PRODUCTS
     public function showProducts()
     {
-        // dd($this->orderProducts);
-
-        // Unify products with same id
-        // $products = collect($this->orderProducts)->groupBy('product_id')->map(function ($item) {
-        //     return [
-        //         'product_id' => $item->first()['product_id'],
-        //         'quantity' => $item->sum('quantity'),
-        //         'price' => $item->first()['price'],
-        //     ];
-        // })->toArray();
-        // dd($products);
+        dd($this->orderProducts);
     }
 
     // UPDATED ORDER PRODUCTS
@@ -151,14 +141,14 @@ class CreatePurchase extends Component
             'total' => $total
         ]);
 
-        // Update stock of products in purchase
+        // Update real_stock of products in purchase considering repeated products
         foreach ($purchase->products as $product) {
-            $product->update([
-                'real_stock' => $product->real_stock + $product->pivot->quantity
+            $p = Product::find($product->id);
+            $p->update([
+                'real_stock' => $p->real_stock + $product->pivot->quantity
             ]);
-        }
 
-        dd('ok');
+        }
 
         // Reset
         $this->reset(['createForm', 'orderProducts']);

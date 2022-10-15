@@ -22,7 +22,7 @@
     </x-slot>
 
     {{-- Purchase detail --}}
-    <div class="bg-white p-10 rounded-lg">
+    <div class="max-w-5xl mx-auto bg-white p-10 rounded-lg">
         <h2 class=" font-mono font-semibold text-2xl text-gray-800 leading-tight mb-4 uppercase text-center">
             Detalle de compra N° {{ $purchase->voucher_number }}
         </h2>

@@ -13,33 +13,67 @@
 
     <x-responsive-table>
 
-        <div class="px-6 py-4">
-            <x-jet-input type="text" wire:model="search" class="w-full" placeholder="Filtre su búsqueda aquí..." />
+        <div class="px-6 py-4 grid grid-cols-4 gap-3 bg-grat-50">
+
+            {{-- Proveedor --}}
+            <div class="col-span-1 rounded-lg gap-2">
+                <x-jet-label class="mb-1">Proveedor</x-jet-label>
+                <select class="input-control w-full" wire:model="filters.supplier">
+                    <option value="" class="text-md">Todos</option>
+                    @foreach ($suppliers as $supplier)
+                        <option value="{{ $supplier->id }}" class="text-md">{{ $supplier->business_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Tipo de comprobante --}}
+            <div class="col-span-1 rounded-lg gap-2">
+                <x-jet-label class="mb-1">Tipo de comprobante</x-jet-label>
+                <select class="input-control w-full" wire:model="filters.voucherType">
+                    <option value="" class="text-md">Todos</option>
+                    @foreach ($voucher_types as $voucher_type)
+                        <option value="{{ $voucher_type->id }}" class="text-md">{{ $voucher_type->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Desde fecha --}}
+            <div class="col-span-1 rounded-lg gap-2">
+                <x-jet-label class="mb-1">Desde fecha</x-jet-label>
+                <x-jet-input wire:model="filters.fromDate" type="date" class="w-full" />
+            </div>
+
+            {{-- Hasta fecha --}}
+            <div class="col-span-1 rounded-lg gap-2">
+                <x-jet-label class="mb-1">Hasta fecha</x-jet-label>
+                <x-jet-input wire:model="filters.toDate" type="date" class="w-full" />
+            </div>
         </div>
 
+        {{-- TABLA --}}
         @if ($purchases->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
                     <tr>
-                        <th scope="col" class="w-1/5 px-4 py-2">
-                            Proveedor
-                        </th>
-                        <th scope="col" class="w-1/5 px-4 py-2">
-                            Fecha de compra
-                        </th>
-                        <th scope="col" class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 py-2 px-4">
                             Tipo - N° comprobante
                         </th>
-                        <th scope="col" class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Proveedor
+                        </th>
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Fecha de compra
+                        </th>
+                        <th scope="col" class="w-1/5 py-2 px-4">
                             Monto total
                         </th>
-                        {{-- <th scope="col" class="w-1/5 px-4 py-2">
+                        {{-- <th scope="col" class="w-1/5 py-2 px-4">
                             Pedido asociado
                         </th> --}}
-                        <th scope="col" class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 py-2 px-4">
                             Estado
                         </th>
-                        <th scope="col" class="px-4 py-2">
+                        <th scope="col" class="py-2 px-4">
                             Acción
                         </th>
                     </tr>
@@ -47,6 +81,11 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($purchases as $purchase)
                         <tr class="bg-gray-50">
+                            <td class="px-6 py-2">
+                                <p class="text-sm uppercase">
+                                    {{ $purchase->voucher_type->name }} - {{ $purchase->voucher_number }}
+                                </p>
+                            </td>
                             <td class="px-6 py-2">
                                 <p class="text-sm uppercase text-center">
                                     {{ $purchase->supplier->business_name }}
@@ -58,11 +97,6 @@
                                     {{ Date::parse($purchase->date)->format('d-m-Y') }}
                                 </p>
                             </td>
-                            <td class="px-6 py-2">
-                                <p class="text-sm uppercase text-center">
-                                    {{ $purchase->voucher_type->name }} - {{ $purchase->voucher_number }}
-                                </p>
-                            </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     $ {{ $purchase->total }}
@@ -72,12 +106,12 @@
                                 <p class="text-sm uppercase">
                                     @if ($purchase->supplier_order_if)
                                         <span
-                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             POSEE
                                         </span>
                                     @else
                                         <span
-                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             NO POSEE
                                         </span>
                                     @endif
@@ -87,12 +121,12 @@
                                 <p class="text-sm uppercase">
                                     @if ($purchase->is_active == 1)
                                         <span
-                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             VÁLIDO
                                         </span>
                                     @else
                                         <span
-                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             ANULADO
                                         </span>
                                     @endif

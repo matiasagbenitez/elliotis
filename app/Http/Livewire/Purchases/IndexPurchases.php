@@ -2,20 +2,32 @@
 
 namespace App\Http\Livewire\Purchases;
 
-use App\Models\Purchase;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Purchase;
+use App\Models\Supplier;
+use App\Models\VoucherTypes;
 use Livewire\WithPagination;
 
 class IndexPurchases extends Component
 {
     use WithPagination;
     public $search;
+    public $suppliers = [], $voucher_types = [];
+
+    public $filters = [
+        'supplier' => '',
+        'voucherType' => '',
+        'fromDate' => '',
+        'toDate' => '',
+    ];
 
     protected $listeners = ['refresh' => 'render', 'disable'];
 
-    public function updatingSearch()
+    public function mount()
     {
-        $this->resetPage();
+        $this->suppliers = Supplier::all();
+        $this->voucher_types = VoucherTypes::all();
     }
 
     public function disable($id)
@@ -25,10 +37,11 @@ class IndexPurchases extends Component
             $purchase->is_active = false;
             $purchase->save();
 
-            // Discount real_stock
             foreach ($purchase->products as $product) {
-                $product->real_stock -= $product->pivot->quantity;
-                $product->save();
+                $p = Product::find($product->id);
+                $p->update([
+                    'real_stock' => $p->real_stock - $product->pivot->quantity
+                ]);
             }
 
             $this->emit('refresh');
@@ -40,12 +53,7 @@ class IndexPurchases extends Component
 
     public function render()
     {
-        // Filter by supplier business name
-        $purchases = Purchase::whereHas('supplier', function ($query) {
-            $query->where('business_name', 'like', '%' . $this->search . '%');
-        })
-            ->orderBy('date', 'desc')
-            ->paginate(10);
+        $purchases = Purchase::filter($this->filters)->paginate(10);
 
         return view('livewire.purchases.index-purchases', compact('purchases'));
     }
