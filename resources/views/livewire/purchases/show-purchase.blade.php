@@ -47,10 +47,23 @@
                     </p>
                 </div>
                 {{-- <div class="w-1/2 space-y-2">
-                    <p class="text-sm  font-mono font-bold">Dirección: <span class=" font-mono font-normal">{{ $purchase->supplier->adress }}, {{ $purchase->supplier->locality->name }}</span></p>
-                    <p class="text-sm  font-mono font-bold">Teléfono de contacto: <span class=" font-mono font-normal">{{ $purchase->supplier->phone }}</span></p>
-                    <p class="text-sm  font-mono font-bold">Correo electrónico: <span class=" font-mono font-normal">{{ $purchase->supplier->email }}</span></p>
+                    <p class="text-sm font-mono font-bold">Dirección: <span class=" font-mono font-normal">{{ $purchase->supplier->adress }}, {{ $purchase->supplier->locality->name }}</span></p>
+                    <p class="text-sm font-mono font-bold">Teléfono de contacto: <span class=" font-mono font-normal">{{ $purchase->supplier->phone }}</span></p>
+                    <p class="text-sm font-mono font-bold">Correo electrónico: <span class=" font-mono font-normal">{{ $purchase->supplier->email }}</span></p>
                 </div> --}}
+                @if (!$purchase->is_active)
+                    <div class="w-1/2 flex justify-center items-center border border-red-700 text-red-700 px-4 py-3 rounded relative gap-4" role="alert">
+                        {{-- <div> --}}
+                            <i class="fas fa-ban text-5xl"></i>
+                        {{-- </div> --}}
+                        <div>
+                            <p class="font-bold font-mono uppercase">Compra anulada</p>
+                            <p class="font-mono text-sm">La presente compra no es válida ya que fue anulada el día {{ $purchase->updated_at->format('d-m-Y') }} a las {{ $purchase->updated_at->format('H:i:s') }} hs</p>
+
+
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 

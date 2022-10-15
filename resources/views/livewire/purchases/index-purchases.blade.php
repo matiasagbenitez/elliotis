@@ -21,28 +21,25 @@
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
                     <tr>
-                        <th scope="col"
-                            class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 px-4 py-2">
                             Proveedor
                         </th>
-                        <th scope="col"
-                            class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 px-4 py-2">
                             Fecha de compra
                         </th>
-                        <th scope="col"
-                            class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 px-4 py-2">
                             Tipo - N° comprobante
                         </th>
-                        <th scope="col"
-                            class="w-1/5 px-4 py-2">
+                        <th scope="col" class="w-1/5 px-4 py-2">
                             Monto total
                         </th>
-                        <th scope="col"
-                            class="w-1/5 px-4 py-2">
+                        {{-- <th scope="col" class="w-1/5 px-4 py-2">
                             Pedido asociado
+                        </th> --}}
+                        <th scope="col" class="w-1/5 px-4 py-2">
+                            Estado
                         </th>
-                        <th scope="col"
-                            class="px-4 py-2">
+                        <th scope="col" class="px-4 py-2">
                             Acción
                         </th>
                     </tr>
@@ -71,17 +68,45 @@
                                     $ {{ $purchase->total }}
                                 </p>
                             </td>
+                            {{-- <td class="px-6 py-2 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    @if ($purchase->supplier_order_if)
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            POSEE
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            NO POSEE
+                                        </span>
+                                    @endif
+                                </p>
+                            </td> --}}
                             <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
-                                   -
+                                    @if ($purchase->is_active == 1)
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            VÁLIDO
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            ANULADO
+                                        </span>
+                                    @endif
                                 </p>
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
-                                <div class="flex items-center justify-center gap-2">
-                                    {{-- <x-jet-danger-button wire:click="$emit('deletePurchase', '{{ $purchase->id }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </x-jet-danger-button> --}}
-                                    <a href="{{ route('admin.purchases.show-detail', $purchase) }}">
+                                <div class="flex items-center justify-end gap-2">
+                                    @if ($purchase->is_active)
+                                        <button title="Anular compra"
+                                            wire:click="$emit('disablePurchase', '{{ $purchase->id }}')">
+                                            <i class="fas fa-ban mr-1"></i>
+                                        </button>
+                                    @endif
+                                    <a title="Ver detalle" href="{{ route('admin.purchases.show-detail', $purchase) }}">
                                         <x-jet-secondary-button>
                                             <i class="fas fa-list"></i>
                                         </x-jet-secondary-button>
@@ -106,23 +131,23 @@
 
     </x-responsive-table>
 
-    {{-- @push('script')
+    @push('script')
         <script>
-            Livewire.on('deletePurchase', purchaseId => {
+            Livewire.on('disablePurchase', purchaseId => {
+                console.log(purchaseId);
                 Swal.fire({
-                    title: '¿Estás seguro?',
+                    title: '¿Anular compra?',
                     text: "¡No podrás revertir esta acción!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, eliminar compra',
+                    confirmButtonText: 'Sí, anular compra',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-
-                        Livewire.emitTo('purchases.index-purchases', 'delete', purchaseId);
-
+                        Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId);
+                        console.log('emitido');
                         Livewire.on('success', message => {
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -131,13 +156,11 @@
                                 timer: 3000,
                                 timerProgressBar: true,
                             });
-
                             Toast.fire({
                                 icon: 'success',
                                 title: message
                             });
                         });
-
                         Livewire.on('error', message => {
                             Swal.fire({
                                 icon: 'error',
@@ -151,6 +174,6 @@
                 })
             });
         </script>
-    @endpush --}}
+    @endpush
 
 </div>

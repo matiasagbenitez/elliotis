@@ -11,23 +11,25 @@ class IndexPurchases extends Component
     use WithPagination;
     public $search;
 
-    protected $listeners = ['refresh' => 'render', 'delete'];
+    protected $listeners = ['refresh' => 'render', 'disable'];
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    // public function delete(Purchase $purchase)
-    // {
-    //    try {
-    //         $purchase->delete();
-    //         $this->emit('refresh');
-    //         $this->emit('success', '¡La compra se ha eliminado correctamente!');
-    //     } catch (\Exception $e) {
-    //         $this->emit('error', 'No es posible eliminar la compra.');
-    //     }
-    // }
+    public function disable($id)
+    {
+        try {
+            $purchase = Purchase::find($id);
+            $purchase->is_active = false;
+            $purchase->save();
+            $this->emit('refresh');
+            $this->emit('success', '¡La compra se ha anulado correctamente!');
+        } catch (\Exception $e) {
+            $this->emit('error', 'No es posible anular la compra.');
+        }
+    }
 
     public function render()
     {

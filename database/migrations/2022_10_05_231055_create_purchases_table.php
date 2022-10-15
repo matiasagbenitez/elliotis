@@ -42,6 +42,8 @@ return new class extends Migration
 
             $table->text('observations')->nullable();
 
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }
