@@ -39,12 +39,14 @@ class PurchaseSeeder extends Seeder
 
             $purchase->subtotal = $subtotal;
 
-            // IVA
-            $purchase->iva = $purchase->subtotal * 0.21;
+            if ($purchase->supplier->iva_condition->discriminate) {
+                $purchase->iva = $subtotal * 0.21;
+                $purchase->total = $purchase->subtotal + $purchase->iva;
+            } else {
+                $purchase->total = $purchase->subtotal;
+            }
 
             // Total
-            $purchase->total = $purchase->subtotal + $purchase->iva;
-
             $purchase->save();
 
         });
