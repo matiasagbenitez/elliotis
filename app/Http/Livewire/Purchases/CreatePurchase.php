@@ -70,7 +70,7 @@ class CreatePurchase extends Component
 
         $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
         $this->orderProducts = [
-            ['product_id' => '', 'quantity' => 1, 'price' => 0]
+            ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
         ];
     }
 
@@ -84,7 +84,7 @@ class CreatePurchase extends Component
     // ADD PRODUCT
     public function addProduct()
     {
-        $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0];
+        $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => 0];
     }
 
     // REMOVE PRODUCT
@@ -104,8 +104,15 @@ class CreatePurchase extends Component
     public function updatedOrderProducts()
     {
         $subtotal = 0;
-        foreach ($this->orderProducts as $product) {
-            $subtotal += $product['price'] * $product['quantity'];
+        foreach ($this->orderProducts as $index => $product) {
+
+            // Product subtotal
+            $this->orderProducts[$index]['subtotal'] = $product['quantity'] * $product['price'];
+
+            // Subtotal
+            $subtotal += $product['quantity'] * $product['price'];
+
+            // $subtotal += $product['price'] * $product['quantity'];
         }
         $this->createForm['subtotal'] = $subtotal;
         $this->createForm['iva'] = $subtotal * 0.21;
@@ -122,12 +129,13 @@ class CreatePurchase extends Component
         foreach ($this->orderProducts as $product) {
             $purchase->products()->attach($product['product_id'], [
                 'quantity' => $product['quantity'],
-                'price' => $product['price']
+                'price' => $product['price'],
+                'subtotal' => $product['quantity'] * $product['price']
             ]);
         }
 
         $subtotal = $purchase->products->sum(function ($product) {
-            return $product->pivot->quantity * $product->pivot->price;
+            return $product->pivot->subtotal;
         });
 
         $iva = $subtotal * 0.21;

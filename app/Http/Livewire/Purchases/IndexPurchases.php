@@ -53,7 +53,7 @@ class IndexPurchases extends Component
 
     public function render()
     {
-        $purchases = Purchase::filter($this->filters)->paginate(10);
+        $purchases = Purchase::filter($this->filters)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('livewire.purchases.index-purchases', compact('purchases'));
     }

@@ -21,9 +21,13 @@ class PurchaseSeeder extends Seeder
                 // Random product where is_buyable = true
                 $product = Product::where('is_buyable', true)->inRandomOrder()->first();
 
+                $quantity = rand(20, 40);
+                $price = rand(1200, 1700);
+
                 $purchase->products()->attach($product->id, [
-                    'quantity' => rand(1, 10),
-                    'price' => rand(1000, 5000),
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'subtotal' => $quantity * $price
                 ]);
 
             }

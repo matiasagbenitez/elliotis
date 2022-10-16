@@ -19,6 +19,7 @@ return new class extends Migration
 
             $table->integer('quantity');
             $table->float('price');
+            $table->float('subtotal');
 
             $table->timestamps();
         });

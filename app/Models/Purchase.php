@@ -59,6 +59,6 @@ class Purchase extends Model
     // Relationship many to many with Product
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot('quantity', 'price');
+        return $this->belongsToMany(Product::class)->withPivot('quantity', 'price', 'subtotal');
     }
 }

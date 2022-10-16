@@ -119,121 +119,122 @@
             <hr>
         </div>
 
-        <div class="col-span-4">
+        <div class="col-span-6">
             @if ($orderProducts)
-                <table class="text-gray-600 min-w-full table-fixed" id="products_table">
-                    <thead>
-                        <tr class="text-sm uppercase py-2 text-left">
-                            <th scope="col" class="w-1/2">Producto</th>
-                            <th scope="col" class="w-1/4">Cantidad</th>
-                            <th scope="col" class="w-1/4">Precio</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
+                <div class="grid grid-cols-6 w-full text-center text-sm uppercase font-bold text-gray-600">
+                    <div class="col-span-2 py-1">Producto</div>
+                    <div class="col-span-1 py-1">Cantidad</div>
+                    <div class="col-span-1 py-1">Precio unitario</div>
+                    <div class="col-span-1 py-1">IVA aplicado</div>
+                    <div class="col-span-1 py-1">Subtotal</div>
+                </div>
 
-                    <tbody>
-                        @foreach ($orderProducts as $index => $orderProduct)
-                            <tr>
-                                <td>
-                                    <select name="orderProducts[{{ $index }}][product_id]"
-                                        wire:model.lazy="orderProducts.{{ $index }}.product_id"
-                                        class="input-control w-full">
-                                        <option disabled value="">Seleccione un producto</option>
-                                        @foreach ($allProducts as $product)
-                                            <option value="{{ $product->id }}">
-                                                {{ $product->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <x-jet-input type="number" min="1"
-                                        name="orderProducts[{{ $index }}][quantity]"
-                                        wire:model.lazy="orderProducts.{{ $index }}.quantity"
-                                        class="input-control w-full" />
-                                </td>
-                                <td>
-                                    <x-jet-input type="number" min="1"
-                                        name="orderProducts[{{ $index }}][price]"
-                                        wire:model.lazy="orderProducts.{{ $index }}.price"
-                                        class="input-control w-full" />
-                                </td>
-                                <td>
-                                    <button type="button" wire:click.prevent="removeProduct({{ $index }})">
-                                        <i class="fas fa-trash mx-2"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="grid grid-cols-6 w-full text-center text-sm uppercase text-gray-600 gap-2 items-center">
+                    @foreach ($orderProducts as $index => $orderProduct)
+                        <div class="col-span-2 flex">
+                            <button type="button" wire:click.prevent="removeProduct({{ $index }})">
+                                <i class="fas fa-trash mx-4 hover:text-red-600" title="Eliminar producto"></i>
+                            </button>
+                            <select name="orderProducts[{{ $index }}][product_id]"
+                                wire:model.lazy="orderProducts.{{ $index }}.product_id"
+                                class="input-control w-full p-1 pl-3">
+                                <option disabled value="">Seleccione un producto</option>
+                                @foreach ($allProducts as $product)
+                                    <option value="{{ $product->id }}">
+                                        {{ $product->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <x-jet-input type="number" min="1"
+                                name="orderProducts[{{ $index }}][quantity]"
+                                wire:model.lazy="orderProducts.{{ $index }}.quantity"
+                                class="input-control w-full p-1 text-center" />
+                        </div>
+                        <div class="col-span-1">
+                            <x-jet-input type="number" min="1"
+                                name="orderProducts[{{ $index }}][price]"
+                                wire:model.lazy="orderProducts.{{ $index }}.price"
+                                class="input-control w-full p-1 text-center" />
+                        </div>
+                        <div class="col-span-1 text-xs">
+                            <span>(21.00%)</span>
+                        </div>
+                        <div class="col-span-1 flex items-center">
+                            $
+                            <x-jet-input disabled readonly type="number" min="1"
+                                name="orderProducts[{{ $index }}][subtotal]"
+                                wire:model.lazy="orderProducts.{{ $index }}.subtotal"
+                                class="input-control w-full p-1 text-center border-none shadow-none" />
+                        </div>
+                    @endforeach
+                </div>
             @endif
 
             <x-jet-input-error for="orderProducts.*.product_id" class="mt-2" />
 
-            <div class="flex flex-col {{ $orderProducts ? '' : 'items-center' }} gap-2 my-2">
-                <div>
-                    <x-jet-secondary-button type="button" wire:click.prevent="addProduct">
-                        <i class="fas fa-plus mr-2"></i>
-                        Agregar producto
-                    </x-jet-secondary-button>
-                </div>
 
-                {{-- @if ($orderProducts)
-                    <div>
-                        <x-jet-button type="button" wire:click="showProducts">
-                            <i class="fas fa-cogs mr-2"></i>
-                            Debug
-                        </x-jet-button>
-                    </div>
-                @endif --}}
-            </div>
         </div>
 
-        {{-- <div class="col-span-6">
-            <h2 class="font-bold">Monto de la compra</h2>
-            <hr>
-        </div> --}}
-
         {{-- Subtotal --}}
-        <div class="ml-2 col-span-2">
-            <p class="text-sm uppercase font-bold text-left text-gray-600">MONTO DE LA COMPRA</p>
-            <div class="">
-                <div class="flex items-center justify-between gap-2">
-                    <x-jet-label class="mb-1" for="subtotal" value="Subtotal" />
+        <div class="col-span-6">
+            <hr>
+            <div class="grid grid-cols-6 gap-2">
+                <div class="col-span-4 flex justify-center items-center gap-2">
                     <div>
-                        <span>$</span>
-                        <x-jet-input readonly disabled id="subtotal" type="number" class="mt-1 w-40 text-right"
-                            placeholder="Subtotal" wire:model.defer="createForm.subtotal" />
+                        <x-jet-button type="button" wire:click.prevent="addProduct" class="px-3">
+                            <i class="fas fa-plus"></i>
+                        </x-jet-button>
                     </div>
+                    {{-- @if ($orderProducts)
+                        <div>
+                            <x-jet-secondary-button type="button" wire:click="showProducts" class="px-3">
+                                <i class="fas fa-cogs"></i>
+                            </x-jet-secondary-button>
+                        </div>
+                    @endif --}}
                 </div>
-                <x-jet-input-error for="createForm.subtotal" class="mt-2" />
-            </div>
+                <div
+                    class="col-span-1 flex flex-col justify-between text-center my-1 text-sm uppercase font-bold text-gray-600">
+                    <span>Subtotal</span>
+                    <span>IVA</span>
+                    <span>Total</span>
+                </div>
 
-            {{-- IVA --}}
-            <div class="">
-                <div class="flex items-center justify-between gap-2">
-                    <x-jet-label class="mb-1" for="iva" value="IVA" />
+                <div class="col-span-1 text-sm uppercase text-gray-600">
                     <div>
-                        <span>$</span>
-                        <x-jet-input readonly disabled id="iva" type="number" class="mt-1 w-40 text-right"
-                            placeholder="IVA" wire:model.defer="createForm.iva" />
+                        <div class="flex items-center">
+                            <span>$</span>
+                            <x-jet-input readonly disabled id="subtotal" type="number"
+                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="Subtotal"
+                                wire:model.defer="createForm.subtotal" />
+                        </div>
+                        <x-jet-input-error for="createForm.subtotal" class="mt-2" />
                     </div>
-                </div>
-                <x-jet-input-error for="createForm.iva" class="mt-2" />
-            </div>
 
-            {{-- Total --}}
-            <div class="">
-                <div class="flex items-center justify-between gap-2">
-                    <x-jet-label class="mb-1" for="total" value="Total" />
+                    {{-- IVA --}}
                     <div>
-                        <span>$</span>
-                        <x-jet-input readonly disabled id="total" type="number" class="mt-1 w-40 text-right"
-                            placeholder="Total compra" wire:model.defer="createForm.total" />
+                        <div class="flex items-center">
+                            <span>$</span>
+                            <x-jet-input readonly disabled id="iva" type="number"
+                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="IVA"
+                                wire:model.defer="createForm.iva" />
+                        </div>
+                        <x-jet-input-error for="createForm.iva" class="mt-2" />
+                    </div>
+
+                    {{-- Total --}}
+                    <div>
+                        <div class="flex items-center">
+                            <span>$</span>
+                            <x-jet-input readonly disabled id="total" type="number"
+                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="Total compra"
+                                wire:model.defer="createForm.total" />
+                        </div>
+                        <x-jet-input-error for="createForm.total" class="mt-2" />
                     </div>
                 </div>
-                <x-jet-input-error for="createForm.total" class="mt-2" />
             </div>
         </div>
 
