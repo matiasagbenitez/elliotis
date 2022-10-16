@@ -22,7 +22,7 @@
     </x-slot>
 
     {{-- Purchase detail --}}
-    <div class="max-w-5xl mx-auto bg-white p-10 rounded-lg">
+    <div class="max-w-5xl mx-auto bg-white p-10 rounded-lg border-2">
         <h2 class=" font-mono font-semibold text-2xl text-gray-800 leading-tight mb-4 uppercase text-center">
             Detalle de compra N° {{ $purchase->voucher_number }}
         </h2>
@@ -52,13 +52,16 @@
                     <p class="text-sm font-mono font-bold">Correo electrónico: <span class=" font-mono font-normal">{{ $purchase->supplier->email }}</span></p>
                 </div> --}}
                 @if (!$purchase->is_active)
-                    <div class="w-1/2 flex justify-center items-center border border-red-700 text-red-700 px-4 py-3 rounded relative gap-4" role="alert">
+                    <div class="w-1/2 flex justify-center items-center border border-red-700 text-red-700 px-4 py-3 rounded relative gap-4"
+                        role="alert">
                         {{-- <div> --}}
-                            <i class="fas fa-ban text-5xl"></i>
+                        <i class="fas fa-ban text-5xl"></i>
                         {{-- </div> --}}
                         <div>
                             <p class="font-bold font-mono uppercase">Compra anulada</p>
-                            <p class="font-mono text-sm">La presente compra no es válida ya que fue anulada el día {{ $purchase->updated_at->format('d-m-Y') }} a las {{ $purchase->updated_at->format('H:i:s') }} hs</p>
+                            <p class="font-mono text-sm">La presente compra no es válida ya que fue anulada el día
+                                {{ $purchase->updated_at->format('d-m-Y') }} a las
+                                {{ $purchase->updated_at->format('H:i:s') }} hs</p>
 
 
                         </div>
@@ -150,20 +153,34 @@
                 </table>
             </div>
 
-            {{-- Totales --}}
-            <div class="mt-5 flex flex-col items-end px-6 space-y-2">
-                <p class="text-sm font-mono font-bold">
-                    Subtotal:
-                    <span class="font-normal">${{ number_format($purchase->subtotal, 2, ',', '.') }}</span>
-                </p>
-                <p class="text-sm font-mono font-bold">
-                    IVA:
-                    <span class="font-normal">${{ number_format($purchase->iva, 2, ',', '.') }}</span>
-                </p>
-                <p class="font-mono font-bold text-lg">
-                    Total:
-                    <span>${{ number_format($purchase->total, 2, ',', '.') }}</span>
-                </p>
+            @if ($purchase->supplier->iva_condition->discriminate)
+                {{-- Totales --}}
+                <div class="mt-5 flex flex-col items-end px-6 space-y-2">
+                    <p class="text-sm font-mono font-bold">
+                        Subtotal:
+                        <span class="font-normal">${{ number_format($purchase->subtotal, 2, ',', '.') }}</span>
+                    </p>
+                    <p class="text-sm font-mono font-bold">
+                        IVA:
+                        <span class="font-normal">${{ number_format($purchase->iva, 2, ',', '.') }}</span>
+                    </p>
+                    <p class="font-mono font-bold text-lg">
+                        Total:
+                        <span>${{ number_format($purchase->total, 2, ',', '.') }}</span>
+                    </p>
+                </div>
+            @else
+                {{-- Totales --}}
+                <div class="mt-5 flex flex-col items-end px-6 space-y-2">
+                    <p class="font-mono font-bold text-lg">
+                        Total:
+                        <span>${{ number_format($purchase->total, 2, ',', '.') }}</span>
+                    </p>
+                </div>
+            @endif
+
+            <div class="mt-2 p-2 text-xs border-1 border uppercase text-center">
+                Detalle de compra para uso interno. Documento no válido como factura.
             </div>
 
         </div>

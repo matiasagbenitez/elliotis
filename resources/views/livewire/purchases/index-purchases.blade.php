@@ -13,10 +13,10 @@
 
     <x-responsive-table>
 
-        <div class="px-6 py-4 grid grid-cols-4 gap-3 bg-grat-50">
+        <div class="px-6 py-4 grid grid-cols-9 gap-3 bg-grat-50">
 
             {{-- Proveedor --}}
-            <div class="col-span-1 rounded-lg gap-2">
+            <div class="col-span-2 rounded-lg gap-2">
                 <x-jet-label class="mb-1">Proveedor</x-jet-label>
                 <select class="input-control w-full" wire:model="filters.supplier">
                     <option value="" class="text-md">Todos</option>
@@ -27,7 +27,7 @@
             </div>
 
             {{-- Tipo de comprobante --}}
-            <div class="col-span-1 rounded-lg gap-2">
+            <div class="col-span-2 rounded-lg gap-2">
                 <x-jet-label class="mb-1">Tipo de comprobante</x-jet-label>
                 <select class="input-control w-full" wire:model="filters.voucherType">
                     <option value="" class="text-md">Todos</option>
@@ -38,15 +38,23 @@
             </div>
 
             {{-- Desde fecha --}}
-            <div class="col-span-1 rounded-lg gap-2">
+            <div class="col-span-2 rounded-lg gap-2">
                 <x-jet-label class="mb-1">Desde fecha</x-jet-label>
                 <x-jet-input wire:model="filters.fromDate" type="date" class="w-full" />
             </div>
 
             {{-- Hasta fecha --}}
-            <div class="col-span-1 rounded-lg gap-2">
+            <div class="col-span-2 rounded-lg gap-2">
                 <x-jet-label class="mb-1">Hasta fecha</x-jet-label>
                 <x-jet-input wire:model="filters.toDate" type="date" class="w-full" />
+            </div>
+
+            {{-- Limpiar filtros --}}
+            <div class="col-span-1 rounded-lg flex items-end justify-center pb-1">
+                <x-jet-button wire:click="resetFilters">
+                    <i class="fas fa-eraser mr-2"></i>
+                    Limpiar
+                </x-jet-button>
             </div>
         </div>
 

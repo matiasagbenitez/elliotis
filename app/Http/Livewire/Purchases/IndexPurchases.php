@@ -12,7 +12,6 @@ use Livewire\WithPagination;
 class IndexPurchases extends Component
 {
     use WithPagination;
-    public $search;
     public $suppliers = [], $voucher_types = [];
 
     public $filters = [
@@ -26,8 +25,18 @@ class IndexPurchases extends Component
 
     public function mount()
     {
-        $this->suppliers = Supplier::all();
+        $this->suppliers = Supplier::orderBy('business_name')->get();
         $this->voucher_types = VoucherTypes::all();
+    }
+
+    public function resetFilters()
+    {
+        $this->filters = [
+            'supplier' => '',
+            'voucherType' => '',
+            'fromDate' => '',
+            'toDate' => '',
+        ];
     }
 
     public function disable($id)

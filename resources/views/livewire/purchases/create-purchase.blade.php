@@ -30,19 +30,30 @@
         {{-- Supplier id --}}
         <div class="col-span-2">
             <x-jet-label class="mb-2" for="supplier_id" value="Proveedor (*)" />
-            <select id="supplier_id" class="input-control w-full" wire:model.defer="createForm.supplier_id">
+            <select id="supplier_id" class="input-control w-full" wire:model="createForm.supplier_id">
                 <option value="">Seleccione un proveedor</option>
                 @foreach ($suppliers as $supplier)
                     <option value="{{ $supplier->id }}">{{ $supplier->business_name }}</option>
                 @endforeach
             </select>
+            <p class="mt-2 text-xs text-gray-500" wire:model="createForm.supplier_id">
+                {{ $supplier_iva_condition }}
+                @isset($supplier_discriminates_iva)
+                    @if ($supplier_discriminates_iva)
+                        (Discrimina IVA)
+                    @else
+                        (No discrimina IVA)
+                    @endif
+
+                @endisset
+            </p>
             <x-jet-input-error for="createForm.supplier_id" class="mt-2" />
         </div>
 
         {{-- Has order associated? --}}
         <div class="col-span-2">
-            <x-jet-label class="mb-2" for="has_order_associated" value="¿Tiene orden asociada?" />
-            <select id="" class="input-control w-full" wire:click="hasOrderAssociated">Seleccione una
+            <x-jet-label class="mb-2" value="¿Tiene orden asociada?" />
+            <select id="" class="input-control w-full" wire:model="has_order_associated">Seleccione una
                 opción</option>
                 <option value="0">No</option>
                 <option value="1">Si</option>
@@ -55,8 +66,9 @@
             <select id="order_id" class="input-control w-full" wire:model="createForm.supplier_order_id"
                 {{ $has_order_associated ? '' : 'disabled' }}>
                 <option value="1">Seleccione una orden</option>
-                <option value="2">1</option>
-                <option value="3">2</option>
+                <option value="2">Orden 1</option>
+                <option value="3">Orden 2</option>
+                <option value="4">Orden 3</option>
                 {{-- @foreach ($orders as $order)
                             <option value="{{ $order->id }}">{{ $order->id }}</option>
                         @endforeach --}}
@@ -125,7 +137,7 @@
                     <div class="col-span-2 py-1">Producto</div>
                     <div class="col-span-1 py-1">Cantidad</div>
                     <div class="col-span-1 py-1">Precio unitario</div>
-                    <div class="col-span-1 py-1">IVA aplicado</div>
+                    <div class="col-span-1 py-1"></div>
                     <div class="col-span-1 py-1">Subtotal</div>
                 </div>
 
@@ -158,8 +170,8 @@
                                 wire:model.lazy="orderProducts.{{ $index }}.price"
                                 class="input-control w-full p-1 text-center" />
                         </div>
-                        <div class="col-span-1 text-xs">
-                            <span>(21.00%)</span>
+                        <div class="col-span-1 text-xs lowercase">
+                            <span>(21.00)</span>
                         </div>
                         <div class="col-span-1 flex items-center">
                             $
@@ -170,21 +182,27 @@
                         </div>
                     @endforeach
                 </div>
+                <x-jet-input-error for="orderProducts.*.product_id" class="mt-2" />
+            @else
+                <p class="text-center">¡No hay productos! Intenta agregar alguno con el botón <span
+                        class="font-bold">"Agregar producto"</span>.</p>
             @endif
-
-            <x-jet-input-error for="orderProducts.*.product_id" class="mt-2" />
 
 
         </div>
 
-        {{-- Subtotal --}}
+        {{-- PARTE INFERIOR --}}
         <div class="col-span-6">
             <hr>
             <div class="grid grid-cols-6 gap-2">
-                <div class="col-span-4 flex justify-center items-center gap-2">
+
+                {{-- PARTE IZQUIERDA - BOTÓN AGREGAR PRODUCTO --}}
+                <div
+                    class="{{ $orderProducts ? 'col-span-4' : 'col-span-6' }}  mt-4 flex justify-center items-center gap-2">
                     <div>
                         <x-jet-button type="button" wire:click.prevent="addProduct" class="px-3">
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-plus mr-2"></i>
+                            Agregar producto
                         </x-jet-button>
                     </div>
                     {{-- @if ($orderProducts)
@@ -195,46 +213,56 @@
                         </div>
                     @endif --}}
                 </div>
-                <div
-                    class="col-span-1 flex flex-col justify-between text-center my-1 text-sm uppercase font-bold text-gray-600">
-                    <span>Subtotal</span>
-                    <span>IVA</span>
-                    <span>Total</span>
-                </div>
 
-                <div class="col-span-1 text-sm uppercase text-gray-600">
-                    <div>
-                        <div class="flex items-center">
-                            <span>$</span>
-                            <x-jet-input readonly disabled id="subtotal" type="number"
-                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="Subtotal"
-                                wire:model.defer="createForm.subtotal" />
-                        </div>
-                        <x-jet-input-error for="createForm.subtotal" class="mt-2" />
+
+                {{-- PARTE DERECHA --}}
+                @if ($orderProducts)
+                    <div
+                        class="col-span-1 flex flex-col justify-between text-left my-1 py-1 text-sm uppercase font-bold text-gray-600">
+                        @if ($supplier_discriminates_iva)
+                            <span>Subtotal sin IVA</span>
+                            <span>IVA 21%</span>
+                        @endif
+                        <span>Total</span>
                     </div>
 
-                    {{-- IVA --}}
-                    <div>
-                        <div class="flex items-center">
-                            <span>$</span>
-                            <x-jet-input readonly disabled id="iva" type="number"
-                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="IVA"
-                                wire:model.defer="createForm.iva" />
-                        </div>
-                        <x-jet-input-error for="createForm.iva" class="mt-2" />
-                    </div>
+                    <div class="col-span-1 text-sm uppercase text-gray-600">
+                        @if ($supplier_discriminates_iva)
+                            {{-- Subtotal --}}
+                            <div>
+                                <div class="flex items-center">
+                                    <span>$</span>
+                                    <x-jet-input readonly disabled id="subtotal" type="number"
+                                        class="border-none shadow-none p-1 w-full text-center"
+                                        wire:model.defer="createForm.subtotal" />
+                                </div>
+                                <x-jet-input-error for="createForm.subtotal" class="mt-2" />
+                            </div>
 
-                    {{-- Total --}}
-                    <div>
-                        <div class="flex items-center">
-                            <span>$</span>
-                            <x-jet-input readonly disabled id="total" type="number"
-                                class="border-none shadow-none mt-1 p-1 w-full text-center" placeholder="Total compra"
-                                wire:model.defer="createForm.total" />
+                            {{-- IVA --}}
+                            <div>
+                                <div class="flex items-center">
+                                    <span>$</span>
+                                    <x-jet-input readonly disabled id="iva" type="number"
+                                        class="border-none shadow-none p-1 w-full text-center"
+                                        wire:model.defer="createForm.iva" />
+                                </div>
+                                <x-jet-input-error for="createForm.iva" class="mt-2" />
+                            </div>
+                        @endif
+
+                        {{-- Total --}}
+                        <div>
+                            <div class="flex items-center font-bold">
+                                <span>$</span>
+                                <x-jet-input readonly disabled id="total" type="number"
+                                    class="border-none shadow-none p-1 w-full text-center"
+                                    wire:model.defer="createForm.total" />
+                            </div>
+                            <x-jet-input-error for="createForm.total" class="mt-2" />
                         </div>
-                        <x-jet-input-error for="createForm.total" class="mt-2" />
                     </div>
-                </div>
+                @endif
             </div>
         </div>
 
@@ -254,7 +282,7 @@
 
             {{-- Input type file for weight_voucher --}}
             <div>
-                <x-jet-label class="mb-2" for="weight_voucher" value="Comprobante de peso" />
+                <x-jet-label class="my-2" for="weight_voucher" value="Comprobante de peso" />
                 <input type="file" id="weight_voucher" class="input-control w-full"
                     wire:model.defer="createForm.weight_voucher" accept="image/*">
                 <x-jet-input-error for="createForm.weight_voucher" class="mt-2" />

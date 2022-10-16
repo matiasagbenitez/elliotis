@@ -10,6 +10,7 @@ use App\Models\VoucherTypes;
 use Livewire\WithFileUploads;
 use App\Models\PaymentMethods;
 use App\Models\PaymentConditions;
+use Ramsey\Uuid\Type\Decimal;
 
 class CreatePurchase extends Component
 {
@@ -17,7 +18,7 @@ class CreatePurchase extends Component
 
     // PURCHASE PARAMETERS
     public $payment_conditions = [], $payment_methods = [], $voucher_types = [], $suppliers = [];
-    public $has_order_associated = 0;
+    public $supplier_iva_condition = '', $supplier_discriminates_iva, $has_order_associated = 0;
 
     // PRODUCTS
     public $orderProducts = [];
@@ -28,7 +29,7 @@ class CreatePurchase extends Component
         'user_id' => 1,
         'date' => '',
         'supplier_id' => '',
-        'supplier_order_id' => 1,
+        'supplier_order_id' => 0,
         'payment_condition_id' => '',
         'payment_method_id' => '',
         'voucher_type_id' => '',
@@ -74,10 +75,17 @@ class CreatePurchase extends Component
         ];
     }
 
-    // TOGGLE DIV
-    public function hasOrderAssociated()
+    // SUPPLIER IVA CONDITION
+    public function updatedCreateFormSupplierId()
     {
-        $this->has_order_associated = !$this->has_order_associated;
+        $this->supplier_iva_condition = Supplier::find($this->createForm['supplier_id'])->iva_condition->name ?? '';
+        $this->supplier_discriminates_iva = Supplier::find($this->createForm['supplier_id'])->iva_condition->discriminate ?? null;
+        $this->updatedOrderProducts();
+    }
+
+    // TOGGLE DIV
+    public function updatedHasOrderAssociated()
+    {
         $this->createForm['supplier_order_id'] = '';
     }
 
@@ -92,6 +100,7 @@ class CreatePurchase extends Component
     {
         unset($this->orderProducts[$index]);
         $this->orderProducts = array_values($this->orderProducts);
+        $this->updatedOrderProducts();
     }
 
     // SHOW PRODUCTS
@@ -107,16 +116,24 @@ class CreatePurchase extends Component
         foreach ($this->orderProducts as $index => $product) {
 
             // Product subtotal
-            $this->orderProducts[$index]['subtotal'] = $product['quantity'] * $product['price'];
+            $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $product['price'], 2, '.', '');
 
             // Subtotal
             $subtotal += $product['quantity'] * $product['price'];
 
             // $subtotal += $product['price'] * $product['quantity'];
         }
-        $this->createForm['subtotal'] = $subtotal;
-        $this->createForm['iva'] = $subtotal * 0.21;
-        $this->createForm['total'] = $subtotal * 1.21;
+
+        // Subtotal format to 2 decimals
+
+        if($this->supplier_discriminates_iva) {
+            $this->createForm['subtotal'] = number_format($subtotal, 2, '.', '');
+            $this->createForm['iva'] = number_format($subtotal * 0.21, 2, '.', '');
+            $this->createForm['total'] = number_format($subtotal * 1.21, 2, '.', '');
+        } else {
+            $this->createForm['total'] = number_format($subtotal, 2, '.', '');
+        }
+
     }
 
     // CREATE PURCHASE
@@ -140,14 +157,19 @@ class CreatePurchase extends Component
 
         $iva = $subtotal * 0.21;
 
-        $total = $subtotal + $iva;
-
-        // Update purchase
-        $purchase->update([
-            'subtotal' => $subtotal,
-            'iva' => $iva,
-            'total' => $total
-        ]);
+        if ($this->supplier_discriminates_iva) {
+            $purchase->update([
+                'subtotal' => $subtotal,
+                'iva' => $iva,
+                'total' => $subtotal + $iva
+            ]);
+        } else {
+            $purchase->update([
+                'subtotal' => $subtotal,
+                'iva' => 0,
+                'total' => $subtotal
+            ]);
+        }
 
         // Update real_stock of products in purchase considering repeated products
         foreach ($purchase->products as $product) {
