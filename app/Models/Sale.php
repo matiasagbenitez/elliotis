@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Purchase extends Model
+class Sale extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,8 @@ class Purchase extends Model
     // Query Scope
     public function scopeFilter($query, $filters)
     {
-        $query->when($filters['supplier'] ?? null, function($query, $supplier) {
-            $query->where('supplier_id', $supplier);
+        $query->when($filters['client'] ?? null, function($query, $client) {
+            $query->where('client_id', $client);
         })->when($filters['voucherType'] ?? null, function($query, $voucherType) {
             $query->where('voucher_type_id', $voucherType);
         })->when($filters['fromDate'] ?? null, function($query, $fromDate) {
@@ -30,10 +30,10 @@ class Purchase extends Model
         return 'voucher_number';
     }
 
-    // Relationship with Supplier
-    public function supplier()
+    // Relationship with Client
+    public function client()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Client::class);
     }
 
     // Relationship with PaymentCondition
@@ -54,7 +54,7 @@ class Purchase extends Model
         return $this->belongsTo(VoucherTypes::class);
     }
 
-    // Falta el id_supplier
+    // Falta el id_client
 
     // Relationship many to many with Product
     public function products()
