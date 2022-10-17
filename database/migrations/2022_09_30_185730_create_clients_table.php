@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('business_name')->required()->unique();
             $table->string('slug')->required()->unique();
 
+            $table->integer('total_sales')->default(0);
+
             $table->unsignedBigInteger('iva_condition_id')->required();
             $table->foreign('iva_condition_id')->references('id')->on('iva_conditions');
 

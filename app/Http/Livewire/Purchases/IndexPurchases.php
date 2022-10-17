@@ -53,6 +53,12 @@ class IndexPurchases extends Component
                 ]);
             }
 
+            $supplier = Supplier::find($purchase->supplier_id);
+            dd($supplier);
+            $supplier->update([
+                'total_purchases' => $supplier->total_purchases - 1
+            ]);
+
             $this->emit('refresh');
             $this->emit('success', '¡La compra se ha anulado correctamente!');
         } catch (\Exception $e) {

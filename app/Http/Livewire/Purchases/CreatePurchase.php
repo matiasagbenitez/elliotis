@@ -177,8 +177,13 @@ class CreatePurchase extends Component
             $p->update([
                 'real_stock' => $p->real_stock + $product->pivot->quantity
             ]);
-
         }
+
+        // Add 1 to supplier's total_purchases
+        $supplier = Supplier::find($purchase->supplier_id);
+        $supplier->update([
+            'total_purchases' => $supplier->total_purchases + 1
+        ]);
 
         // Reset
         $this->reset(['createForm', 'orderProducts']);

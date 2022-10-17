@@ -22,24 +22,28 @@
                 <thead class="border-b border-gray-300 bg-gray-200">
                     <tr>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             ID
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             Razón social
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             CUIT
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            Total ventas
+                        </th>
+                        <th scope="col"
+                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             Estado
                         </th>
                         </th>
                         <th scope="col"
-                            class="px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
                             Acción
                         </th>
                     </tr>
@@ -53,13 +57,19 @@
                                 </p>
                             </td>
                             <td class="px-6 py-3 text-center ">
-                                <p class="font-bold text-sm uppercase ">
+                                <p class="text-sm uppercase ">
                                     {{ $client->business_name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     {{ $client->cuit }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    {{-- Total sales count --}}
+                                    {{ $client->total_sales }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">

@@ -49,6 +49,12 @@ class PurchaseSeeder extends Seeder
             // Total
             $purchase->save();
 
+            // Add 1 to total_purchases in supplier
+            $supplier = $purchase->supplier;
+            $supplier->total_purchases += 1;
+            $supplier->save();
+
+
         });
     }
 }

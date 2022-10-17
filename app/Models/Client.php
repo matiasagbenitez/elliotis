@@ -26,4 +26,10 @@ class Client extends Model
     {
         return $this->belongsTo(Locality::class);
     }
+
+    // Relation with Sale
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

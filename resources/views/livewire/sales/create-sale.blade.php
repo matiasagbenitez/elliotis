@@ -29,7 +29,7 @@
 
         {{-- Supplier id --}}
         <div class="col-span-2">
-            <x-jet-label class="mb-2" for="client_id" value="Proveedor (*)" />
+            <x-jet-label class="mb-2" for="client_id" value="Cliente (*)" />
             <select id="client_id" class="input-control w-full" wire:model="createForm.client_id">
                 <option value="">Seleccione un cliente</option>
                 @foreach ($clients as $client)

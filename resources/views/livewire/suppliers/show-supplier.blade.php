@@ -35,6 +35,13 @@
                 </p>
             </div>
 
+            <div class="flex items-baseline space-x-2">
+                <h3 class="mt-3 text-md font-bold">Fecha de alta sistema:</h3>
+                <p class="text-md font-mono">
+                    {{ $supplier->created_at->format('d/m/Y') }}
+                </p>
+            </div>
+
             <h2 class="font-bold text-lg uppercase mt-4">Información adicional</h2>
             <hr>
 

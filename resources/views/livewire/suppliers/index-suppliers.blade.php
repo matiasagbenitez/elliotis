@@ -26,15 +26,19 @@
                             ID
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Razón social
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             CUIT
                         </th>
                         <th scope="col"
-                            class="w-1/3 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
+                            Total compras
+                        </th>
+                        <th scope="col"
+                            class="w-1/4 px-4 py-2 text-center text-md font-bold text-gray-500 uppercase tracking-wider">
                             Estado
                         </th>
                         </th>
@@ -53,13 +57,18 @@
                                 </p>
                             </td>
                             <td class="px-6 py-3 text-center ">
-                                <p class="font-bold text-sm uppercase ">
+                                <p class="text-sm uppercase ">
                                     {{ $supplier->business_name }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     {{ $supplier->cuit }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    {{ $supplier->total_purchases }}
                                 </p>
                             </td>
                             <td class="px-6 py-3 whitespace-nowrap text-center">

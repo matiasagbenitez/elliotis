@@ -26,4 +26,10 @@ class Supplier extends Model
     {
         return $this->belongsTo(Locality::class);
     }
+
+    // Relation with Purchase
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }
