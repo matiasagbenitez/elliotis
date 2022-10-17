@@ -48,7 +48,7 @@ class SupplierFactory extends Factory
             'locality_id' => $locality_id,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
-            'active' => $this->faker->boolean,
+            'active' => true,
             'observations' => $this->faker->text(100),
         ];
     }

@@ -20,32 +20,36 @@
         @if ($clients->count())
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="border-b border-gray-300 bg-gray-200">
-                    <tr>
-                        <th scope="col"
-                            class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    <tr class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+
+                        <th scope="col" wire:click="order('id')"
+                            class="px-4 py-2 cursor-pointer flex items-center">
+                            <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                        <th scope="col" wire:click="order('business_name')"
+                            class="w-1/4 px-4 py-2 cursor-pointer">
+                            <i class="fas fa-sort mr-2"></i>
                             Razón social
                         </th>
                         <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2">
                             CUIT
                         </th>
-                        <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                        <th scope="col" wire:click="order('total_sales')"
+                            class="w-1/4 px-4 py-2 cursor-pointer">
+                            <i class="fas fa-sort mr-2"></i>
                             Total ventas
                         </th>
                         <th scope="col"
-                            class="w-1/4 px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            class="w-1/4 px-4 py-2">
                             Estado
                         </th>
                         </th>
-                        <th scope="col"
-                            class="px-4 py-2 text-center text-sm font-bold text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-4 py-2">
                             Acción
                         </th>
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
