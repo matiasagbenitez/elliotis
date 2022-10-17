@@ -64,10 +64,10 @@ class CreatePurchase extends Component
     // MOUNT METHOD
     public function mount()
     {
-        $this->payment_conditions = PaymentConditions::all();
-        $this->payment_methods = PaymentMethods::all();
-        $this->voucher_types = VoucherTypes::all();
-        $this->suppliers = Supplier::all();
+        $this->suppliers = Supplier::orderBy('business_name')->get();
+        $this->payment_conditions = PaymentConditions::orderBy('name')->get();
+        $this->payment_methods = PaymentMethods::orderBy('name')->get();
+        $this->voucher_types = VoucherTypes::orderBy('name')->get();
 
         $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
         $this->orderProducts = [
