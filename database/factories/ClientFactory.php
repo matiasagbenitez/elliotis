@@ -9,11 +9,24 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClientFactory extends Factory
 {
+    const BUSINESS_NAMES_CLIENTS = [
+        'Maderera La Loma',
+        'Zavalla Moreno SA',
+        'Madersat',
+        'Maderera Los Tilos',
+        'Maderera El Terreno',
+        'El Emporio del Terciado',
+        'Fenólicos La Plata',
+        'Maderera Cedimad',
+        'Maderera El Cedrito',
+        'Mercoplat SA'
+    ];
+
     public function definition()
     {
+        $business_name = self::BUSINESS_NAMES_CLIENTS[$this->faker->unique()->numberBetween(0, count(self::BUSINESS_NAMES_CLIENTS) - 1)];
         $iva_condition_id = IvaCondition::inRandomOrder()->first()->id;
         $locality_id = Locality::inRandomOrder()->first()->id;
-        $business_name = $this->faker->company;
         $slug = Str::slug($business_name, '-');
 
         return [

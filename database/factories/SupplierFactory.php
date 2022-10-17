@@ -9,12 +9,32 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SupplierFactory extends Factory
 {
+    const BUSINESS_NAMES_SUPPLIERS = [
+        'Maderera La Loma',
+        'Zavalla Moreno SA',
+        'Madersat',
+        'Maderera Los Tilos',
+        'Maderera El Terreno',
+        'El Emporio del Terciado',
+        'Fenólicos La Plata',
+        'Maderera Cedimad',
+        'Maderera El Cedrito',
+        'Mercoplat SA',
+        'Arauco Argentina SA',
+        'Forestal Bosques del Plata SA',
+        'Forestal Guarani SA',
+        'Walti SRL',
+        'Forestal Garuhape SA',
+        'Foresto Industrial Langer',
+        'Centro Forestal Predio YPora AASA',
+        'Pindó SA',
+    ];
 
     public function definition()
     {
+        $business_name = self::BUSINESS_NAMES_SUPPLIERS[$this->faker->unique()->numberBetween(0, count(self::BUSINESS_NAMES_SUPPLIERS) - 1)];
         $iva_condition_id = IvaCondition::inRandomOrder()->first()->id;
         $locality_id = Locality::inRandomOrder()->first()->id;
-        $business_name = $this->faker->company;
         $slug = Str::slug($business_name, '-');
 
         return [
