@@ -24,7 +24,7 @@
     {{-- Purchase detail --}}
     <div class="max-w-5xl mx-auto bg-white p-10 rounded-lg border-2">
         <h2 class=" font-mono font-semibold text-2xl text-gray-800 leading-tight mb-4 uppercase text-center">
-            Detalle de venta N° {{ $sale->voucher_number }}
+            Detalle de venta N° {{ $sale->id }}
         </h2>
 
         {{-- Datos del proveedor --}}
@@ -57,11 +57,15 @@
                         {{-- <div> --}}
                         <i class="fas fa-ban text-5xl"></i>
                         {{-- </div> --}}
-                        <div>
+                        <div class="flex flex-col">
                             <p class="font-bold font-mono uppercase">Venta anulada</p>
                             <p class="font-mono text-sm">
                                 La presente venta no es válida ya que fue anulada por {{ $user_who_cancelled }}
                                 el día {{ $sale->updated_at->format('d-m-Y') }} a las {{ $sale->updated_at->format('H:i:s') }} hs
+                            </p>
+                            <p class="font-bold font-mono uppercase mt-2">Motivo</p>
+                            <p class="font-mono text-sm">
+                                {{ $sale->cancel_reason }}
                             </p>
                         </div>
                     </div>

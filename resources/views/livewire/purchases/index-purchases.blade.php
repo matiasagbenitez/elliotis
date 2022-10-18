@@ -65,22 +65,18 @@
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
                     <tr>
-                        <th scope="col" wire:click="order('id')"
-                        class="px-4 py-2 cursor-pointer flex items-center">
+                        <th scope="col" wire:click="order('id')" class="px-4 py-2 cursor-pointer flex items-center">
                             <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col"
-                        class="w-1/4 px-4 py-2 cursor-pointer">
+                        <th scope="col" class="w-1/4 px-4 py-2 cursor-pointer">
                             Proveedor
                         </th>
-                        <th scope="col" wire:click="order('date')"
-                        class="w-1/4 px-4 py-2 cursor-pointer">
+                        <th scope="col" wire:click="order('date')" class="w-1/4 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Fecha de compra
                         </th>
-                        <th scope="col" wire:click="order('total')"
-                        class="w-1/4 px-4 py-2 cursor-pointer">
+                        <th scope="col" wire:click="order('total')" class="w-1/4 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Monto total
                         </th>
@@ -154,7 +150,7 @@
                                     @if ($purchase->is_active)
                                         <button title="Anular compra"
                                             wire:click="$emit('disablePurchase', '{{ $purchase->id }}')">
-                                            <i class="fas fa-ban mr-1"></i>
+                                            <i class="fas fa-ban mr-1 hover:text-red-600"></i>
                                         </button>
                                     @endif
                                     <a title="Ver detalle"
@@ -185,45 +181,60 @@
 
     @push('script')
         <script>
-            Livewire.on('disablePurchase', purchaseId => {
-                console.log(purchaseId);
-                Swal.fire({
-                    title: '¿Anular compra?',
-                    text: "¡No podrás revertir esta acción!",
-                    icon: 'warning',
+            Livewire.on('disablePurchase', async (purchaseId) => {
+
+                const {
+                    value: reason
+                } = await Swal.fire({
+                    title: 'Anular compra',
+                    input: 'textarea',
+                    inputPlaceholder: 'Especifique aquí el o los motivos de anulación',
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, anular compra',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId);
-                        console.log('emitido');
-                        Livewire.on('success', message => {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                });
+
+                if (reason) {
+
+                    Swal.fire({
+                        title: '¿Anular compra?',
+                        text: "¡No podrás revertir esta acción!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#1f2937',
+                        cancelButtonColor: '#dc2626',
+                        confirmButtonText: 'Sí, anular compra',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId, reason);
+                            Livewire.on('success', message => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: message
+                                });
                             });
-                            Toast.fire({
-                                icon: 'success',
-                                title: message
+                            Livewire.on('error', message => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: message,
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#1f2937',
+                                });
                             });
-                        });
-                        Livewire.on('error', message => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: message,
-                                showConfirmButton: true,
-                                confirmButtonColor: '#1f2937',
-                            });
-                        });
-                    }
-                })
+                        }
+                    })
+                }
             });
         </script>
     @endpush

@@ -180,43 +180,59 @@
 
     @push('script')
         <script>
-            Livewire.on('disableSale', saleId => {
-                Swal.fire({
-                    title: '¿Anular compra?',
-                    text: "¡No podrás revertir esta acción!",
-                    icon: 'warning',
+            Livewire.on('disableSale', async (saleId) => {
+
+                const {
+                    value: reason
+                } = await Swal.fire({
+                    title: 'Anular venta',
+                    input: 'textarea',
+                    inputPlaceholder: 'Especifique aquí el o los motivos de anulación',
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, anular venta',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.emitTo('sales.index-sales', 'disable', saleId);
-                        Livewire.on('success', message => {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                });
+
+                if (reason) {
+                    Swal.fire({
+                        title: '¿Anular compra?',
+                        text: "¡No podrás revertir esta acción!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#1f2937',
+                        cancelButtonColor: '#dc2626',
+                        confirmButtonText: 'Sí, anular venta',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Livewire.emitTo('sales.index-sales', 'disable', saleId, reason);
+                            Livewire.on('success', message => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: message
+                                });
                             });
-                            Toast.fire({
-                                icon: 'success',
-                                title: message
+                            Livewire.on('error', message => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: message,
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#1f2937',
+                                });
                             });
-                        });
-                        Livewire.on('error', message => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: message,
-                                showConfirmButton: true,
-                                confirmButtonColor: '#1f2937',
-                            });
-                        });
-                    }
-                })
+                        }
+                    })
+                }
             });
         </script>
     @endpush

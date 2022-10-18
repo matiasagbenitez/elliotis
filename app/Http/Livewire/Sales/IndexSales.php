@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\VoucherTypes;
+use Carbon\Carbon;
 use Livewire\WithPagination;
 
 class IndexSales extends Component
@@ -47,10 +48,10 @@ class IndexSales extends Component
         }
     }
 
-    public function updatedFilters()
-    {
-        $this->total_sales = Sale::filter($this->filters)->where('is_active', true)->sum('total');
-    }
+    // public function updatedFilters()
+    // {
+    //     $this->total_sales = Sale::filter($this->filters)->where('is_active', true)->sum('total');
+    // }
 
     public function resetFilters()
     {
@@ -62,28 +63,33 @@ class IndexSales extends Component
         ];
     }
 
-    public function disable($id)
+    public function disable($id, $reason)
     {
-        try {
-            $sale = Sale::find($id);
-            $sale->is_active = false;
-            $sale->save();
+        $sale_month = Carbon::parse(Sale::find($id)->date)->format('m');
 
-            foreach ($sale->products as $product) {
-                $p = Product::find($product->id);
-                $p->update([
-                    'real_stock' => $p->real_stock + $product->pivot->quantity
-                ]);
+        if ($sale_month == now()->month) {
+            try {
+                $sale = Sale::find($id);
+                $sale->is_active = false;
+                $sale->cancelled_by = auth()->user()->id;
+                $sale->cancelled_at = now();
+                $sale->cancel_reason = $reason;
+                $sale->save();
+
+                foreach ($sale->products as $product) {
+                    $p = Product::find($product->id);
+                    $p->update([
+                        'real_stock' => $p->real_stock + $product->pivot->quantity
+                    ]);
+                }
+
+                $this->emit('refresh');
+                $this->emit('success', '¡La venta se ha anulado correctamente!');
+            } catch (\Exception $e) {
+                $this->emit('error', 'No es posible anular la venta.');
             }
-
-            // Cancelled by
-            $sale->cancelled_by = auth()->user()->id;
-            $sale->save();
-
-            $this->emit('refresh');
-            $this->emit('success', '¡La venta se ha anulado correctamente!');
-        } catch (\Exception $e) {
-            $this->emit('error', 'No es posible anular la venta.');
+        } else {
+            $this->emit('error', 'No es posible anular una venta del mes pasado.');
         }
     }
 

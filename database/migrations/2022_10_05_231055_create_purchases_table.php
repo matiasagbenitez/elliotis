@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             // Date format is d/m/Y
-            $table->date('date');
+            $table->timestamp('date');
 
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
@@ -44,6 +44,8 @@ return new class extends Migration
 
             $table->boolean('is_active')->default(true);
             $table->integer('cancelled_by')->nullable();
+            $table->date('cancelled_at')->nullable();
+            $table->text('cancel_reason')->nullable();
 
             $table->timestamps();
         });

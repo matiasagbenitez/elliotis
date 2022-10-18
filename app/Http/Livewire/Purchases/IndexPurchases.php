@@ -7,7 +7,9 @@ use Livewire\Component;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\VoucherTypes;
+use Carbon\Carbon;
 use Livewire\WithPagination;
+use Termwind\Components\Dd;
 
 class IndexPurchases extends Component
 {
@@ -61,33 +63,38 @@ class IndexPurchases extends Component
         ];
     }
 
-    public function disable($id)
+    public function disable($id, $reason)
     {
-        try {
-            $purchase = Purchase::find($id);
-            $purchase->is_active = false;
-            $purchase->save();
+        $purchase_month = Carbon::parse(Purchase::find($id)->date)->format('m');
 
-            foreach ($purchase->products as $product) {
-                $p = Product::find($product->id);
-                $p->update([
-                    'real_stock' => $p->real_stock - $product->pivot->quantity
+        if ($purchase_month == now()->month) {
+            try {
+                $purchase = Purchase::find($id);
+                $purchase->is_active = false;
+                $purchase->cancelled_by = auth()->user()->id;
+                $purchase->cancelled_at = now();
+                $purchase->cancel_reason = $reason;
+                $purchase->save();
+
+                foreach ($purchase->products as $product) {
+                    $p = Product::find($product->id);
+                    $p->update([
+                        'real_stock' => $p->real_stock - $product->pivot->quantity
+                    ]);
+                }
+
+                $supplier = Supplier::find($purchase->supplier_id);
+                $supplier->update([
+                    'total_purchases' => $supplier->total_purchases - 1
                 ]);
+
+                $this->emit('refresh');
+                $this->emit('success', '¡La compra se ha anulado correctamente!');
+            } catch (\Exception $e) {
+                $this->emit('error', 'No es posible anular la compra.');
             }
-
-            // Cancelled by
-            $purchase->cancelled_by = auth()->user()->id;
-            $purchase->save();
-
-            $supplier = Supplier::find($purchase->supplier_id);
-            $supplier->update([
-                'total_purchases' => $supplier->total_purchases - 1
-            ]);
-
-            $this->emit('refresh');
-            $this->emit('success', '¡La compra se ha anulado correctamente!');
-        } catch (\Exception $e) {
-            $this->emit('error', 'No es posible anular la compra.');
+        } else {
+            $this->emit('error', 'No es posible anular una compra del mes pasado.');
         }
     }
 
