@@ -92,7 +92,25 @@ class CreatePurchase extends Component
     // ADD PRODUCT
     public function addProduct()
     {
-        $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => 0];
+        if (count($this->orderProducts) == count($this->allProducts)) {
+            return;
+        }
+
+        if (!empty($this->orderProducts[count($this->orderProducts) - 1]['product_id']) || count($this->orderProducts) == 0) {
+            $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0'];
+        }
+        // $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => 0];
+    }
+
+    // IS PRODUCT IN ORDER
+    public function isProductInOrder($product_id)
+    {
+        foreach ($this->orderProducts as $product) {
+            if ($product['product_id'] == $product_id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // REMOVE PRODUCT
@@ -188,7 +206,12 @@ class CreatePurchase extends Component
         // Reset
         $this->reset(['createForm', 'orderProducts']);
 
-        session()->flash('flash.banner', '¡La compra se ha creado correctamente!');
+        // Get last purchase->id
+        $id = $purchase->id;
+
+        $message = '¡La compra se ha creado correctamente! Su ID es: ' . $id;
+
+        session()->flash('flash.banner', $message);
 
         return redirect()->route('admin.purchases.index');
     }

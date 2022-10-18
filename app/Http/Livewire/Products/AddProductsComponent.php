@@ -20,7 +20,25 @@ class AddProductsComponent extends Component
 
     public function addProduct()
     {
-        $this->orderProducts[] = ['product_id' => '', 'quantity' => 1];
+        // If all products are selected, don't add more
+        if (count($this->orderProducts) == count($this->allProducts)) {
+            return;
+        }
+
+        if (!empty($this->orderProducts[count($this->orderProducts) - 1]['product_id'])) {
+            $this->orderProducts[] = ['product_id' => '', 'quantity' => 1];
+        }
+    }
+
+    public function isProductInOrder($productId)
+    {
+        foreach ($this->orderProducts as $orderProduct) {
+            if ($orderProduct['product_id'] == $productId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function removeProduct($index)
@@ -36,7 +54,6 @@ class AddProductsComponent extends Component
 
     public function render()
     {
-        info($this->orderProducts);
         return view('livewire.products.add-products-component');
     }
 }

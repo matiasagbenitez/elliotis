@@ -152,7 +152,9 @@
                                 class="input-control w-full p-1 pl-3">
                                 <option disabled value="">Seleccione un producto</option>
                                 @foreach ($allProducts as $product)
-                                    <option value="{{ $product->id }}">
+                                    {{-- Disable product options that are already in the $orderProducts[][] --}}
+                                    <option value="{{ $product->id }}"
+                                        {{ $this->isProductInOrder($product->id) ? 'disabled' : '' }}>
                                         {{ $product->name }}
                                     </option>
                                 @endforeach
