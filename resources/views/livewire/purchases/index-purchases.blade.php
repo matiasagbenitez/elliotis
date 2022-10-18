@@ -50,11 +50,13 @@
             </div>
 
             {{-- Limpiar filtros --}}
-            <div class="col-span-1 rounded-lg flex items-end justify-center pb-1">
+            <div class="col-span-1 rounded-lg flex items-end justify-center pb-1 space-x-3">
                 <x-jet-button wire:click="resetFilters">
-                    <i class="fas fa-eraser mr-2"></i>
-                    Limpiar
+                    <i class="fas fa-eraser"></i>
                 </x-jet-button>
+                <x-jet-danger-button>
+                    <i class="fas fa-file-pdf"></i>
+                </x-jet-danger-button>
             </div>
         </div>
 
@@ -63,22 +65,29 @@
             <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
                 <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
                     <tr>
-                        <th scope="col" class="w-1/5 py-2 px-4">
-                            Tipo - N° comprobante
+                        <th scope="col" wire:click="order('id')"
+                        class="px-4 py-2 cursor-pointer flex items-center">
+                            <i class="fas fa-sort mr-2"></i>
+                            ID
                         </th>
-                        <th scope="col" class="w-1/5 py-2 px-4">
+                        <th scope="col"
+                        class="w-1/4 px-4 py-2 cursor-pointer">
                             Proveedor
                         </th>
-                        <th scope="col" class="w-1/5 py-2 px-4">
+                        <th scope="col" wire:click="order('date')"
+                        class="w-1/4 px-4 py-2 cursor-pointer">
+                            <i class="fas fa-sort mr-2"></i>
                             Fecha de compra
                         </th>
-                        <th scope="col" class="w-1/5 py-2 px-4">
+                        <th scope="col" wire:click="order('total')"
+                        class="w-1/4 px-4 py-2 cursor-pointer">
+                            <i class="fas fa-sort mr-2"></i>
                             Monto total
                         </th>
-                        {{-- <th scope="col" class="w-1/5 py-2 px-4">
+                        {{-- <th scope="col" class="w-1/4 py-2 px-4">
                             Pedido asociado
                         </th> --}}
-                        <th scope="col" class="w-1/5 py-2 px-4">
+                        <th scope="col" class="w-1/4 py-2 px-4">
                             Estado
                         </th>
                         <th scope="col" class="py-2 px-4">
@@ -91,7 +100,7 @@
                         <tr class="bg-gray-50">
                             <td class="px-6 py-2">
                                 <p class="text-sm uppercase">
-                                    {{ $purchase->voucher_type->name }} - {{ $purchase->voucher_number }}
+                                    {{ $purchase->id }}
                                 </p>
                             </td>
                             <td class="px-6 py-2">
@@ -148,7 +157,8 @@
                                             <i class="fas fa-ban mr-1"></i>
                                         </button>
                                     @endif
-                                    <a title="Ver detalle" href="{{ route('admin.purchases.show-detail', $purchase) }}">
+                                    <a title="Ver detalle"
+                                        href="{{ route('admin.purchases.show-detail', $purchase) }}">
                                         <x-jet-secondary-button>
                                             <i class="fas fa-list"></i>
                                         </x-jet-secondary-button>

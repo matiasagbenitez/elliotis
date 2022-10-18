@@ -13,6 +13,9 @@ class IndexPurchases extends Component
 {
     use WithPagination;
     public $suppliers = [], $voucher_types = [];
+    public $sort = 'id';
+    public $direction = 'asc';
+    public $total_purchases;
 
     public $filters = [
         'supplier' => '',
@@ -28,6 +31,25 @@ class IndexPurchases extends Component
         $this->suppliers = Supplier::orderBy('business_name')->get();
         $this->voucher_types = VoucherTypes::all();
     }
+
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if ($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'desc';
+        }
+    }
+
+    // public function updatedFilters()
+    // {
+    //     $this->total_purchases = Purchase::filter($this->filters)->where('is_active', true)->sum('total');
+    // }
 
     public function resetFilters()
     {
@@ -71,7 +93,7 @@ class IndexPurchases extends Component
 
     public function render()
     {
-        $purchases = Purchase::filter($this->filters)->orderBy('created_at', 'desc')->paginate(10);
+        $purchases = Purchase::filter($this->filters)->orderBy($this->sort, $this->direction)->paginate(8);
 
         return view('livewire.purchases.index-purchases', compact('purchases'));
     }
