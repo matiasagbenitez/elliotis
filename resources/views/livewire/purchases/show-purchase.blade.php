@@ -61,7 +61,8 @@
                             <p class="font-bold font-mono uppercase">Compra anulada</p>
                             <p class="font-mono text-sm">
                                 La presente compra no es válida ya que fue anulada por {{ $user_who_cancelled }}
-                                el día {{ $purchase->updated_at->format('d-m-Y') }} a las {{ $purchase->updated_at->format('H:i:s') }} hs
+                                el día {{ $purchase->updated_at->format('d-m-Y') }} a las
+                                {{ $purchase->updated_at->format('H:i:s') }} hs
                             </p>
                             <p class="font-bold font-mono uppercase mt-2">Motivo</p>
                             <p class="font-mono text-sm">
@@ -142,12 +143,30 @@
                                 <td class="px-6 py-3 whitespace-nowrap text-center">
                                     <p>
                                         {{-- Decimal format --}}
-                                        {{ number_format($product->pivot->price, 2, ',', '.') }}
+                                        @php
+                                            $price_with_iva = $product->pivot->price * 1.21;
+                                            $price_with_iva = number_format($price_with_iva, 2, ',', '.');
+                                        @endphp
+
+                                        @if ($purchase->supplier->iva_condition->discriminate)
+                                            ${{ number_format($product->pivot->price, 2, ',', '.') }}
+                                        @else
+                                            ${{ $price_with_iva }}
+                                        @endif
                                     </p>
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap text-right">
                                     <p>
-                                        {{ number_format($product->pivot->price * $product->pivot->quantity, 2, ',', '.') }}
+                                        @php
+                                            $subtotal_with_iva = $product->pivot->quantity * $product->pivot->price * 1.21;
+                                            $subtotal_with_iva = number_format($subtotal_with_iva, 2, ',', '.');
+                                        @endphp
+
+                                        @if ($purchase->supplier->iva_condition->discriminate)
+                                            ${{ number_format($product->pivot->quantity * $product->pivot->price, 2, ',', '.') }}
+                                        @else
+                                            ${{ $subtotal_with_iva }}
+                                        @endif
                                     </p>
                                 </td>
                             </tr>

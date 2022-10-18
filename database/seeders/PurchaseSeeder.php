@@ -16,7 +16,7 @@ class PurchaseSeeder extends Seeder
         // Associate random products to each purchase
         Purchase::all()->each(function ($purchase) {
 
-            for ($i=0; $i < rand(1, 4); $i++) {
+            for ($i = 0; $i < rand(1, 4); $i++) {
 
                 // Random product where is_buyable = true
                 $product = Product::where('is_buyable', true)->inRandomOrder()->first();
@@ -29,7 +29,6 @@ class PurchaseSeeder extends Seeder
                     'price' => $price,
                     'subtotal' => $quantity * $price
                 ]);
-
             }
 
             // Subtotal
@@ -38,13 +37,8 @@ class PurchaseSeeder extends Seeder
             });
 
             $purchase->subtotal = $subtotal;
-
-            if ($purchase->supplier->iva_condition->discriminate) {
-                $purchase->iva = $subtotal * 0.21;
-                $purchase->total = $purchase->subtotal + $purchase->iva;
-            } else {
-                $purchase->total = $purchase->subtotal;
-            }
+            $purchase->iva = $subtotal * 0.21;
+            $purchase->total = $purchase->subtotal + $purchase->iva;
 
             // Total
             $purchase->save();
@@ -53,8 +47,6 @@ class PurchaseSeeder extends Seeder
             $supplier = $purchase->supplier;
             $supplier->total_purchases += 1;
             $supplier->save();
-
-
         });
     }
 }

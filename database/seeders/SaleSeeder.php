@@ -16,7 +16,7 @@ class SaleSeeder extends Seeder
         // Associate random products to each sale
         Sale::all()->each(function ($sale) {
 
-            for ($i=0; $i < rand(1, 4); $i++) {
+            for ($i = 0; $i < rand(1, 4); $i++) {
 
                 // Random product where is_sellable = true
                 $product = Product::where('is_salable', true)->inRandomOrder()->first();
@@ -29,7 +29,6 @@ class SaleSeeder extends Seeder
                     'price' => $price,
                     'subtotal' => $quantity * $price
                 ]);
-
             }
 
             // Subtotal
@@ -38,13 +37,8 @@ class SaleSeeder extends Seeder
             });
 
             $sale->subtotal = $subtotal;
-
-            if ($sale->client->iva_condition->discriminate) {
-                $sale->iva = $subtotal * 0.21;
-                $sale->total = $sale->subtotal + $sale->iva;
-            } else {
-                $sale->total = $sale->subtotal;
-            }
+            $sale->iva = $subtotal * 0.21;
+            $sale->total = $sale->subtotal + $sale->iva;
 
             // Total
             $sale->save();
@@ -53,7 +47,6 @@ class SaleSeeder extends Seeder
             $client = $sale->client;
             $client->total_sales += 1;
             $client->save();
-
         });
     }
 }
