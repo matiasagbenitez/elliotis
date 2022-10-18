@@ -170,8 +170,8 @@
                                 wire:model.lazy="orderProducts.{{ $index }}.price"
                                 class="input-control w-full p-1 text-center" />
                         </div>
-                        <div class="col-span-1 text-xs lowercase">
-                            <span>(21.00)</span>
+                        <div class="col-span-1 text-xs">
+                            <span>IVA</span>
                         </div>
                         <div class="col-span-1 flex items-center">
                             $
