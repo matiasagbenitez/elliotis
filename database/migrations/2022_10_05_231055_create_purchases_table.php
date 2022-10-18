@@ -33,9 +33,9 @@ return new class extends Migration
 
             $table->integer('voucher_number')->required()->unique();
 
-            $table->float('subtotal')->required();
-            $table->float('iva')->required();
-            $table->float('total')->required();
+            $table->float('subtotal', 10, 2)->required();
+            $table->float('iva', 10, 2)->required();
+            $table->float('total', 10, 2)->required();
 
             $table->decimal('weight', 10, 2)->required();
             $table->string('weight_voucher')->nullable();

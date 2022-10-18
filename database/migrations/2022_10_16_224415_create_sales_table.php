@@ -34,10 +34,9 @@ return new class extends Migration
             $table->integer('voucher_number')->required()->unique();
 
             // bigFloat for subtotal, iva and total
-            $table->float('subtotal')->required();
-            $table->float('iva')->required();
-            $table->float('total')->required();
-
+            $table->float('subtotal', 10, 2)->required();
+            $table->float('iva', 10, 2)->required();
+            $table->float('total', 10, 2)->required();
             $table->text('observations')->nullable();
 
             $table->boolean('is_active')->default(true);

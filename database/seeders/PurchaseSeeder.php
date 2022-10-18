@@ -22,7 +22,7 @@ class PurchaseSeeder extends Seeder
                 $product = Product::where('is_buyable', true)->inRandomOrder()->first();
 
                 $quantity = rand(20, 40);
-                $price = rand(1200, 1700);
+                $price = $product->cost;
 
                 $purchase->products()->attach($product->id, [
                     'quantity' => $quantity,

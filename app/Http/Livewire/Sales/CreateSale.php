@@ -67,7 +67,7 @@ class CreateSale extends Component
 
         $this->allProducts = Product::where('is_salable', true)->orderBy('name')->get();
         $this->orderProducts = [
-            [ 'product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
+            ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
         ];
     }
 
@@ -126,7 +126,8 @@ class CreateSale extends Component
     {
         $subtotal = 0;
         foreach ($this->orderProducts as $index => $product) {
-            $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $product['price'], 2, '.', '');
+            $this->orderProducts[$index]['price'] = Product::find($product['product_id'])->selling_price ?? 0;
+            $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $this->orderProducts[$index]['price'], 2, '.', '');
             $subtotal += $this->orderProducts[$index]['subtotal'];
         }
 
@@ -143,6 +144,14 @@ class CreateSale extends Component
     public function save()
     {
         $this->validate();
+
+        foreach ($this->orderProducts as $orderProduct) {
+            $product = Product::find($orderProduct['product_id']);
+            if ($product->real_stock < $orderProduct['quantity']) {
+                $this->emit('error', 'No hay stock suficiente para el producto ' . $product->name);
+                return;
+            }
+        }
 
         $sale = Sale::create($this->createForm);
 

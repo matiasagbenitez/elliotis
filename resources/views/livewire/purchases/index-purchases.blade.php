@@ -112,7 +112,7 @@
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
-                                    $ {{ $purchase->total }}
+                                    ${{ number_format($purchase->total, 2, ',', '.') }}
                                 </p>
                             </td>
                             {{-- <td class="px-6 py-2 whitespace-nowrap text-center">

@@ -21,8 +21,8 @@ class SaleSeeder extends Seeder
                 // Random product where is_sellable = true
                 $product = Product::where('is_salable', true)->inRandomOrder()->first();
 
-                $quantity = rand(5, 10);
-                $price = rand(10000, 20000);
+                $quantity = rand(3, 5);
+                $price = $product->selling_price;
 
                 $sale->products()->attach($product->id, [
                     'quantity' => $quantity,
