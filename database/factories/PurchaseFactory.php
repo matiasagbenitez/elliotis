@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\PaymentConditions;
 use App\Models\PaymentMethods;
 use App\Models\Supplier;
+use App\Models\User;
 use App\Models\VoucherTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,7 @@ class PurchaseFactory extends Factory
 {
     public function definition()
     {
+        $user_id = User::inRandomOrder()->first()->id;
         $supplier_id = Supplier::inRandomOrder()->first()->id;
         $payment_condition_id = PaymentConditions::inRandomOrder()->first()->id;
         $payment_method_id = PaymentMethods::inRandomOrder()->first()->id;
@@ -22,7 +24,7 @@ class PurchaseFactory extends Factory
         $total = $subtotal + $iva;
 
         return [
-            'user_id' => 1,
+            'user_id' => $user_id,
             'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'supplier_id' => $supplier_id,
             // 'supplier_order_id' => $this->faker->unique()->numberBetween(1, 100),

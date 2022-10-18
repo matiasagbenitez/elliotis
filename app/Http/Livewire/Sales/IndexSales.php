@@ -54,6 +54,10 @@ class IndexSales extends Component
                 ]);
             }
 
+            // Cancelled by
+            $sale->cancelled_by = auth()->user()->id;
+            $sale->save();
+
             $this->emit('refresh');
             $this->emit('success', '¡La venta se ha anulado correctamente!');
         } catch (\Exception $e) {

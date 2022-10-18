@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Client;
 use App\Models\VoucherTypes;
 use App\Models\PaymentMethods;
@@ -13,6 +14,7 @@ class SaleFactory extends Factory
 
     public function definition()
     {
+        $user_id = User::inRandomOrder()->first()->id;
         $client_id = Client::inRandomOrder()->first()->id;
         $payment_condition_id = PaymentConditions::inRandomOrder()->first()->id;
         $payment_method_id = PaymentMethods::inRandomOrder()->first()->id;
@@ -22,7 +24,7 @@ class SaleFactory extends Factory
         $total = $subtotal + $iva;
 
         return [
-            'user_id' => 1,
+            'user_id' => $user_id,
             'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'client_id' => $client_id,
             // 'client_order_id' => $this->faker->unique()->numberBetween(1, 100),

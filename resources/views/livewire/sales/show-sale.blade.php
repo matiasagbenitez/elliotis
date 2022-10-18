@@ -59,9 +59,9 @@
                         {{-- </div> --}}
                         <div>
                             <p class="font-bold font-mono uppercase">Venta anulada</p>
-                            <p class="font-mono text-sm">La presente venta no es válida ya que fue anulada el día
-                                {{ $sale->updated_at->format('d-m-Y') }} a las
-                                {{ $sale->updated_at->format('H:i:s') }} hs
+                            <p class="font-mono text-sm">
+                                La presente venta no es válida ya que fue anulada por {{ $user_who_cancelled }}
+                                el día {{ $sale->updated_at->format('d-m-Y') }} a las {{ $sale->updated_at->format('H:i:s') }} hs
                             </p>
                         </div>
                     </div>

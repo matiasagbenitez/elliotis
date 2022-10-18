@@ -53,8 +53,11 @@ class IndexPurchases extends Component
                 ]);
             }
 
+            // Cancelled by
+            $purchase->cancelled_by = auth()->user()->id;
+            $purchase->save();
+
             $supplier = Supplier::find($purchase->supplier_id);
-            dd($supplier);
             $supplier->update([
                 'total_purchases' => $supplier->total_purchases - 1
             ]);

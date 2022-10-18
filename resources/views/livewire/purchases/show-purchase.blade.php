@@ -59,11 +59,10 @@
                         {{-- </div> --}}
                         <div>
                             <p class="font-bold font-mono uppercase">Compra anulada</p>
-                            <p class="font-mono text-sm">La presente compra no es válida ya que fue anulada el día
-                                {{ $purchase->updated_at->format('d-m-Y') }} a las
-                                {{ $purchase->updated_at->format('H:i:s') }} hs</p>
-
-
+                            <p class="font-mono text-sm">
+                                La presente compra no es válida ya que fue anulada por {{ $user_who_cancelled }}
+                                el día {{ $purchase->updated_at->format('d-m-Y') }} a las {{ $purchase->updated_at->format('H:i:s') }} hs
+                            </p>
                         </div>
                     </div>
                 @endif

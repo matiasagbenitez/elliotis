@@ -10,22 +10,16 @@ use Laravel\Jetstream\Features;
 
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = User::class;
+    CONST NAMES = ['Juan Pérez', 'María González', 'Luisa López', 'Jorge Martínez', 'Ana Sánchez', 'Sofía Hernández', 'Miguel Rodríguez', 'Lucía Díaz', 'Santiago Fernández', 'Valentina Martín', 'David Jiménez', 'Paula García', 'Daniel López', 'Ángela Gómez', 'Javier Martínez', 'Natalia Pérez', 'Álvaro González', 'María Sánchez', 'Jesús Sánchez', 'Sara Martín', 'Miguel Ángel García', 'Sofía Rodríguez', 'Santiago Martínez', 'Lucía Martín', 'David Pérez', 'Paula Martín', 'Daniel González', 'Ángela Martín', 'Javier Sánchez', 'Natalia Gómez', 'Álvaro Martínez', 'María García', 'Jesús García', 'Sara Sánchez', 'Miguel Ángel Martín', 'Sofía Martín', 'Santiago González', 'Lucía González', 'David Martínez', 'Paula Sánchez', 'Daniel Martín', 'Ángela Sánchez', 'Javier García', 'Natalia Martín', 'Álvaro Sánchez', 'María Martín', 'Jesús Martín', 'Sara García', 'Miguel Ángel Sánchez', 'Sofía González', 'Santiago Martín', 'Lucía Martínez', 'David González', 'Paula González', 'Daniel Sánchez', 'Ángela Martínez', 'Javier Martín', 'Natalia González', 'Álvaro García', 'María González', 'Jesús González', 'Sara Martínez', 'Miguel Ángel Martínez', 'Sofía Martínez', 'Santiago Sánchez', 'Lucía Sánchez', 'David Sánchez', 'Paula Martínez', 'Daniel Martínez', 'Ángela González', 'Javier González', 'Natalia Martínez', 'Álvaro Martínez', 'María Martínez', 'Jesús Martínez'];
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
+        // Get unique name from NAMES array
+        $name = $this->faker->unique()->randomElement(self::NAMES);
+
         return [
-            'name' => $this->faker->name(),
+            'name' => $name,
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -33,11 +27,6 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
     public function unverified()
     {
         return $this->state(function (array $attributes) {
@@ -47,11 +36,6 @@ class UserFactory extends Factory
         });
     }
 
-    /**
-     * Indicate that the user should have a personal team.
-     *
-     * @return $this
-     */
     public function withPersonalTeam()
     {
         if (! Features::hasTeamFeatures()) {
