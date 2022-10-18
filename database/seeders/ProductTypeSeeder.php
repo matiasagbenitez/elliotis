@@ -75,6 +75,19 @@ class ProductTypeSeeder extends Seeder
                 'measure_id' => 28,
                 'unity_id' => 1,
             ],
+
+            // PAQUETES GRANDES MACHIMBRADOS DE 11' Y 13'
+            [
+                'product_name_id' => 5,
+                'measure_id' => 22,
+                'unity_id' => 3,
+            ],
+            [
+                'product_name_id' => 5,
+                'measure_id' => 24,
+                'unity_id' => 3,
+            ],
+
         ];
 
         foreach ($productTypes as $productType) {

@@ -29,4 +29,10 @@ class ProductType extends Model
         return $this->belongsTo(ProductName::class);
     }
 
+    // Relationship with Product
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
 }

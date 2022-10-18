@@ -13,19 +13,19 @@ class IvaConditionSeeder extends Seeder
         $ivaConditions = [
             [
                 'name' => 'IVA Responsable Inscripto',
-                'discriminate' => false,
+                'discriminate' => true,
             ],
             [
                 'name' => 'IVA Sujeto Exento',
-                'discriminate' => true,
+                'discriminate' => false,
             ],
             [
                 'name' => 'Monotributista',
-                'discriminate' => true,
+                'discriminate' => false,
             ],
             [
                 'name' => 'Consumidor Final',
-                'discriminate' => true,
+                'discriminate' => false,
             ]
         ];
 

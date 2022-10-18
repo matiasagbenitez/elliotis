@@ -9,16 +9,18 @@ class CreateProductName extends Component
 {
     public $isOpen = 0;
 
-    public $createForm = ['name' => ''];
+    public $createForm = ['name' => '', 'margin' => ''];
 
     protected $listeners = ['refresh' => 'render'];
 
     protected $rules = [
         'createForm.name' => 'required|string|max:255|unique:product_names,name',
+        'createForm.margin' => 'required|numeric|min:1|max:100',
     ];
 
     protected $validationAttributes = [
         'createForm.name' => 'name',
+        'createForm.margin' => 'margin',
     ];
 
     public function createProductName()
@@ -41,18 +43,33 @@ class CreateProductName extends Component
     {
         $this->resetErrorBag();
         $this->createForm = ['name' => ''];
+        $this->createForm = ['margin' => ''];
     }
 
     public function save()
     {
-        $this->validate();
+        try {
+            $this->validate();
 
-        ProductName::create($this->createForm);
+            $product_name = ProductName::create($this->createForm);
 
-        $this->emit('success', '¡Nombre de producto creado con éxito!');
-        $this->closeModal();
-        $this->resetInputFields();
-        $this->emit('refresh');
+            // Update all products margin where product_type->product_name = $this->product_name
+            $product_name->product_types->each(function ($product_type) {
+                $product_type->products->each(function ($product) {
+                    $product->update([
+                        'margin' => $this->editForm['margin'],
+                        'selling_price' => $product->selling_price * $this->editForm['margin'],
+                    ]);
+                });
+            });
+
+            $this->emit('success', '¡Nombre de producto creado con éxito!');
+            $this->closeModal();
+            $this->resetInputFields();
+            $this->emit('refresh');
+        } catch (\Exception $e) {
+            $this->emit('error', '¡Error al crear el nombre de producto!');
+        }
     }
 
     public function render()
