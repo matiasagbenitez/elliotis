@@ -10,6 +10,7 @@ use App\Models\VoucherTypes;
 use Livewire\WithFileUploads;
 use App\Models\PaymentMethods;
 use App\Models\PaymentConditions;
+use App\Models\Price;
 use Ramsey\Uuid\Type\Decimal;
 
 class CreatePurchase extends Component
@@ -164,6 +165,22 @@ class CreatePurchase extends Component
                 'price' => $product['price'],
                 'subtotal' => $product['quantity'] * $product['price']
             ]);
+
+            // Actualizamos el precio de venta de cada producto si su costo es mayor al de compra
+            $dbProduct = Product::find($product['product_id']);
+            if ($dbProduct->cost < $product['price']) {
+
+                $dbProduct->prices()->create([
+                    'cost' => $dbProduct->cost,
+                    'selling_price' => $dbProduct->selling_price,
+                    'user_id' => auth()->user()->id
+                ]);
+
+                // Actualizamos los precios
+                $dbProduct->cost = $product['price'];
+                $dbProduct->selling_price = $product['price'] * $dbProduct->margin;
+                $dbProduct->save();
+            }
         }
 
         // Obtenemos el subtotal de la compra

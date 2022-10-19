@@ -41,4 +41,10 @@ class Product extends Model
         return $this->belongsToMany(Sale::class);
     }
 
+    // Relationship many with Price
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
 }
