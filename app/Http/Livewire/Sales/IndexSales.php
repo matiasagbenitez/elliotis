@@ -83,6 +83,11 @@ class IndexSales extends Component
                     ]);
                 }
 
+                $client = Client::find($sale->client_id);
+                $client = $client->update([
+                    'total_sales' => $client->total_sales - 1
+                ]);
+
                 $this->emit('refresh');
                 $this->emit('success', '¡La venta se ha anulado correctamente!');
             } catch (\Exception $e) {

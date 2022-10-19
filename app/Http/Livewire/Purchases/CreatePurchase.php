@@ -51,9 +51,9 @@ class CreatePurchase extends Component
         'createForm.payment_method_id' => 'required|integer|exists:payment_methods,id',
         'createForm.voucher_type_id' => 'required|integer|exists:voucher_types,id',
         'createForm.voucher_number' => 'required|numeric|unique:purchases,voucher_number',
-        'createForm.subtotal' => 'nullable',
-        'createForm.iva' => 'nullable',
-        'createForm.total' => 'nullable',
+        'createForm.subtotal' => 'required',
+        'createForm.iva' => 'required',
+        'createForm.total' => 'required',
         'createForm.weight' => 'nullable|numeric',
         'createForm.weight_voucher' => 'nullable|image|max:1024',
         'createForm.observations' => 'nullable|string',
@@ -131,19 +131,13 @@ class CreatePurchase extends Component
     public function updatedOrderProducts()
     {
         $subtotal = 0;
+
         foreach ($this->orderProducts as $index => $product) {
-
-            // Product subtotal
             $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $product['price'], 2, '.', '');
-
-            // Subtotal
-            $subtotal += $product['quantity'] * $product['price'];
-
-            // $subtotal += $product['price'] * $product['quantity'];
+            $subtotal += $this->orderProducts[$index]['subtotal'];
         }
 
         // Subtotal format to 2 decimals
-
         if($this->supplier_discriminates_iva) {
             $this->createForm['subtotal'] = number_format($subtotal, 2, '.', '');
             $this->createForm['iva'] = number_format($subtotal * 0.21, 2, '.', '');
@@ -157,10 +151,13 @@ class CreatePurchase extends Component
     // CREATE PURCHASE
     public function save()
     {
+        // Validamos los datos
         $this->validate();
 
+        // Creamos la compra
         $purchase = Purchase::create($this->createForm);
 
+        // Creamos los productos de la compra en la tabla pivote
         foreach ($this->orderProducts as $product) {
             $purchase->products()->attach($product['product_id'], [
                 'quantity' => $product['quantity'],
@@ -169,27 +166,22 @@ class CreatePurchase extends Component
             ]);
         }
 
+        // Obtenemos el subtotal de la compra
         $subtotal = $purchase->products->sum(function ($product) {
             return $product->pivot->subtotal;
         });
 
+        // Obtenemos el iva de la compra
         $iva = $subtotal * 0.21;
 
-        if ($this->supplier_discriminates_iva) {
-            $purchase->update([
-                'subtotal' => $subtotal,
-                'iva' => $iva,
-                'total' => $subtotal + $iva
-            ]);
-        } else {
-            $purchase->update([
-                'subtotal' => $subtotal,
-                'iva' => 0,
-                'total' => $subtotal
-            ]);
-        }
+        // Actualizamos el subtotal, iva y total de la compra
+        $purchase->update([
+            'subtotal' => $subtotal,
+            'iva' => $iva,
+            'total' => $subtotal + $iva
+        ]);
 
-        // Update real_stock of products in purchase considering repeated products
+        // Actualizamos el stock de los productos
         foreach ($purchase->products as $product) {
             $p = Product::find($product->id);
             $p->update([
@@ -197,22 +189,19 @@ class CreatePurchase extends Component
             ]);
         }
 
-        // Add 1 to supplier's total_purchases
+        // Añadimos 1 compra al proveedor
         $supplier = Supplier::find($purchase->supplier_id);
         $supplier->update([
             'total_purchases' => $supplier->total_purchases + 1
         ]);
 
-        // Reset
+        // Reseteamos los campos
         $this->reset(['createForm', 'orderProducts']);
 
-        // Get last purchase->id
+        // Retornamos a la vista de compras
         $id = $purchase->id;
-
         $message = '¡La compra se ha creado correctamente! Su ID es: ' . $id;
-
         session()->flash('flash.banner', $message);
-
         return redirect()->route('admin.purchases.index');
     }
 

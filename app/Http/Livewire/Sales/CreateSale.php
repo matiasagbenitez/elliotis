@@ -212,6 +212,12 @@ class CreateSale extends Component
             ]);
         }
 
+        // Añadimos 1 venta al cliente
+        $client = Client::find($sale->client_id);
+        $client->update([
+            'total_sales' => $client->total_sales + 1,
+        ]);
+
         // Reseteamos el formulario
         $this->reset('createForm', 'orderProducts');
 
