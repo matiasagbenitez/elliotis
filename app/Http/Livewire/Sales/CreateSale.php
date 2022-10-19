@@ -50,9 +50,9 @@ class CreateSale extends Component
         'createForm.payment_method_id' => 'required|integer|exists:payment_methods,id',
         'createForm.voucher_type_id' => 'required|integer|exists:voucher_types,id',
         'createForm.voucher_number' => 'required|numeric|unique:sales,voucher_number',
-        'createForm.subtotal' => 'nullable',
-        'createForm.iva' => 'nullable',
-        'createForm.total' => 'nullable',
+        'createForm.subtotal' => 'required',
+        'createForm.iva' => 'required',
+        'createForm.total' => 'required',
         'createForm.observations' => 'nullable|string',
         'orderProducts.*.product_id' => 'required',
         'orderProducts.*.quantity' => 'required|numeric|min:1',
@@ -93,7 +93,6 @@ class CreateSale extends Component
         if (!empty($this->orderProducts[count($this->orderProducts) - 1]['product_id']) || count($this->orderProducts) == 0) {
             $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0'];
         }
-        // $this->orderProducts[] = ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => 0];
     }
 
     // IS PRODUCT IN ORDER
@@ -125,12 +124,27 @@ class CreateSale extends Component
     public function updatedOrderProducts()
     {
         $subtotal = 0;
+
         foreach ($this->orderProducts as $index => $product) {
-            $this->orderProducts[$index]['price'] = Product::find($product['product_id'])->selling_price ?? 0;
-            $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $this->orderProducts[$index]['price'], 2, '.', '');
-            $subtotal += $this->orderProducts[$index]['subtotal'];
+
+            if ($this->client_discriminates_iva) {
+
+                // Si el cliente discrimina IVA, se calcula el IVA sobre el subtotal de la venta
+                $this->orderProducts[$index]['price'] = Product::find($product['product_id'])->selling_price ?? 0;
+                $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $this->orderProducts[$index]['price'], 2, '.', '');
+                $subtotal += $this->orderProducts[$index]['subtotal'];
+            } else {
+
+                // Si el cliente no discrimina IVA, se calcula el IVA junto al precio unitario de cada producto
+                $aux = Product::find($product['product_id'])->selling_price ?? 0;
+                $aux *= 1.21;
+                $this->orderProducts[$index]['price'] = $aux;
+                $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $this->orderProducts[$index]['price'], 2, '.', '');
+                $subtotal += $this->orderProducts[$index]['subtotal'];
+            }
         }
 
+        // Resumen de la venta
         if ($this->client_discriminates_iva) {
             $this->createForm['subtotal'] = number_format($subtotal, 2, '.', '');
             $this->createForm['iva'] = number_format($subtotal * 0.21, 2, '.', '');
@@ -143,8 +157,10 @@ class CreateSale extends Component
     // CREATE SALE
     public function save()
     {
+        // Validamos los campos
         $this->validate();
 
+        // Controlamos que exista stock para todos los productos de la orden, caso contrario, mostramos un mensaje de error
         foreach ($this->orderProducts as $orderProduct) {
             $product = Product::find($orderProduct['product_id']);
             if ($product->real_stock < $orderProduct['quantity']) {
@@ -153,37 +169,43 @@ class CreateSale extends Component
             }
         }
 
+        // Creamos la venta con los datos del formulario
         $sale = Sale::create($this->createForm);
 
-        foreach ($this->orderProducts as $product) {
-            $sale->products()->attach($product['product_id'], [
-                'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'subtotal' => $product['quantity'] * $product['price'],
-            ]);
+        // Creamos los productos de la venta en la tabla pivote
+        if ($this->client_discriminates_iva) {
+            foreach ($this->orderProducts as $product) {
+                $sale->products()->attach($product['product_id'], [
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'],
+                    'subtotal' => $product['quantity'] * $product['price'],
+                ]);
+            }
+        } else {
+            foreach ($this->orderProducts as $product) {
+                $sale->products()->attach($product['product_id'], [
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'] / 1.21,
+                    'subtotal' => $product['quantity'] * ($product['price'] / 1.21),
+                ]);
+            }
         }
 
+        // Obtenemos el subtotal de la venta
         $subtotal = $sale->products->sum(function ($product) {
             return $product->pivot->subtotal;
         });
 
+        // Obtenemos el IVA de la venta
         $iva = $subtotal * 0.21;
 
-        if ($this->client_discriminates_iva) {
-            $sale->update([
-                'subtotal' => $subtotal,
-                'iva' => $iva,
-                'total' => $subtotal + $iva,
-            ]);
-        } else {
-            $sale->update([
-                'subtotal' => $subtotal,
-                'iva' => 0,
-                'total' => $subtotal,
-            ]);
-        }
+        $sale->update([
+            'subtotal' => $subtotal,
+            'iva' => $iva,
+            'total' => $subtotal + $iva,
+        ]);
 
-        // UPDATE REAL STOCK
+        // Actualizamos el stock de los productos
         foreach ($sale->products as $product) {
             $p = Product::find($product->id);
             $p->update([
@@ -191,16 +213,13 @@ class CreateSale extends Component
             ]);
         }
 
-        // Reset
+        // Reseteamos el formulario
         $this->reset('createForm', 'orderProducts');
 
-        // Get last purchase->id
+        // Retornamos mensaje de éxito y redireccionamos
         $id = $sale->id;
-
         $message = '¡La venta se ha creado correctamente! Su ID es: ' . $id;
-
         session()->flash('flash.banner', $message);
-
         return redirect()->route('admin.sales.index');
     }
 

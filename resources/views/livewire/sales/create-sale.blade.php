@@ -77,56 +77,6 @@
         </div>
 
         <div class="col-span-6">
-            <h2 class="font-bold">Información del pago</h2>
-            <hr>
-        </div>
-
-        {{-- Select for payment_methods --}}
-        <div class="col-span-3">
-            <x-jet-label class="mb-2" for="payment_method" value="Método de pago (*)" />
-            <select id="payment_method" class="input-control w-full" wire:model.defer="createForm.payment_method_id">
-                <option value="">Seleccione un método de pago</option>
-                @foreach ($payment_methods as $payment_method)
-                    <option value="{{ $payment_method->id }}">{{ $payment_method->name }}</option>
-                @endforeach
-            </select>
-            <x-jet-input-error for="createForm.payment_method_id" class="mt-2" />
-        </div>
-
-        {{-- Select for payment_conditions --}}
-        <div class="col-span-3">
-            <x-jet-label class="mb-2" for="payment_condition" value="Condición de pago (*)" />
-            <select id="payment_condition" class="input-control w-full"
-                wire:model.defer="createForm.payment_condition_id">
-                <option value="">Seleccione una condición de pago</option>
-                @foreach ($payment_conditions as $payment_condition)
-                    <option value="{{ $payment_condition->id }}">{{ $payment_condition->name }}</option>
-                @endforeach
-            </select>
-            <x-jet-input-error for="createForm.payment_condition_id" class="mt-2" />
-        </div>
-
-        {{-- Select for voucher_type_id --}}
-        <div class="col-span-3">
-            <x-jet-label class="mb-2" for="voucher_type_id" value="Tipo de comprobante (*)" />
-            <select id="voucher_type_id" class="input-control w-full" wire:model.defer="createForm.voucher_type_id">
-                <option value="">Seleccione un tipo de comprobante</option>
-                @foreach ($voucher_types as $voucher_type)
-                    <option value="{{ $voucher_type->id }}">{{ $voucher_type->name }}</option>
-                @endforeach
-            </select>
-            <x-jet-input-error for="createForm.voucher_type_id" class="mt-2" />
-        </div>
-
-        {{-- Voucher number --}}
-        <div class="col-span-3">
-            <x-jet-label class="mb-2" for="voucher_number" value="Número de comprobante" />
-            <x-jet-input id="voucher_number" type="number" class="mt-1 block w-full"
-                placeholder="Ingrese el número de comprobante" wire:model.defer="createForm.voucher_number" />
-            <x-jet-input-error for="createForm.voucher_number" class="mt-2" />
-        </div>
-
-        <div class="col-span-6">
             <h2 class="font-bold">Detalle de compra</h2>
             <hr>
         </div>
@@ -155,7 +105,7 @@
                                     {{-- Disable product options that are already in the $orderProducts[][] --}}
                                     <option value="{{ $product->id }}"
                                         {{ $this->isProductInOrder($product->id) ? 'disabled' : '' }}>
-                                        {{ $product->name }}
+                                        {{ $product->name }} ({{ $product->real_stock }} disponibles)
                                     </option>
                                 @endforeach
                             </select>
@@ -173,7 +123,11 @@
                                 class="input-control w-full p-1 text-center" />
                         </div>
                         <div class="col-span-1 text-xs">
-                            <span>IVA</span>
+                            <span>
+                                @if ($client_discriminates_iva)
+                                    IVA
+                                @endif
+                            </span>
                         </div>
                         <div class="col-span-1 flex items-center">
                             $
@@ -222,8 +176,8 @@
                     <div
                         class="col-span-1 flex flex-col justify-between text-left my-1 py-1 text-sm uppercase font-bold text-gray-600">
                         @if ($client_discriminates_iva)
-                            <span>Subtotal sin IVA</span>
-                            <span>IVA 21%</span>
+                            <span>Subtotal</span>
+                            <span>IVA</span>
                         @endif
                         <span>Total</span>
                     </div>
@@ -266,6 +220,56 @@
                     </div>
                 @endif
             </div>
+        </div>
+
+        <div class="col-span-6">
+            <h2 class="font-bold">Información del pago</h2>
+            <hr>
+        </div>
+
+        {{-- Select for payment_methods --}}
+        <div class="col-span-3">
+            <x-jet-label class="mb-2" for="payment_method" value="Método de pago (*)" />
+            <select id="payment_method" class="input-control w-full" wire:model.defer="createForm.payment_method_id">
+                <option value="">Seleccione un método de pago</option>
+                @foreach ($payment_methods as $payment_method)
+                    <option value="{{ $payment_method->id }}">{{ $payment_method->name }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error for="createForm.payment_method_id" class="mt-2" />
+        </div>
+
+        {{-- Select for payment_conditions --}}
+        <div class="col-span-3">
+            <x-jet-label class="mb-2" for="payment_condition" value="Condición de pago (*)" />
+            <select id="payment_condition" class="input-control w-full"
+                wire:model.defer="createForm.payment_condition_id">
+                <option value="">Seleccione una condición de pago</option>
+                @foreach ($payment_conditions as $payment_condition)
+                    <option value="{{ $payment_condition->id }}">{{ $payment_condition->name }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error for="createForm.payment_condition_id" class="mt-2" />
+        </div>
+
+        {{-- Select for voucher_type_id --}}
+        <div class="col-span-3">
+            <x-jet-label class="mb-2" for="voucher_type_id" value="Tipo de comprobante (*)" />
+            <select id="voucher_type_id" class="input-control w-full" wire:model.defer="createForm.voucher_type_id">
+                <option value="">Seleccione un tipo de comprobante</option>
+                @foreach ($voucher_types as $voucher_type)
+                    <option value="{{ $voucher_type->id }}">{{ $voucher_type->name }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error for="createForm.voucher_type_id" class="mt-2" />
+        </div>
+
+        {{-- Voucher number --}}
+        <div class="col-span-3">
+            <x-jet-label class="mb-2" for="voucher_number" value="Número de comprobante" />
+            <x-jet-input id="voucher_number" type="number" class="mt-1 block w-full"
+                placeholder="Ingrese el número de comprobante" wire:model.defer="createForm.voucher_number" />
+            <x-jet-input-error for="createForm.voucher_number" class="mt-2" />
         </div>
 
         <div class="col-span-6">
