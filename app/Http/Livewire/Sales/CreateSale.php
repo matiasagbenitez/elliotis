@@ -125,16 +125,15 @@ class CreateSale extends Component
     {
         $subtotal = 0;
 
-        foreach ($this->orderProducts as $index => $product) {
-
-            if ($this->client_discriminates_iva) {
-
+        if ($this->client_discriminates_iva) {
+            foreach ($this->orderProducts as $index => $product) {
                 // Si el cliente discrimina IVA, se calcula el IVA sobre el subtotal de la venta
                 $this->orderProducts[$index]['price'] = Product::find($product['product_id'])->selling_price ?? 0;
                 $this->orderProducts[$index]['subtotal'] = number_format($product['quantity'] * $this->orderProducts[$index]['price'], 2, '.', '');
                 $subtotal += $this->orderProducts[$index]['subtotal'];
-            } else {
-
+            }
+        } else {
+            foreach ($this->orderProducts as $index => $product) {
                 // Si el cliente no discrimina IVA, se calcula el IVA junto al precio unitario de cada producto
                 $aux = Product::find($product['product_id'])->selling_price ?? 0;
                 $aux *= 1.21;
