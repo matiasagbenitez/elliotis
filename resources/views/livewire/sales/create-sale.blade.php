@@ -79,6 +79,17 @@
         <div class="col-span-6">
             <h2 class="font-bold">Detalle de compra</h2>
             <hr>
+            @if ($client_discriminates_iva == false)
+                <span class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    El cliente no discrimina IVA, por lo tanto, el precio de los productos debe ser el precio final.
+                </span>
+            @else
+                <span class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    El cliente discrimina IVA, por lo tanto, el precio de los productos debe ser el precio sin IVA.
+                </span>
+            @endif
         </div>
 
         <div class="col-span-6">

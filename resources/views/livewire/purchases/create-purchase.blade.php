@@ -44,7 +44,6 @@
                     @else
                         (No discrimina IVA)
                     @endif
-
                 @endisset
             </p>
             <x-jet-input-error for="createForm.supplier_id" class="mt-2" />
@@ -79,6 +78,17 @@
         <div class="col-span-6">
             <h2 class="font-bold">Detalle de compra</h2>
             <hr>
+            @if ($supplier_discriminates_iva == false)
+                <span class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    El proveedor no discrimina IVA, por lo tanto, el precio de los productos debe ser el precio final.
+                </span>
+            @else
+                <span class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    El proveedor discrimina IVA, por lo tanto, el precio de los productos debe ser el precio sin IVA.
+                </span>
+            @endif
         </div>
 
         <div class="col-span-6">
@@ -123,7 +133,11 @@
                                 class="input-control w-full p-1 text-center" />
                         </div>
                         <div class="col-span-1 text-xs">
-                            <span>IVA</span>
+                            <span>
+                                @if ($supplier_discriminates_iva)
+                                    IVA
+                                @endif
+                            </span>
                         </div>
                         <div class="col-span-1 flex items-center">
                             $
@@ -173,7 +187,7 @@
                         class="col-span-1 flex flex-col justify-between text-left my-1 py-1 text-sm uppercase font-bold text-gray-600">
                         @if ($supplier_discriminates_iva)
                             <span>Subtotal sin IVA</span>
-                            <span>IVA 21%</span>
+                            <span>IVA</span>
                         @endif
                         <span>Total</span>
                     </div>
