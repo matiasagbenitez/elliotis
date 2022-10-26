@@ -18,8 +18,16 @@ class PurchaseSeeder extends Seeder
 
             for ($i = 0; $i < rand(1, 4); $i++) {
 
-                // Random product where is_buyable = true
-                $product = Product::where('is_buyable', true)->inRandomOrder()->first();
+                // Random product where is_buyable = true and is not already associated to the purchase
+                $product = Product::where('is_buyable', true)
+                    ->whereDoesntHave('purchases', function ($query) use ($purchase) {
+                        $query->where('purchase_id', $purchase->id);
+                    })
+                    ->inRandomOrder()
+                    ->first();
+
+
+                // $product = Product::where('is_buyable', true)->inRandomOrder()->first();
 
                 $quantity = rand(20, 40);
                 $price = $product->cost;

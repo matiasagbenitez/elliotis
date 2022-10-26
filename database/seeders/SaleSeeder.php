@@ -18,8 +18,15 @@ class SaleSeeder extends Seeder
 
             for ($i = 0; $i < rand(1, 4); $i++) {
 
-                // Random product where is_sellable = true
-                $product = Product::where('is_salable', true)->inRandomOrder()->first();
+                // Random product where is_sellable = true and is not already associated to the sale
+                $product = Product::where('is_salable', true)
+                    ->whereDoesntHave('sales', function ($query) use ($sale) {
+                        $query->where('sale_id', $sale->id);
+                    })
+                    ->inRandomOrder()
+                    ->first();
+
+                // $product = Product::where('is_salable', true)->inRandomOrder()->first();
 
                 $quantity = rand(3, 5);
                 $price = $product->selling_price;
