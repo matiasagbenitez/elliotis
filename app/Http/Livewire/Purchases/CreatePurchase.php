@@ -21,6 +21,8 @@ class CreatePurchase extends Component
     public $payment_conditions = [], $payment_methods = [], $voucher_types = [], $suppliers = [];
     public $supplier_iva_condition = '', $supplier_discriminates_iva, $has_order_associated = 0;
 
+    protected $listeners = ['save' => 'save'];
+
     // PRODUCTS
     public $orderProducts = [];
     public $allProducts = [];
@@ -149,8 +151,31 @@ class CreatePurchase extends Component
 
     }
 
+    // Si el costo de compra es mayor al costo actual, se debe mostrar un mensaje de alerta
+    public function presave()
+    {
+        $this->validate();
+
+        $products = [];
+
+        foreach ($this->orderProducts as $product) {
+            $dbProduct = Product::find($product['product_id']);
+            if ($dbProduct->cost < $product['price']) {
+                $products[] = $dbProduct->name;
+            }
+        }
+
+        if (count($products) > 0) {
+            // $this->emit('error', 'El costo de compra de los siguientes productos es mayor al costo actual: ' . implode(', ', $products));
+            $this->emit('moreExpensiveProducts', 'El costo de compra de los siguientes productos es mayor al costo actual: ' . implode(', ', $products));
+        } else {
+            $this->save(true);
+            // dd('Pasa el presave y no hay productos más caros');
+        }
+    }
+
     // CREATE PURCHASE
-    public function save()
+    public function save($updateCosts)
     {
         // Validamos los datos
         $this->validate();
@@ -159,27 +184,37 @@ class CreatePurchase extends Component
         $purchase = Purchase::create($this->createForm);
 
         // Creamos los productos de la compra en la tabla pivote
-        foreach ($this->orderProducts as $product) {
-            $purchase->products()->attach($product['product_id'], [
-                'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'subtotal' => $product['quantity'] * $product['price']
-            ]);
-
-            // Actualizamos el precio de venta de cada producto si su costo es mayor al de compra
-            $dbProduct = Product::find($product['product_id']);
-            if ($dbProduct->cost < $product['price']) {
-
-                $dbProduct->prices()->create([
-                    'cost' => $dbProduct->cost,
-                    'selling_price' => $dbProduct->selling_price,
-                    'user_id' => auth()->user()->id
+        if ($updateCosts) {
+            foreach ($this->orderProducts as $product) {
+                $purchase->products()->attach($product['product_id'], [
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'],
+                    'subtotal' => $product['quantity'] * $product['price']
                 ]);
 
-                // Actualizamos los precios
-                $dbProduct->cost = $product['price'];
-                $dbProduct->selling_price = $product['price'] * $dbProduct->margin;
-                $dbProduct->save();
+                // Actualizamos el precio de venta de cada producto si su costo es mayor al de compra
+                $dbProduct = Product::find($product['product_id']);
+                if ($dbProduct->cost < $product['price']) {
+
+                    $dbProduct->prices()->create([
+                        'cost' => $dbProduct->cost,
+                        'selling_price' => $dbProduct->selling_price,
+                        'user_id' => auth()->user()->id
+                    ]);
+
+                    // Actualizamos los precios
+                    $dbProduct->cost = $product['price'];
+                    $dbProduct->selling_price = $product['price'] * $dbProduct->margin;
+                    $dbProduct->save();
+                }
+            }
+        } else {
+            foreach ($this->orderProducts as $product) {
+                $purchase->products()->attach($product['product_id'], [
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'],
+                    'subtotal' => $product['quantity'] * $product['price']
+                ]);
             }
         }
 
@@ -192,11 +227,15 @@ class CreatePurchase extends Component
         $iva = $subtotal * 0.21;
 
         // Actualizamos el subtotal, iva y total de la compra
-        $purchase->update([
-            'subtotal' => $subtotal,
-            'iva' => $iva,
-            'total' => $subtotal + $iva
-        ]);
+        if ($this->supplier_discriminates_iva) {
+            $purchase->subtotal = $subtotal;
+            $purchase->iva = $iva;
+            $purchase->total = $subtotal + $iva;
+        } else {
+            $purchase->subtotal = $subtotal;
+            $purchase->iva = 0;
+            $purchase->total = $subtotal;
+        }
 
         // Actualizamos el stock de los productos
         foreach ($purchase->products as $product) {

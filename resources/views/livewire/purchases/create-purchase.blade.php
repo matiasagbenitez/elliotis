@@ -127,8 +127,7 @@
                                 class="input-control w-full p-1 text-center" />
                         </div>
                         <div class="col-span-1">
-                            <x-jet-input type="number" min="1"
-                                name="orderProducts[{{ $index }}][price]"
+                            <x-jet-input type="number" min="1" name="orderProducts[{{ $index }}][price]"
                                 wire:model.lazy="orderProducts.{{ $index }}.price"
                                 class="input-control w-full p-1 text-center" />
                         </div>
@@ -323,10 +322,68 @@
 
     </div>
 
-    <div class="flex justify-end mt-6" wire:click="save">
+    {{-- <div class="flex justify-end mt-6" wire:click="save"> --}}
+    <div class="flex justify-end mt-6" wire:click="presave">
         <x-jet-button class="px-6 col-span-2">
             Registrar compra
         </x-jet-button>
     </div>
+
+    @push('script')
+        <script>
+            Livewire.on('moreExpensiveProducts', message => {
+
+                Swal.fire({
+                    title: '¿Actualizar costos?',
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1f2937',
+                    cancelButtonColor: '#dc2626',
+                    confirmButtonText: 'Sí, actualizar costos',
+                    cancelButtonText: 'Esta vez no'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        Livewire.emit('save', true);
+
+                        Livewire.on('success', message => {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: message
+                            });
+                        });
+
+                    } else {
+
+                        Livewire.emit('save', false);
+
+                        Livewire.on('success', message => {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: message
+                            });
+                        });
+                    }
+                });
+
+            });
+        </script>
+    @endpush
 
 </div>
