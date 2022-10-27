@@ -53,7 +53,7 @@ Route::get('/wood-types', IndexWoodTypes::class)->name('admin.wood-types.index')
 Route::get('/product-types', IndexProductTypes::class)->name('admin.product-types.index');
 
 Route::get('/products', IndexProducts::class)->name('admin.products.index');
-// Route::get('/add-products', AddProductsComponent::class)->name('admin.add-products.index');
+Route::get('/add-products', AddProductsComponent::class)->name('admin.add-products.index');
 
 Route::get('/task-types', IndexTaskTypes::class)->name('admin.task-types.index');
 Route::get('/task-statuses', IndexTaskStatuses::class)->name('admin.task-statuses.index');
