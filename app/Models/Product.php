@@ -47,4 +47,16 @@ class Product extends Model
         return $this->hasMany(Price::class);
     }
 
+    // Relationship many with SaleOrder
+    public function saleOrders()
+    {
+        return $this->belongsToMany(SaleOrder::class);
+    }
+
+    // Relationship many with PurchaseOrder
+    public function purchaseOrders()
+    {
+        return $this->belongsToMany(PurchaseOrder::class);
+    }
+
 }
