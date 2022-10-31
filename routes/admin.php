@@ -18,6 +18,7 @@ use App\Http\Livewire\Countries\IndexCountries;
 use App\Http\Livewire\Provinces\IndexProvinces;
 use App\Http\Livewire\Purchases\CreatePurchase;
 use App\Http\Livewire\Purchases\IndexPurchases;
+use App\Http\Livewire\SaleOrders\ShowSaleOrder;
 use App\Http\Livewire\Suppliers\CreateSupplier;
 use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\TaskTypes\IndexTaskTypes;
@@ -69,4 +70,5 @@ Route::get('/sale/create', CreateSale::class)->name('admin.sales.create');
 Route::get('/sale/{sale}/detail', ShowSale::class)->name('admin.sales.show-detail');
 
 Route::get('/sale-orders', SaleOrdersIndex::class)->name('admin.sale-orders.index');
+Route::get('/sale-order/{saleOrder}/detail', ShowSaleOrder::class)->name('admin.sale-orders.show-detail');
 

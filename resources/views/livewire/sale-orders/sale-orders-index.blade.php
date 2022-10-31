@@ -89,7 +89,7 @@
                                             <i class="fas fa-ban mr-1"></i>
                                         </button>
                                     @endif
-                                    <a title="Ver detalle" href="#">
+                                    <a title="Ver detalle" href="{{ route('admin.sale-orders.show-detail', $saleOrder) }}">
                                         <x-jet-secondary-button>
                                             <i class="fas fa-list"></i>
                                         </x-jet-secondary-button>
