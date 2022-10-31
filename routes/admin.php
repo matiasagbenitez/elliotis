@@ -23,6 +23,7 @@ use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\TaskTypes\IndexTaskTypes;
 use App\Http\Livewire\WoodTypes\IndexWoodTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
+use App\Http\Livewire\SaleOrders\SaleOrdersIndex;
 use App\Http\Livewire\Products\AddProductsComponent;
 use App\Http\Livewire\ProductNames\IndexProductNames;
 use App\Http\Livewire\ProductTypes\IndexProductTypes;
@@ -67,5 +68,5 @@ Route::get('/sales', IndexSales::class)->name('admin.sales.index');
 Route::get('/sale/create', CreateSale::class)->name('admin.sales.create');
 Route::get('/sale/{sale}/detail', ShowSale::class)->name('admin.sales.show-detail');
 
-
+Route::get('/sale-orders', SaleOrdersIndex::class)->name('admin.sale-orders.index');
 

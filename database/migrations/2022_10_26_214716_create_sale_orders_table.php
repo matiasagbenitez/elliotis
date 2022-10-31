@@ -19,13 +19,16 @@ return new class extends Migration
 
             $table->date('registration_date');
 
-            $table->boolean('is_active')->default(true);
-
             // bigFloat for subtotal, iva and total
             $table->float('subtotal', 10, 2)->required();
             $table->float('iva', 10, 2)->required();
             $table->float('total', 10, 2)->required();
             $table->text('observations')->nullable();
+
+            $table->boolean('is_active')->default(true);
+            $table->integer('cancelled_by')->nullable();
+            $table->date('cancelled_at')->nullable();
+            $table->text('cancel_reason')->nullable();
 
             $table->timestamps();
         });
