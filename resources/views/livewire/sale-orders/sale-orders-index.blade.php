@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Órdenes de venta</h2>
-            <a href="{{ route('admin.sales.create') }}">
+            <a href="{{ route('admin.sale-orders.create') }}">
                 <x-jet-secondary-button>
                     Registrar nueva orden de venta
                 </x-jet-secondary-button>
