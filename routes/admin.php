@@ -31,6 +31,9 @@ use App\Http\Livewire\ProductNames\IndexProductNames;
 use App\Http\Livewire\ProductTypes\IndexProductTypes;
 use App\Http\Livewire\TaskStatuses\IndexTaskStatuses;
 use App\Http\Livewire\IvaConditions\IndexIvaConditions;
+use App\Http\Livewire\PurchaseOrders\ShowPurchaseOrder;
+use App\Http\Livewire\PurchaseOrders\CreatePurchaseOrder;
+use App\Http\Livewire\PurchaseOrders\PurchaseOrdersIndex;
 use App\Http\Livewire\PucharseParameters\IndexPucharseParameters;
 
 Route::get('/countries', IndexCountries::class)->name('admin.countries.index');
@@ -74,3 +77,6 @@ Route::get('/sale-orders', SaleOrdersIndex::class)->name('admin.sale-orders.inde
 Route::get('/sale-order/create', CreateSaleOrder::class)->name('admin.sale-orders.create');
 Route::get('/sale-order/{saleOrder}/detail', ShowSaleOrder::class)->name('admin.sale-orders.show-detail');
 
+Route::get('/purchase-orders', PurchaseOrdersIndex::class)->name('admin.purchase-orders.index');
+Route::get('/purchase-order/create', CreatePurchaseOrder::class)->name('admin.purchase-orders.create');
+Route::get('/purchase-order/{purchaseOrder}/detail', ShowPurchaseOrder::class)->name('admin.purchase-orders.show-detail');
