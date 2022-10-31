@@ -64,13 +64,10 @@
             <x-jet-label class="mb-2" for="order_id" value="Orden asociada" />
             <select id="order_id" class="input-control w-full" wire:model="createForm.supplier_order_id"
                 {{ $has_order_associated ? '' : 'disabled' }}>
-                <option value="1">Seleccione una orden</option>
-                <option value="2">Orden 1</option>
-                <option value="3">Orden 2</option>
-                <option value="4">Orden 3</option>
-                {{-- @foreach ($orders as $order)
-                            <option value="{{ $order->id }}">{{ $order->id }}</option>
-                        @endforeach --}}
+                <option value="">Seleccione una orden</option>
+                @foreach ($supplier_orders as $order)
+                    <option value="{{ $order->id }}">Orden #{{ $order->id }} ({{ Date::parse($order->registration_date)->format('d-m-Y') }})</option>
+                @endforeach
             </select>
             <x-jet-input-error for="createForm.supplier_order_id" class="mt-2" />
         </div>

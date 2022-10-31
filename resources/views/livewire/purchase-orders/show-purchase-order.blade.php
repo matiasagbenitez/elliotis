@@ -52,15 +52,30 @@
                         <i class="fas fa-ban text-5xl"></i>
                         {{-- </div> --}}
                         <div class="flex flex-col">
-                            <p class="font-bold font-mono uppercase">Orden de venta anulada</p>
+                            <p class="font-bold font-mono uppercase">Orden de compra anulada</p>
                             <p class="font-mono text-sm">
-                                La presente orden de compra no es válida ya que fue anulada por {{ $user_who_cancelled }}
-                                el día {{ $purchaseOrder->updated_at->format('d-m-Y') }} a las {{ $purchaseOrder->updated_at->format('H:i:s') }} hs
+                                La presente orden de compra no es válida ya que fue anulada por
+                                {{ $user_who_cancelled }}
+                                el día {{ $purchaseOrder->updated_at->format('d-m-Y') }} a las
+                                {{ $purchaseOrder->updated_at->format('H:i:s') }} hs
                             </p>
                             <p class="font-bold font-mono uppercase mt-2">Motivo</p>
                             <p class="font-mono text-sm">
                                 {{ $purchaseOrder->cancel_reason }}
                             </p>
+                        </div>
+                    </div>
+                @elseif ($purchaseOrder->its_done)
+                    <div class="w-1/2 flex justify-center items-center border border-green-700 text-green-700 px-4 py-3 rounded relative gap-4"
+                        role="alert">
+                        {{-- <div> --}}
+                        <i class="fas fa-ban text-5xl"></i>
+                        {{-- </div> --}}
+                        <div class="flex flex-col">
+                            <p class="font-bold font-mono uppercase">Orden de compra procesada correctamente</p>
+                            <a href="{{ route('admin.purchases.show-detail', $purchase->id) }}" class="font-mono text-sm">
+                                La presente orden fue procesada correctamente y asociada a la compra #{{ $purchase->id }}
+                            </a>
                         </div>
                     </div>
                 @endif

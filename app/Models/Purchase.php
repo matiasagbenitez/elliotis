@@ -25,11 +25,6 @@ class Purchase extends Model
         });
     }
 
-    public function getRouteKeyName()
-    {
-        return 'voucher_number';
-    }
-
     // Relationship with Supplier
     public function supplier()
     {

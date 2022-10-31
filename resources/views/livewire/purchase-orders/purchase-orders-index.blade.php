@@ -22,20 +22,23 @@
                             <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col" class="w-1/4 py-2 px-4">
+                        <th scope="col" class="w-1/5 py-2 px-4">
                             Proveedor
                         </th>
                         <th scope="col" wire:click="order('registration_date')"
-                            class="w-1/4 px-4 py-2 cursor-pointer">
+                            class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Fecha de registro
                         </th>
-                        <th scope="col" wire:click="order('total')" class="w-1/4 px-4 py-2 cursor-pointer">
+                        <th scope="col" wire:click="order('total')" class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Monto total
                         </th>
-                        <th scope="col" class="w-1/4 py-2 px-4">
-                            Estado
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Estado orden
+                        </th>
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Estado compra
                         </th>
                         <th scope="col" class="py-2 px-4">
                             Acción
@@ -71,25 +74,43 @@
                                     @if ($purchaseOrder->is_active == 1)
                                         <span
                                             class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            VÁLIDO
+                                            VÁLIDA
                                         </span>
                                     @else
                                         <span
                                             class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            ANULADO
+                                            ANULADA
                                         </span>
+                                    @endif
+                                </p>
+                            </td>
+                            <td class="px-6 py-2 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    @if ($purchaseOrder->is_active == 1)
+                                        @if ($purchaseOrder->its_done == 1)
+                                            <span
+                                                class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                COMPLETADA
+                                            </span>
+                                        @else
+                                            <span
+                                                class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                                                PENDIENTE
+                                            </span>
+                                        @endif
                                     @endif
                                 </p>
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-end gap-2">
-                                    @if ($purchaseOrder->is_active)
+                                    @if ($purchaseOrder->is_active && $purchaseOrder->its_done == 0)
                                         <button title="Anular compra"
                                             wire:click="$emit('disablePurchaseOrder', '{{ $purchaseOrder->id }}')">
                                             <i class="fas fa-ban mr-1"></i>
                                         </button>
                                     @endif
-                                    <a title="Ver detalle" href="{{ route('admin.purchase-orders.show-detail', $purchaseOrder) }}">
+                                    <a title="Ver detalle"
+                                        href="{{ route('admin.purchase-orders.show-detail', $purchaseOrder) }}">
                                         <x-jet-secondary-button>
                                             <i class="fas fa-list"></i>
                                         </x-jet-secondary-button>
@@ -145,7 +166,8 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.emitTo('purchase-orders.purchase-orders-index', 'disable', purchaseId, reason);
+                        Livewire.emitTo('purchase-orders.purchase-orders-index', 'disable', purchaseId,
+                            reason);
                         Livewire.on('success', message => {
                             const Toast = Swal.mixin({
                                 toast: true,

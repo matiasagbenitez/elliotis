@@ -86,6 +86,13 @@
                             class="font-normal">{{ $purchase->payment_method->name }}</span></p>
                     <p class="text-sm  font-mono font-bold">Condición de pago: <span
                             class="font-normal">{{ $purchase->payment_condition->name }}</span></p>
+                    @if ($purchase->supplier_order_id)
+                        <p class="text-sm  font-mono font-bold">
+                            Orden de compra:
+                            <span class="font-normal">#{{ $purchase->supplier_order_id }}</span>
+                            <a href="{{ route('admin.purchase-orders.show-detail', $purchase->supplier_order_id) }}" class="text-xs italic font-normal text-blue-500">(ver detalle)</a>
+                        </p>
+                    @endif
                 </div>
                 <div class="w-1/2 space-y-2">
                     <p class="text-sm font-mono font-bold">Tipo de comprobante: <span
@@ -150,7 +157,7 @@
 
                                         @if ($purchase->supplier->iva_condition->discriminate)
                                             ${{ number_format($product->pivot->price, 2, ',', '.') }}
-                                            @else
+                                        @else
                                             ${{ number_format($product->pivot->price, 2, ',', '.') }}
                                             {{-- ${{ $price_with_iva }} --}}
                                         @endif
@@ -165,7 +172,7 @@
 
                                         @if ($purchase->supplier->iva_condition->discriminate)
                                             ${{ number_format($product->pivot->quantity * $product->pivot->price, 2, ',', '.') }}
-                                            @else
+                                        @else
                                             ${{ number_format($product->pivot->quantity * $product->pivot->price, 2, ',', '.') }}
                                             {{-- ${{ $subtotal_with_iva }} --}}
                                         @endif

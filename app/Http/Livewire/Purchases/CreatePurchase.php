@@ -2,16 +2,18 @@
 
 namespace App\Http\Livewire\Purchases;
 
+use App\Models\Price;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\VoucherTypes;
+use App\Models\PurchaseOrder;
 use Livewire\WithFileUploads;
+use Ramsey\Uuid\Type\Decimal;
 use App\Models\PaymentMethods;
 use App\Models\PaymentConditions;
-use App\Models\Price;
-use Ramsey\Uuid\Type\Decimal;
+use App\Models\ProductPurchaseOrder;
 
 class CreatePurchase extends Component
 {
@@ -19,7 +21,7 @@ class CreatePurchase extends Component
 
     // PURCHASE PARAMETERS
     public $payment_conditions = [], $payment_methods = [], $voucher_types = [], $suppliers = [];
-    public $supplier_iva_condition = '', $supplier_discriminates_iva, $has_order_associated = 0;
+    public $supplier_iva_condition = '', $supplier_discriminates_iva, $has_order_associated = 0, $supplier_orders = [];
 
     protected $listeners = ['save' => 'save'];
 
@@ -78,18 +80,43 @@ class CreatePurchase extends Component
         ];
     }
 
+    // RESET ORDER PRODUCTS
+    public function resetOrderProducts()
+    {
+        $this->orderProducts = [
+            ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
+        ];
+        $this->createForm['subtotal'] = 0;
+        $this->createForm['iva'] = 0;
+        $this->createForm['total'] = 0;
+    }
+
     // SUPPLIER IVA CONDITION
     public function updatedCreateFormSupplierId()
     {
         $this->supplier_iva_condition = Supplier::find($this->createForm['supplier_id'])->iva_condition->name ?? '';
         $this->supplier_discriminates_iva = Supplier::find($this->createForm['supplier_id'])->iva_condition->discriminate ?? null;
-        $this->updatedOrderProducts();
+        $this->reset(['has_order_associated', 'supplier_orders']);
+        $this->resetOrderProducts();
     }
 
     // TOGGLE DIV
     public function updatedHasOrderAssociated()
     {
-        $this->createForm['supplier_order_id'] = '';
+        if ($this->has_order_associated == 0) {
+            $this->supplier_orders = [];
+            $this->resetOrderProducts();
+        } else {
+            $this->supplier_orders = PurchaseOrder::where('supplier_id', $this->createForm['supplier_id'])->where('is_active', true)->get();
+        }
+    }
+
+    // SUPPLIER ORDER
+    public function updatedCreateFormSupplierOrderId($value)
+    {
+        $this->orderProducts = [];
+        $this->orderProducts = ProductPurchaseOrder::where('purchase_order_id', $value)->get()->toArray();
+        $this->updatedOrderProducts();
     }
 
     // ADD PRODUCT
@@ -245,11 +272,18 @@ class CreatePurchase extends Component
             ]);
         }
 
+        // Actualizamos la orden de compra
+        $purchaseOrder = PurchaseOrder::find($purchase->supplier_order_id);
+        $purchaseOrder->update([
+            'its_done' => true
+        ]);
+
         // Añadimos 1 compra al proveedor
         $supplier = Supplier::find($purchase->supplier_id);
         $supplier->update([
             'total_purchases' => $supplier->total_purchases + 1
         ]);
+
 
         // Reseteamos los campos
         $this->reset(['createForm', 'orderProducts']);

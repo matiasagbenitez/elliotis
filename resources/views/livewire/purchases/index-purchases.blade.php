@@ -200,16 +200,25 @@
 
                     Swal.fire({
                         title: '¿Anular compra?',
-                        text: "¡No podrás revertir esta acción!",
+                        text: "Puedes anular la compra y su orden asociada o bien, solo la compra. ¡No podrás revertir esta acción!",
                         icon: 'warning',
-                        showCancelButton: true,
+
                         confirmButtonColor: '#1f2937',
+                        confirmButtonText: 'Anular compra y orden',
+
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        denyButtonText: 'Anular solo compra',
+                        denyButtonColor: '#9ca3af',
+
                         cancelButtonColor: '#dc2626',
-                        confirmButtonText: 'Sí, anular compra',
                         cancelButtonText: 'Cancelar'
+
                     }).then((result) => {
+
                         if (result.isConfirmed) {
-                            Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId, reason);
+
+                            Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId, reason, disableOrder = true);
                             Livewire.on('success', message => {
                                 const Toast = Swal.mixin({
                                     toast: true,
@@ -223,6 +232,34 @@
                                     title: message
                                 });
                             });
+
+                            Livewire.on('error', message => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: message,
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#1f2937',
+                                });
+                            });
+
+                        } else if (result.isDenied) {
+
+                            Livewire.emitTo('purchases.index-purchases', 'disable', purchaseId, reason, disableOrder = false);
+                            Livewire.on('success', message => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: message
+                                });
+                            });
+
                             Livewire.on('error', message => {
                                 Swal.fire({
                                     icon: 'error',

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Purchases;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Purchase;
+use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Models\VoucherTypes;
 use Carbon\Carbon;
@@ -63,7 +64,7 @@ class IndexPurchases extends Component
         ];
     }
 
-    public function disable($id, $reason)
+    public function disable($id, $reason, $disableOrder)
     {
         $purchase_month = Carbon::parse(Purchase::find($id)->date)->format('m');
 
@@ -88,8 +89,21 @@ class IndexPurchases extends Component
                     'total_purchases' => $supplier->total_purchases - 1
                 ]);
 
+                $purchaseOrder = PurchaseOrder::find($purchase->supplier_order_id);
+                if ($disableOrder) {
+                    $purchaseOrder->update([
+                        'is_active' => false
+                    ]);
+                    $this->emit('success', '¡La compra y la orden se han anulado correctamente!');
+                } else {
+                    $purchaseOrder->update([
+                        'is_active' => true,
+                        'its_done' => null
+                    ]);
+                    $this->emit('success', '¡La compra se ha anulado correctamente!');
+                }
+
                 $this->emit('refresh');
-                $this->emit('success', '¡La compra se ha anulado correctamente!');
             } catch (\Exception $e) {
                 $this->emit('error', 'No es posible anular la compra.');
             }
