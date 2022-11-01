@@ -22,20 +22,23 @@
                             <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col" class="w-1/4 py-2 px-4">
+                        <th scope="col" class="w-1/5 py-2 px-4">
                             Cliente
                         </th>
                         <th scope="col" wire:click="order('registration_date')"
-                            class="w-1/4 px-4 py-2 cursor-pointer">
+                            class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Fecha de registro
                         </th>
-                        <th scope="col" wire:click="order('total')" class="w-1/4 px-4 py-2 cursor-pointer">
+                        <th scope="col" wire:click="order('total')" class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
                             Monto total
                         </th>
-                        <th scope="col" class="w-1/4 py-2 px-4">
-                            Estado
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Estado orden
+                        </th>
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Estado venta
                         </th>
                         <th scope="col" class="py-2 px-4">
                             Acción
@@ -71,19 +74,36 @@
                                     @if ($saleOrder->is_active == 1)
                                         <span
                                             class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            VÁLIDO
+                                            VÁLIDA
                                         </span>
                                     @else
                                         <span
                                             class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            ANULADO
+                                            ANULADA
                                         </span>
+                                    @endif
+                                </p>
+                            </td>
+                            <td class="px-6 py-2 whitespace-nowrap text-center">
+                                <p class="text-sm uppercase">
+                                    @if ($saleOrder->is_active == 1)
+                                        @if ($saleOrder->its_done == 1)
+                                            <span
+                                                class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                COMPLETADA
+                                            </span>
+                                        @else
+                                            <span
+                                                class="px-6 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                                                PENDIENTE
+                                            </span>
+                                        @endif
                                     @endif
                                 </p>
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center justify-end gap-2">
-                                    @if ($saleOrder->is_active)
+                                    @if ($saleOrder->is_active && $saleOrder->its_done == 0)
                                         <button title="Anular venta"
                                             wire:click="$emit('disableSaleOrder', '{{ $saleOrder->id }}')">
                                             <i class="fas fa-ban mr-1"></i>

@@ -25,11 +25,6 @@ class Sale extends Model
         });
     }
 
-    public function getRouteKeyName()
-    {
-        return 'voucher_number';
-    }
-
     // Relationship with Client
     public function client()
     {

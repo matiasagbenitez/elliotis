@@ -30,6 +30,8 @@ return new class extends Migration
             $table->date('cancelled_at')->nullable();
             $table->text('cancel_reason')->nullable();
 
+            $table->boolean('its_done')->default(false)->nullable();
+
             $table->timestamps();
         });
     }
