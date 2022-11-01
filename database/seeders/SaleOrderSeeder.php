@@ -49,11 +49,6 @@ class SaleOrderSeeder extends Seeder
 
             // Total
             $saleOrder->save();
-
-            // Add 1 to total_sales in client
-            $client = $saleOrder->client;
-            $client->total_sales += 1;
-            $client->save();
         });
 
     }

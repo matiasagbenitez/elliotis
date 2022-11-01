@@ -49,11 +49,6 @@ class PurchaseOrderSeeder extends Seeder
 
             // Total
             $purchaseOrder->save();
-
-            // Add 1 to total_purchases in provider
-            $provider = $purchaseOrder->supplier;
-            $provider->total_purchases += 1;
-            $provider->save();
         });
     }
 }
