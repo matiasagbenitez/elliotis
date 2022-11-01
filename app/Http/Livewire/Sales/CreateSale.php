@@ -11,6 +11,8 @@ use App\Models\VoucherTypes;
 use Livewire\WithFileUploads;
 use App\Models\PaymentMethods;
 use App\Models\PaymentConditions;
+use App\Models\ProductSaleOrder;
+use App\Models\SaleOrder;
 
 class CreateSale extends Component
 {
@@ -19,7 +21,7 @@ class CreateSale extends Component
 
     // SALE PARAMETERS
     public $clients = [], $payment_conditions = [], $payment_methods = [], $voucher_types = [];
-    public $client_iva_condition = '', $client_discriminates_iva, $has_order_associated = 0;
+    public $client_iva_condition = '', $client_discriminates_iva, $has_order_associated = 0, $client_orders = [];
 
     // PRODUCTS
     public $orderProducts = [];
@@ -71,16 +73,42 @@ class CreateSale extends Component
         ];
     }
 
+    // RESET ORDER PRODUCTS
+    public function resetOrderProducts()
+    {
+        $this->orderProducts = [
+            ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
+        ];
+        $this->createForm['subtotal'] = 0;
+        $this->createForm['iva'] = 0;
+        $this->createForm['total'] = 0;
+    }
+
     public function updatedCreateFormClientId()
     {
         $this->client_iva_condition = Client::find($this->createForm['client_id'])->iva_condition->name ?? '';
         $this->client_discriminates_iva = Client::find($this->createForm['client_id'])->iva_condition->discriminate ?? null;
-        $this->updatedOrderProducts();
+        $this->reset(['has_order_associated', 'client_orders']);
+        $this->resetOrderProducts();
+        // $this->updatedOrderProducts();
     }
 
     public function updatedHasOrderAssociated()
     {
-        $this->createForm['client_order_id'] = '';
+        if ($this->has_order_associated == 0) {
+            $this->client_orders = [];
+            $this->resetOrderProducts();
+        } else {
+            $this->client_orders = SaleOrder::where('client_id', $this->createForm['client_id'])->where('is_active', true)->get();
+        }
+    }
+
+    // CLIENT ORDERS
+    public function updatedCreateFormClientOrderId($value)
+    {
+        $this->orderProducts = [];
+        $this->orderProducts = ProductSaleOrder::where('sale_order_id', $value)->get()->toArray();
+        $this->updatedOrderProducts();
     }
 
     // ADD PRODUCT
@@ -211,6 +239,12 @@ class CreateSale extends Component
                 'real_stock' => $p->real_stock - $product->pivot->quantity,
             ]);
         }
+
+        // Actualizamos la orden de venta
+        $saleOrder = SaleOrder::find($this->createForm['sale_order_id']);
+        $saleOrder->update([
+            'its_done' => true,
+        ]);
 
         // Añadimos 1 venta al cliente
         $client = Client::find($sale->client_id);
