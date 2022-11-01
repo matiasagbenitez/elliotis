@@ -41,8 +41,8 @@
                         </span>
                     </p>
                     <p class="text-sm font-mono font-bold">
-                        Fecha de registro:
-                        <span class="font-normal">{{ $purchaseOrder->registration_date }}</span>
+                        Fecha comprobante:
+                        <span class="font-normal"> {{ Date::parse($purchaseOrder->registration_date)->format('d-m-Y') }} </span>
                     </p>
                 </div>
                 @if (!$purchaseOrder->is_active)
@@ -58,10 +58,6 @@
                                 {{ $user_who_cancelled }}
                                 el día {{ $purchaseOrder->updated_at->format('d-m-Y') }} a las
                                 {{ $purchaseOrder->updated_at->format('H:i:s') }} hs
-                            </p>
-                            <p class="font-bold font-mono uppercase mt-2">Motivo</p>
-                            <p class="font-mono text-sm">
-                                {{ $purchaseOrder->cancel_reason }}
                             </p>
                         </div>
                     </div>

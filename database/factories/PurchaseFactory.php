@@ -15,6 +15,7 @@ class PurchaseFactory extends Factory
     public function definition()
     {
         $user_id = User::inRandomOrder()->first()->id;
+        $date = $this->faker->dateTimeBetween('-2 week', 'now');
         $supplier_id = Supplier::inRandomOrder()->first()->id;
         $payment_condition_id = PaymentConditions::inRandomOrder()->first()->id;
         $payment_method_id = PaymentMethods::inRandomOrder()->first()->id;
@@ -25,7 +26,7 @@ class PurchaseFactory extends Factory
 
         return [
             'user_id' => $user_id,
-            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'date' => $date,
             'supplier_id' => $supplier_id,
             // 'supplier_order_id' => $this->faker->unique()->numberBetween(1, 100),
             'payment_condition_id' => $payment_condition_id,
@@ -38,6 +39,8 @@ class PurchaseFactory extends Factory
             'weight' => $this->faker->randomFloat(2, 30000, 50000),
             'weight_voucher' => null,
             'observations' => $this->faker->text(100),
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 }

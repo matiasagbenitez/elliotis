@@ -44,8 +44,14 @@ class PurchaseOrderSeeder extends Seeder
             });
 
             $purchaseOrder->subtotal = $subtotal;
-            $purchaseOrder->iva = $subtotal * 0.21;
-            $purchaseOrder->total = $purchaseOrder->subtotal + $purchaseOrder->iva;
+
+            if ($purchaseOrder->supplier->iva_condition->discriminate) {
+                $purchaseOrder->iva = $subtotal * 0.21;
+                $purchaseOrder->total = $purchaseOrder->subtotal + $purchaseOrder->iva;
+            } else {
+                $purchaseOrder->iva = 0;
+                $purchaseOrder->total = $purchaseOrder->subtotal;
+            }
 
             // Total
             $purchaseOrder->save();

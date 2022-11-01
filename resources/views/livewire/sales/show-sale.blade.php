@@ -85,6 +85,13 @@
                             class="font-normal">{{ $sale->payment_method->name }}</span></p>
                     <p class="text-sm  font-mono font-bold">Condición de pago: <span
                             class="font-normal">{{ $sale->payment_condition->name }}</span></p>
+                            @if ($sale->client_order_id)
+                            <p class="text-sm  font-mono font-bold">
+                                Orden de venta:
+                                <span class="font-normal">#{{ $sale->client_order_id }}</span>
+                                <a href="{{ route('admin.sale-orders.show-detail', $sale->client_order_id) }}" class="text-xs italic font-normal text-blue-500">(ver detalle)</a>
+                            </p>
+                        @endif
                 </div>
                 <div class="w-1/2 space-y-2">
                     <p class="text-sm font-mono font-bold">Tipo de comprobante: <span

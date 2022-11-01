@@ -17,7 +17,7 @@ class IndexPurchases extends Component
     use WithPagination;
     public $suppliers = [], $voucher_types = [];
     public $sort = 'id';
-    public $direction = 'asc';
+    public $direction = 'desc';
     public $total_purchases;
 
     public $filters = [

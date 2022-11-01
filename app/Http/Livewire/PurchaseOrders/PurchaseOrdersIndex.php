@@ -12,7 +12,7 @@ class PurchaseOrdersIndex extends Component
 
     public $search;
     public $sort = 'id';
-    public $direction = 'asc';
+    public $direction = 'desc';
 
     protected $listeners = ['render', 'disable'];
 

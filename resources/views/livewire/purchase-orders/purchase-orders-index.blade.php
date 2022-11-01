@@ -22,13 +22,13 @@
                             <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col" class="w-1/5 py-2 px-4">
-                            Proveedor
-                        </th>
                         <th scope="col" wire:click="order('registration_date')"
                             class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
-                            Fecha de registro
+                            Alta sistema
+                        </th>
+                        <th scope="col" class="w-1/5 py-2 px-4">
+                            Proveedor
                         </th>
                         <th scope="col" wire:click="order('total')" class="w-1/5 px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
@@ -53,15 +53,15 @@
                                     {{ $purchaseOrder->id }}
                                 </p>
                             </td>
-                            <td class="px-6 py-2">
-                                <p class="text-sm uppercase text-center">
-                                    {{ $purchaseOrder->supplier->business_name }}
-                                </p>
-                            </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     {{-- Format date to Y-m-d --}}
-                                    {{ Date::parse($purchaseOrder->registration_date)->format('d-m-Y') }}
+                                    {{ Date::parse($purchaseOrder->created_at)->format('d-m-Y') }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-2">
+                                <p class="text-sm uppercase text-center">
+                                    {{ $purchaseOrder->supplier->business_name }}
                                 </p>
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">

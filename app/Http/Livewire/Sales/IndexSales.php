@@ -17,7 +17,7 @@ class IndexSales extends Component
     use WithPagination;
     public $clients = [], $voucher_types = [];
     public $sort = 'id';
-    public $direction = 'asc';
+    public $direction = 'desc';
     public $total_sales;
 
     public $filters = [

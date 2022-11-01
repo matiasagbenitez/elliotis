@@ -69,12 +69,12 @@
                             <i class="fas fa-sort mr-2"></i>
                             ID
                         </th>
-                        <th scope="col" class="w-1/4 py-2 px-4">
-                            Cliente
-                        </th>
                         <th scope="col" wire:click="order('date')" class="px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
-                            Fecha de venta
+                            Alta sistema
+                        </th>
+                        <th scope="col" class="w-1/4 py-2 px-4">
+                            Cliente
                         </th>
                         <th scope="col" wire:click="order('total')" class="px-4 py-2 cursor-pointer">
                             <i class="fas fa-sort mr-2"></i>
@@ -99,15 +99,15 @@
                                     {{ $sale->id }}
                                 </p>
                             </td>
-                            <td class="px-6 py-2">
-                                <p class="text-sm uppercase text-center">
-                                    {{ $sale->client->business_name }}
-                                </p>
-                            </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">
                                 <p class="text-sm uppercase">
                                     {{-- Format date to Y-m-d --}}
-                                    {{ Date::parse($sale->date)->format('d-m-Y') }}
+                                    {{ Date::parse($sale->created_at)->format('d-m-Y') }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-2">
+                                <p class="text-sm uppercase text-center">
+                                    {{ $sale->client->business_name }}
                                 </p>
                             </td>
                             <td class="px-6 py-2 whitespace-nowrap text-center">

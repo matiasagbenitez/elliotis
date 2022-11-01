@@ -15,6 +15,7 @@ class SaleFactory extends Factory
     public function definition()
     {
         $user_id = User::inRandomOrder()->first()->id;
+        $date = $this->faker->dateTimeBetween('-2 week', 'now');
         $client_id = Client::inRandomOrder()->first()->id;
         $payment_condition_id = PaymentConditions::inRandomOrder()->first()->id;
         $payment_method_id = PaymentMethods::inRandomOrder()->first()->id;
@@ -25,7 +26,7 @@ class SaleFactory extends Factory
 
         return [
             'user_id' => $user_id,
-            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'date' => $date,
             'client_id' => $client_id,
             // 'client_order_id' => $this->faker->unique()->numberBetween(1, 100),
             'payment_condition_id' => $payment_condition_id,
@@ -36,6 +37,8 @@ class SaleFactory extends Factory
             'iva' => $iva,
             'total' => $total,
             'observations' => $this->faker->text(100),
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 }

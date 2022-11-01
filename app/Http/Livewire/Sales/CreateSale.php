@@ -244,7 +244,7 @@ class CreateSale extends Component
         if ($this->createForm['client_order_id'] != null) {
             $saleOrder = SaleOrder::find($this->createForm['client_order_id']);
             $saleOrder->update([
-                'is_active' => false,
+                'its_done' => true,
             ]);
         }
 

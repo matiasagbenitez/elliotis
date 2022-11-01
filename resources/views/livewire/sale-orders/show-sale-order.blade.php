@@ -41,8 +41,8 @@
                         </span>
                     </p>
                     <p class="text-sm font-mono font-bold">
-                        Fecha de registro:
-                        <span class="font-normal">{{ $saleOrder->registration_date }}</span>
+                        Fecha comprobante:
+                        <span class="font-normal"> {{ Date::parse($saleOrder->registration_date)->format('d-m-Y') }} </span>
                     </p>
                 </div>
                 @if (!$saleOrder->is_active)
@@ -57,10 +57,19 @@
                                 La presente orden de venta no es válida ya que fue anulada por {{ $user_who_cancelled }}
                                 el día {{ $saleOrder->updated_at->format('d-m-Y') }} a las {{ $saleOrder->updated_at->format('H:i:s') }} hs
                             </p>
-                            <p class="font-bold font-mono uppercase mt-2">Motivo</p>
-                            <p class="font-mono text-sm">
-                                {{ $saleOrder->cancel_reason }}
-                            </p>
+                        </div>
+                    </div>
+                    @elseif ($saleOrder->its_done)
+                    <div class="w-1/2 flex justify-center items-center border border-green-700 text-green-700 px-4 py-3 rounded relative gap-4"
+                        role="alert">
+                        {{-- <div> --}}
+                        <i class="fas fa-ban text-5xl"></i>
+                        {{-- </div> --}}
+                        <div class="flex flex-col">
+                            <p class="font-bold font-mono uppercase">Orden de venta procesada correctamente</p>
+                            <a href="{{ route('admin.sales.show-detail', $sale->id) }}" class="font-mono text-sm">
+                                La presente orden fue procesada correctamente y asociada a la venta #{{ $sale->id }}
+                            </a>
                         </div>
                     </div>
                 @endif
