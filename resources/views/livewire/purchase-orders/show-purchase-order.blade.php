@@ -142,7 +142,7 @@
                                         @endphp --}}
 
                                         {{-- @if ($purchaseOrder->supplier->iva_condition->discriminate) --}}
-                                            ${{ number_format($product->pivot->quantity * $product->pivot->price, 2, ',', '.') }}
+                                            ${{ number_format($product->pivot->subtotal, 2, ',', '.') }}
                                         {{-- @else --}}
                                             {{-- ${{ $subtotal_with_iva }} --}}
                                         {{-- @endif --}}
