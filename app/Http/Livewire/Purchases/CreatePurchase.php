@@ -273,10 +273,12 @@ class CreatePurchase extends Component
         }
 
         // Actualizamos la orden de compra
-        $purchaseOrder = PurchaseOrder::find($purchase->supplier_order_id);
-        $purchaseOrder->update([
-            'its_done' => true
-        ]);
+        if ($this->createForm['supplier_order_id'] != null) {
+            $purchaseOrder = PurchaseOrder::find($purchase->supplier_order_id);
+            $purchaseOrder->update([
+                'its_done' => true
+            ]);
+        }
 
         // Añadimos 1 compra al proveedor
         $supplier = Supplier::find($purchase->supplier_id);

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Sales;
 use App\Models\Sale;
 use App\Models\Client;
 use App\Models\Product;
+use App\Models\SaleOrder;
 use Livewire\Component;
 use App\Models\VoucherTypes;
 use Carbon\Carbon;
@@ -63,7 +64,7 @@ class IndexSales extends Component
         ];
     }
 
-    public function disable($id, $reason)
+    public function disable($id, $reason, $disableOrder)
     {
         $sale_month = Carbon::parse(Sale::find($id)->date)->format('m');
 
@@ -88,8 +89,21 @@ class IndexSales extends Component
                     'total_sales' => $client->total_sales - 1
                 ]);
 
+                $saleOrder = SaleOrder::find($sale->client_order_id);
+                if ($disableOrder) {
+                    $saleOrder->update([
+                        'is_active' => false
+                    ]);
+                    $this->emit('success', '¡La venta y la orden se han anulado correctamente!');
+                } else {
+                    $saleOrder->update([
+                        'is_active' => true,
+                        'its_done' => null
+                    ]);
+                    $this->emit('success', '¡La venta se ha anulado correctamente!');
+                }
+
                 $this->emit('refresh');
-                $this->emit('success', '¡La venta se ha anulado correctamente!');
             } catch (\Exception $e) {
                 $this->emit('error', 'No es posible anular la venta.');
             }
