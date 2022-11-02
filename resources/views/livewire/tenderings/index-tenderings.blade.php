@@ -94,10 +94,12 @@
                         </p>
                         @if ($tender->is_active)
                             @if ($tender->end_date > now())
-                                <span class="text-sm hover:font-bold cursor-pointer">
-                                    <i class="fas fa-ban mr-1 text-gray-800"></i>
-                                    Anular
-                                </span>
+                                <button wire:click="$emit('disableTender', '{{ $tender->id }}')">
+                                    <span class="text-sm hover:font-bold cursor-pointer">
+                                        <i class="fas fa-ban mr-1 text-gray-800"></i>
+                                        Anular
+                                    </span>
+                                </button>
                             @endif
                         @endif
                     </div>
@@ -126,14 +128,14 @@
 
 </div>
 
-{{-- @push('script')
+@push('script')
     <script>
-        Livewire.on('disableSaleOrder', async (saleId) => {
+        Livewire.on('disableTender', async (tenderId) => {
 
             const {
                 value: reason
             } = await Swal.fire({
-                title: 'Anular orden de venta',
+                title: 'Anular concurso',
                 input: 'textarea',
                 inputPlaceholder: 'Especifique aquí el o los motivos de anulación',
                 showCancelButton: true,
@@ -145,17 +147,17 @@
 
             if (reason) {
                 Swal.fire({
-                    title: '¿Anular orden de venta?',
+                    title: '¿Anular concurso?',
                     text: "¡No podrás revertir esta acción!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#1f2937',
                     cancelButtonColor: '#dc2626',
-                    confirmButtonText: 'Sí, anular venta',
+                    confirmButtonText: 'Sí, anular concurso',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.emitTo('sale-orders.sale-orders-index', 'disable', saleId, reason);
+                        Livewire.emitTo('tenderings.index-tenderings', 'disable', tenderId, reason);
                         Livewire.on('success', message => {
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -183,4 +185,4 @@
             }
         });
     </script>
-@endpush --}}
+@endpush

@@ -11,9 +11,26 @@ class IndexTenderings extends Component
     use WithPagination;
     public $query, $direction = 'asc';
 
+    protected $listeners = ['render', 'disable'];
+
     public function updatedQuery()
     {
         $this->resetPage();
+    }
+
+    public function disable($id, $reason)
+    {
+        try {
+            $tendering = Tendering::find($id);
+            $tendering->is_active = false;
+            $tendering->cancelled_by = auth()->user()->id;
+            $tendering->cancelled_at = now();
+            $tendering->cancel_reason = $reason;
+            $tendering->save();
+            $this->emit('success', 'Concurso anulado correctamente.');
+        } catch (\Exception $e) {
+            $this->emit('error', 'Error al desactivar el concurso.');
+        }
     }
 
     public function render()
