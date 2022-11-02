@@ -59,4 +59,10 @@ class Product extends Model
         return $this->belongsToMany(PurchaseOrder::class);
     }
 
+    // Relationship many with Tendering
+    public function tenderings()
+    {
+        return $this->belongsToMany(Tendering::class);
+    }
+
 }
