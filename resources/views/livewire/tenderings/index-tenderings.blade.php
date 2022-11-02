@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Concursos privados de precios</h2>
-            <a href="#">
+            <a href="{{ route('admin.tenderings.create') }}">
                 <x-jet-secondary-button>
                     Registrar nuevo concurso
                 </x-jet-secondary-button>
@@ -14,17 +14,30 @@
     <div class="flex flex-col gap-4 rounded-lg bg-transparent">
 
         {{-- Search --}}
-        <div class="flex flex-col gap-2">
-            <x-jet-label value="Filtros" />
-            <select wire:model="query" class="input-control">
-                <option value="">Todos los concursos</option>
-                <option value="1">Concursos válidos</option>
-                <option value="2">Concursos anulados</option>
-                <option value="3">Concursos más prontos a vencer</option>
-                <option value="4">Concursos más tardes a vencer</option>
-                <option value="5">Concursos analizados</option>
-                <option value="6">Concursos aprobados</option>
-            </select>
+        <div class="grid grid-cols-6 gap-3">
+            <div class="col-span-3">
+                <div class="flex flex-col gap-2">
+                    <x-jet-label value="Filtros" />
+                    <select wire:model="query" class="input-control">
+                        <option value="">Todos los concursos</option>
+                        <option value="1">Concursos válidos</option>
+                        <option value="2">Concursos anulados</option>
+                        <option value="3">Concursos más prontos a vencer</option>
+                        <option value="4">Concursos más tardes a vencer</option>
+                        <option value="5">Concursos analizados</option>
+                        <option value="6">Concursos aprobados</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-span-3">
+                <div class="flex flex-col gap-2">
+                    <x-jet-label value="Orden" />
+                    <select wire:model="direction" class="input-control" @if ($query == 3 || $query == 4) disabled @endif>
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         @if ($tenderings->count())
@@ -50,12 +63,12 @@
                     </div>
                     <hr class="mt-1">
                     <p class="text-sm font-bold my-1">Inicio concurso:
-                        <span class="font-normal"> {{ Date::parse($tender->start_date)->format('d-m-Y h:m') }} hs
-                        </span>
+                        {{-- <span class="font-normal"> {{ Date::parse($tender->start_date)->format('d-m-Y h:m:s') }} hs</span> --}}
+                        <span class="font-normal"> {{ Date::parse($tender->start_date)->format('d-m-Y H:i') }} hs</span>
                     </p>
                     <div class="flex justify-between">
                         <p class="text-sm font-bold">Fin concurso:
-                            <span class="font-normal">{{ Date::parse($tender->end_date)->format('d-m-Y h:m') }}
+                            <span class="font-normal">{{ Date::parse($tender->end_date)->format('d-m-Y H:i') }}
                                 hs</span>
                         </p>
                         {{-- Si le fecha de fin aún no llegó o si no está inactivo, mostrar el tiempo restante --}}
@@ -80,10 +93,12 @@
                             <span class="font-normal">{{ $tender->is_analyzed == 1 ? 'Sí' : 'No' }}</span>
                         </p>
                         @if ($tender->is_active)
-                            <span class="text-sm hover:font-bold cursor-pointer">
-                                <i class="fas fa-ban mr-1 text-gray-800"></i>
-                                Anular
-                            </span>
+                            @if ($tender->end_date > now())
+                                <span class="text-sm hover:font-bold cursor-pointer">
+                                    <i class="fas fa-ban mr-1 text-gray-800"></i>
+                                    Anular
+                                </span>
+                            @endif
                         @endif
                     </div>
                     <div class="flex justify-between">

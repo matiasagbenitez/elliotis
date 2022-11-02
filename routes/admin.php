@@ -26,6 +26,7 @@ use App\Http\Livewire\WoodTypes\IndexWoodTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\SaleOrders\CreateSaleOrder;
 use App\Http\Livewire\SaleOrders\SaleOrdersIndex;
+use App\Http\Livewire\Tenderings\CreateTendering;
 use App\Http\Livewire\Tenderings\IndexTenderings;
 use App\Http\Livewire\Products\AddProductsComponent;
 use App\Http\Livewire\ProductNames\IndexProductNames;
@@ -83,3 +84,4 @@ Route::get('/purchase-order/create', CreatePurchaseOrder::class)->name('admin.pu
 Route::get('/purchase-order/{purchaseOrder}/detail', ShowPurchaseOrder::class)->name('admin.purchase-orders.show-detail');
 
 Route::get('/tenderings', IndexTenderings::class)->name('admin.tenderings.index');
+Route::get('/tendering/create', CreateTendering::class)->name('admin.tenderings.create');

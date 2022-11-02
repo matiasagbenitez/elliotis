@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 class IndexTenderings extends Component
 {
     use WithPagination;
-    public $query;
+    public $query, $direction = 'asc';
 
     public function updatedQuery()
     {
@@ -20,10 +20,10 @@ class IndexTenderings extends Component
     {
         switch ($this->query) {
             case 1:
-                $tenderings = Tendering::where('is_active', true)->paginate(3);
+                $tenderings = Tendering::where('is_active', true)->orderBy('id', $this->direction)->paginate(3);
                 break;
             case 2:
-                $tenderings = Tendering::where('is_active', false)->paginate(3);
+                $tenderings = Tendering::where('is_active', false)->orderBy('id', $this->direction)->paginate(3);
                 break;
             case 3:
                 $tenderings = Tendering::where('is_active', true)->orderBy('end_date', 'asc')->paginate(3);
@@ -32,13 +32,13 @@ class IndexTenderings extends Component
                 $tenderings = Tendering::where('is_active', true)->orderBy('end_date', 'desc')->paginate(3);
                 break;
             case 5:
-                $tenderings = Tendering::where('is_analyzed', true)->paginate(3);
+                $tenderings = Tendering::where('is_analyzed', true)->orderBy('id', $this->direction)->paginate(3);
                 break;
             case 6:
-                $tenderings = Tendering::where('is_approved', true)->paginate(3);
+                $tenderings = Tendering::where('is_approved', true)->orderBy('id', $this->direction)->paginate(3);
                 break;
             default:
-                $tenderings = Tendering::paginate(3);
+                $tenderings = Tendering::orderBy('id', 'asc')->paginate(3);
                 break;
         }
 
