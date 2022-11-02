@@ -107,11 +107,12 @@
                         <p class="text-sm my-1 font-bold">Oferta aceptada:
                             <span class="font-normal">{{ $tender->is_approved == 1 ? 'Sí' : 'No' }}</span>
                         </p>
-
-                        <span class="text-sm hover:font-bold cursor-pointer">
-                            <i class="fas fa-info-circle mr-1 text-gray-800"></i>
-                            Ver detalle
-                        </span>
+                        <a href="{{ route('admin.tenderings.show-detail', $tender->id) }}">
+                            <span class="text-sm hover:font-bold cursor-pointer">
+                                <i class="fas fa-info-circle mr-1 text-gray-800"></i>
+                                Ver detalle
+                            </span>
+                        </a>
                     </div>
                 </div>
             @endforeach

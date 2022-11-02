@@ -22,6 +22,7 @@ use App\Http\Livewire\SaleOrders\ShowSaleOrder;
 use App\Http\Livewire\Suppliers\CreateSupplier;
 use App\Http\Livewire\Suppliers\IndexSuppliers;
 use App\Http\Livewire\TaskTypes\IndexTaskTypes;
+use App\Http\Livewire\Tenderings\ShowTendering;
 use App\Http\Livewire\WoodTypes\IndexWoodTypes;
 use App\Http\Livewire\Localities\IndexLocalities;
 use App\Http\Livewire\SaleOrders\CreateSaleOrder;
@@ -85,3 +86,4 @@ Route::get('/purchase-order/{purchaseOrder}/detail', ShowPurchaseOrder::class)->
 
 Route::get('/tenderings', IndexTenderings::class)->name('admin.tenderings.index');
 Route::get('/tendering/create', CreateTendering::class)->name('admin.tenderings.create');
+Route::get('/tendering/{tendering}/detail', ShowTendering::class)->name('admin.tenderings.show-detail');
