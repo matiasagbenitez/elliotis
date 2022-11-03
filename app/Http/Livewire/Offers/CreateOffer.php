@@ -16,6 +16,7 @@ class CreateOffer extends Component
     public $orderProducts = [];
     public $allProducts = [];
     public $hash;
+    public $supplier;
     public $tender;
 
     // CREATE FORM
@@ -45,6 +46,7 @@ class CreateOffer extends Component
             $this->orderProducts[$key]['price'] = 0;
         }
 
+        $this->supplier = $hash->supplier;
         $this->tender = $hash->tendering;
     }
 

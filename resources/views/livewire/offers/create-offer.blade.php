@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Oferta privada de precios</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Oferta privada de precios: {{ $supplier->business_name }}</h2>
         </div>
     </x-slot>
 
@@ -30,7 +30,7 @@
             <h2 class="font-bold">Su oferta</h2>
             <span class="text-xs text-gray-500">
                 <i class="fas fa-info-circle mr-1"></i>
-                El detalle discrimina IVA, descuentos, etc. Puede quitar de la lista los productos que no tiene disponible.
+                El detalle discrimina IVA, descuentos, etc. Puede quitar de la lista los productos que no tiene disponible, como así también modificar la cantidad de cada uno.
             </span>
         </div>
 
