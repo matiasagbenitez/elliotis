@@ -65,4 +65,10 @@ class Product extends Model
         return $this->belongsToMany(Tendering::class);
     }
 
+    // Relationship many with Offer
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class);
+    }
+
 }

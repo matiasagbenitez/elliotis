@@ -22,4 +22,10 @@ class Hash extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    // Relationship one to one with Offer
+    public function offer()
+    {
+        return $this->hasOne(Offer::class);
+    }
 }
