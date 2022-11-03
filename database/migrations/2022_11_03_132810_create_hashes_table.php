@@ -18,12 +18,15 @@ return new class extends Migration
             $table->foreign('supplier_id')->references('id')->on('suppliers');
 
             $table->string('hash')->unique();
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
 
             $table->datetime('sent_at')->nullable();
+
+            $table->boolean('seen')->default(false);
             $table->datetime('seen_at')->nullable();
 
             $table->boolean('answered')->default(false);
+            $table->datetime('answered_at')->nullable();
 
             $table->timestamps();
         });

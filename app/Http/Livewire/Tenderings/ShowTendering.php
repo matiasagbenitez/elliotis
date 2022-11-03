@@ -8,7 +8,7 @@ use App\Models\Tendering;
 
 class ShowTendering extends Component
 {
-    public $tender, $user_who_cancelled = '';
+    public $tender, $hashes = [], $user_who_cancelled = '';
 
     public function mount(Tendering $tendering)
     {
@@ -17,6 +17,7 @@ class ShowTendering extends Component
             $this->user_who_cancelled = User::find($id)->name;
         }
         $this->tender = $tendering;
+        $this->hashes = $tendering->hashes;
     }
 
     public function render()

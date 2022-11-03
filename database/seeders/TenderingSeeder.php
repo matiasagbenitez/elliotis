@@ -3,15 +3,17 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use App\Models\Supplier;
 use App\Models\Tendering;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TenderingSeeder extends Seeder
 {
+
     public function run()
     {
-        Tendering::factory(3)->create();
+        Tendering::factory(1)->create();
 
         // Associate random products to each tendering
         Tendering::all()->each(function ($tendering) {
@@ -28,7 +30,7 @@ class TenderingSeeder extends Seeder
 
                 // $product = Product::where('is_buyable', true)->inRandomOrder()->first();
 
-                $quantity = rand(20, 30);
+                $quantity = rand(50, 100);
                 $price = $product->cost;
 
                 $tendering->products()->attach($product->id, [
@@ -49,6 +51,22 @@ class TenderingSeeder extends Seeder
 
             // Total
             $tendering->save();
+
+            // -------------------------- CREACIÓN DE HASHES ----------------------------- //
+            $suppliers = Supplier::where('active', true)->get();
+
+            // Create a unique hash on hashes table for each supplier, so they can access the tendering
+            foreach ($suppliers as $supplier) {
+                $supplier->hashes()->create([
+                    'tendering_id' => $tendering->id,
+                    'hash' => md5($supplier->id . $tendering->id . time()),
+                    'sent_at' => now(),
+                    'seen_at' => null,
+                    'answered' => false,
+                ]);
+            }
+
+            // -------------------------- FIN CREACIÓN DE HASHES ----------------------------- //
         });
     }
 }

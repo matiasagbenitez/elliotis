@@ -4,11 +4,13 @@ namespace App\Http\Livewire\Tenderings;
 
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Supplier;
 use App\Models\Tendering;
 
 class CreateTendering extends Component
 {
     // PRODUCTS
+    public $suppliers = [];
     public $orderProducts = [];
     public $allProducts = [];
 
@@ -25,6 +27,7 @@ class CreateTendering extends Component
 
     public function mount()
     {
+        $this->suppliers = Supplier::where('active', true)->get();
         $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
         $this->orderProducts = [
             ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
@@ -124,8 +127,22 @@ class CreateTendering extends Component
             'total' => $total,
         ]);
 
-        // Retornamos el mensaje de éxito y redireccionamos a la vista de listado
+        // -------------------------- CREACIÓN DE HASHES ----------------------------- //
 
+        // Create a unique hash on hashes table for each supplier, so they can access the tendering
+        foreach ($this->suppliers as $supplier) {
+            $supplier->hashes()->create([
+                'tendering_id' => $tendering->id,
+                'hash' => md5($supplier->id . $tendering->id . time()),
+                'sent_at' => now(),
+                'seen_at' => null,
+                'answered' => false,
+            ]);
+        }
+
+        // -------------------------- FIN CREACIÓN DE HASHES ----------------------------- //
+
+        // Retornamos el mensaje de éxito y redireccionamos a la vista de listado
         $id = $tendering->id;
         $message = 'La licitación se ha creado correctamente. Se ha enviado un correo electrónico a los proveedores. El número de licitación es: ' . $id;
         session()->flash('flash.banner', $message);

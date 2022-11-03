@@ -85,4 +85,115 @@
 
         </div>
     </div>
+
+    {{-- DETALLE DE HASHES --}}
+    <div class="px-6 py-3 bg-white rounded-lg shadow mt-4">
+        <p class="text-sm font-bold my-1">Solicitudes enviadas</p>
+        <hr class="mt-1 mb-2">
+        @if ($hashes->count())
+            <x-responsive-table>
+                <table class="text-gray-600 min-w-full divide-y divide-gray-200 table-fixed">
+                    <thead class="text-sm text-center text-gray-500 uppercase border-b border-gray-300 bg-gray-200">
+                        <tr>
+                            <th scope="col" class="px-4 py-2">
+                                ID
+                            </th>
+                            <th scope="col" class="w-1/3 px-4 py-2">
+                                Proveedor
+                            </th>
+                            <th scope="col" class="px-4 py-2">
+                                Visto
+                            </th>
+                            <th scope="col" class="w-1/4 px-4 py-2">
+                                Fecha visto
+                            </th>
+                            <th scope="col" class="px-4 py-2">
+                                Respuesta
+                            </th>
+                            <th scope="col" class="w-1/4 px-4 py-2">
+                                Fecha respuesta
+                            </th>
+                            <th scope="col" class="px-4 py-2">
+                                Acción
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach ($hashes as $hash)
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-2">
+                                    <p class="text-sm uppercase">
+                                        {{ $hash->id }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-2 text-center">
+                                    <p class="text-sm uppercase">
+                                        {{ $hash->supplier->business_name }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-2 text-center">
+                                    @switch($hash->seen)
+                                        @case(1)
+                                            <span
+                                                class="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Sí
+                                            </span>
+                                        @break
+
+                                        @case(0)
+                                            <span
+                                                class="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                No
+                                            </span>
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                </td>
+                                <td class="px-6 py-2">
+                                    <p class="text-sm uppercase text-center">
+                                        {{ $hash->seen_at ? Date::parse($hash->seen_at)->format('d-m-Y H:i') : 'N/A' }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-2 text-center">
+                                    @switch($hash->answered)
+                                        @case(1)
+                                            <span
+                                                class="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Sí
+                                            </span>
+                                        @break
+
+                                        @case(0)
+                                            <span
+                                                class="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                No
+                                            </span>
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                </td>
+                                <td class="px-6 py-2">
+                                    <p class="text-sm uppercase text-center">
+                                        {{ $hash->answered_at ? Date::parse($hash->answered_at)->format('d-m-Y H:i') : 'N/A' }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a title="Ver detalle" href="#">
+                                            <x-jet-secondary-button>
+                                                <i class="fas fa-list"></i>
+                                            </x-jet-secondary-button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </x-responsive-table>
+        @endif
+
+    </div>
 </div>
