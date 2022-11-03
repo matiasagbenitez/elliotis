@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Offers;
 
+use App\Models\Hash;
 use App\Models\Product;
 use Livewire\Component;
 use App\View\Components\GuestLayout;
@@ -11,6 +12,7 @@ class CreateOffer extends Component
     // PRODUCTS
     public $orderProducts = [];
     public $allProducts = [];
+    public $hash;
 
     // CREATE FORM
     public $createForm = [
@@ -21,12 +23,29 @@ class CreateOffer extends Component
         'observations' => '',
     ];
 
-    public function mount()
+    public function mount(Hash $hash)
     {
+        $this->checkHash($hash);
         $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
         $this->orderProducts = [
             ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
         ];
+    }
+
+    public function checkHash(Hash $hash)
+    {
+        $this->hash = $hash->hash;
+
+        if (!$hash->seen){
+            $hash->update([
+                'seen' => true,
+                'seen_at' => now(),
+            ]);
+        }
+
+        if ($hash->answered){
+            abort(403);
+        }
     }
 
     public function addProduct()
@@ -72,6 +91,37 @@ class CreateOffer extends Component
         $this->createForm['subtotal'] = number_format($subtotal, 2, '.', '');
         $this->createForm['iva'] = number_format($iva, 2, '.', '');
         $this->createForm['total'] = number_format($total, 2, '.', '');
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'createForm.delivery_date' => 'required|date',
+            'createForm.observations' => 'nullable|string',
+            'orderProducts' => 'required|array',
+            'orderProducts.*.product_id' => 'required|exists:products,id',
+            'orderProducts.*.quantity' => 'required|numeric|min:1',
+            'orderProducts.*.price' => 'required|numeric|min:0',
+        ]);
+
+        // Find hash or fail
+        $hash = Hash::where('hash', $this->hash)->firstOrFail();
+
+        $hash->offer()->create([
+            'subtotal' => $this->createForm['subtotal'],
+            'iva' => $this->createForm['iva'],
+            'total' => $this->createForm['total'],
+            'delivery_date' => $this->createForm['delivery_date'],
+            'observations' => $this->createForm['observations'],
+        ])->products()->attach($this->orderProducts);
+
+        $hash->update([
+            'answered' => true,
+            'answered_at' => now()
+        ]);
+
+        session()->flash('success', 'Oferta creada correctamente');
+        return redirect()->route('dashboard');
     }
 
     public function render()

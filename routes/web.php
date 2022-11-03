@@ -28,4 +28,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/offer/create', CreateOffer::class)->name('offer.create');
+Route::get('/offer/{hash:hash}', CreateOffer::class)->name('offer.create');
