@@ -32,4 +32,10 @@ class Supplier extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    // Relation with Hash
+    public function hashes()
+    {
+        return $this->hasMany(Hash::class);
+    }
 }

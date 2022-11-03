@@ -22,4 +22,10 @@ class Tendering extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Relationship with Hash
+    public function hashes()
+    {
+        return $this->hasMany(Hash::class);
+    }
 }
