@@ -4,6 +4,9 @@ namespace App\Http\Livewire\Offers;
 
 use App\Models\Hash;
 use App\Models\Product;
+use App\Models\ProductTendering;
+use App\Models\Supplier;
+use App\Models\Tendering;
 use Livewire\Component;
 use App\View\Components\GuestLayout;
 
@@ -13,6 +16,7 @@ class CreateOffer extends Component
     public $orderProducts = [];
     public $allProducts = [];
     public $hash;
+    public $tender;
 
     // CREATE FORM
     public $createForm = [
@@ -26,10 +30,22 @@ class CreateOffer extends Component
     public function mount(Hash $hash)
     {
         $this->checkHash($hash);
-        $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
-        $this->orderProducts = [
-            ['product_id' => '', 'quantity' => 1, 'price' => 0, 'subtotal' => '0']
-        ];
+        // $this->allProducts = Product::where('is_buyable', true)->orderBy('name')->get();
+
+        // $this->allProducts is filled with the products related to the tendering
+        $this->allProducts = Product::where('is_buyable', true)->whereHas('tenderings', function ($query) use ($hash) {
+            $query->where('tendering_id', $hash->tendering->id);
+        })->orderBy('name')->get();
+
+        // $this->orderProducts is filled with product_id, quantity and price of the products from the tendering associated with the hash
+        $this->orderProducts = ProductTendering::where('tendering_id', $hash->tendering_id)->get(['product_id', 'quantity'])->toArray();
+
+        // Fill the price of each product with 0
+        foreach ($this->orderProducts as $key => $product) {
+            $this->orderProducts[$key]['price'] = 0;
+        }
+
+        $this->tender = $hash->tendering;
     }
 
     public function checkHash(Hash $hash)

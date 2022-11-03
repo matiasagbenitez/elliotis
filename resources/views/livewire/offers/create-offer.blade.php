@@ -17,7 +17,17 @@
         </div>
 
         <div class="col-span-6">
-            <h2 class="font-bold">Detalle</h2>
+            <h2 class="font-bold mb-1">Detalle de lo requerido</h2>
+            {{-- Products of tender --}}
+            <ul class="list-disc list-inside ml-4">
+                @foreach ($tender->products as $product)
+                    <li class="text-sm italic">{{ $product->name }} (x {{ $product->pivot->quantity }})</li>
+                @endforeach
+            </ul>
+        </div>
+
+        <div class="col-span-6">
+            <h2 class="font-bold">Su oferta</h2>
             <span class="text-xs text-gray-500">
                 <i class="fas fa-info-circle mr-1"></i>
                 El detalle discrimina IVA, descuentos, etc. Puede quitar de la lista los productos que no tiene disponible.
