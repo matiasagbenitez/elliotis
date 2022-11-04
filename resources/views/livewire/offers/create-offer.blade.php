@@ -1,14 +1,14 @@
-<div class="max-w-5xl mx-auto bg-white p-10 my-6 rounded-lg">
+<div class="max-w-5xl mx-auto bg-white py-6 px-10 my-6 rounded-lg">
 
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Oferta privada de precios: {{ $supplier->business_name }}</h2>
+            <h2 class="text-xl text-gray-800 leading-tight">¡Bienvenido <span class="font-bold">{{ $supplier->business_name }}</span>, a este concurso privado de precios!</h2>
         </div>
     </x-slot>
 
     <div class="grid grid-cols-6 gap-4">
         <div class="col-span-6">
-            <h2 class="font-bold text-xl text-gray-800 leading-tight mb-1 uppercase">Registrar oferta</h2>
+            <h2 class="font-bold text-xl text-gray-800 leading-tight mb-1 uppercase">Formulario de oferta</h2>
             <span class="text-xs text-gray-700 italic">
                 Estimado proveedor: el envío de una oferta es considerado un compromiso de venta a la fecha acordada. Revise los precios y condiciones propuestas antes de enviar la oferta.
             </span>

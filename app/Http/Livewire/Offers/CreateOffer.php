@@ -138,8 +138,7 @@ class CreateOffer extends Component
             'answered_at' => now()
         ]);
 
-        session()->flash('success', 'Oferta creada correctamente');
-        return redirect()->route('dashboard');
+        return redirect()->route('offer.sent-successfully', $hash->hash);
     }
 
     public function render()

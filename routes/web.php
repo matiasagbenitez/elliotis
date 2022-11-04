@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\Offers\CreateOffer;
+use App\Http\Livewire\Offers\OfferSentSuccesfully;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,9 @@ Route::middleware([
 });
 
 Route::get('/offer/{hash:hash}', CreateOffer::class)->name('offer.create');
+
+Route::get('/offer/{hash:hash}/sent-successfully', OfferSentSuccesfully::class)->name('offer.sent-successfully');
+
+Route::get('/prueba', function() {
+    return 'view';
+});

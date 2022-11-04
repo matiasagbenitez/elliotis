@@ -55,7 +55,7 @@ class IndexTenderings extends Component
                 $tenderings = Tendering::where('is_approved', true)->orderBy('id', $this->direction)->paginate(3);
                 break;
             default:
-                $tenderings = Tendering::orderBy('id', 'asc')->paginate(3);
+                $tenderings = Tendering::orderBy('id', $this->direction)->paginate(3);
                 break;
         }
 

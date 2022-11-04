@@ -6,6 +6,8 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Supplier;
 use App\Models\Tendering;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TenderingCreatedMailable;
 
 class CreateTendering extends Component
 {
@@ -138,6 +140,12 @@ class CreateTendering extends Component
                 'seen_at' => null,
                 'answered' => false,
             ]);
+
+            $hash = $supplier->hashes()->where('tendering_id', $tendering->id)->first();
+
+            // Send email to supplier
+            $mail = new TenderingCreatedMailable($supplier, $hash);
+            Mail::to($supplier->email)->send($mail);
         }
 
         // -------------------------- FIN CREACIÓN DE HASHES ----------------------------- //

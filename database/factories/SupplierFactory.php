@@ -36,6 +36,7 @@ class SupplierFactory extends Factory
         $iva_condition_id = IvaCondition::inRandomOrder()->first()->id;
         $locality_id = Locality::inRandomOrder()->first()->id;
         $slug = Str::slug($business_name, '-');
+        $email = $slug . '@gmail.com';
 
         return [
             'business_name' => $business_name,
@@ -47,7 +48,7 @@ class SupplierFactory extends Factory
             'adress' => $this->faker->streetAddress,
             'locality_id' => $locality_id,
             'phone' => $this->faker->phoneNumber,
-            'email' => $this->faker->email,
+            'email' => $email,
             'active' => true,
             'observations' => $this->faker->text(100),
         ];
