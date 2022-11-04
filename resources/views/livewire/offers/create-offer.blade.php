@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl text-gray-800 leading-tight">¡Bienvenido <span class="font-bold">{{ $supplier->business_name }}</span>, a este concurso privado de precios!</h2>
+            <h2 class="text-xl text-gray-800 leading-tight">¡Bienvenido a un nuevo concurso privado de precios, <span class="font-bold">{{ $supplier->business_name }}</span>!</h2>
         </div>
     </x-slot>
 

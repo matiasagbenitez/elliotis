@@ -152,7 +152,7 @@ class CreateTendering extends Component
 
         // Retornamos el mensaje de éxito y redireccionamos a la vista de listado
         $id = $tendering->id;
-        $message = 'La licitación se ha creado correctamente. Se ha enviado un correo electrónico a los proveedores. El número de licitación es: ' . $id;
+        $message = 'El concurso se ha creado con éxito. Se ha enviado un correo electrónico a los proveedores. El número de concurso es el #' . $id;
         session()->flash('flash.banner', $message);
         return redirect()->route('admin.tenderings.index');
     }

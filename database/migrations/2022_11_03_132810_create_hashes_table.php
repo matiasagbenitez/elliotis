@@ -28,6 +28,8 @@ return new class extends Migration
             $table->boolean('answered')->default(false);
             $table->datetime('answered_at')->nullable();
 
+            $table->boolean('confirmation_sent')->default(false);
+
             $table->timestamps();
         });
     }
